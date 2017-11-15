@@ -14,6 +14,10 @@ public interface Const {
 
     String CLASS = "class";
 
+    String BEAN = "bean";
+
+    String INTERFACE = "interface";
+
     String SCOPE_PUBLIC = "public";
 
     String SCOPE_PRIVATE = "private";
@@ -27,4 +31,8 @@ public interface Const {
     String NULL_STR = "";
 
     int MAP_SIZE = 16;
+
+    String UTF8 = "utf-8";
+
+    String UNDERLINE = "_";
 }

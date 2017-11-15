@@ -14,6 +14,10 @@ public class Column {
      */
     private String columnType;
     /**
+     * 数据库列名对应的java类字段名
+     */
+    private String property;
+    /**
      * 占用字节
      */
     private int columnSize;
@@ -21,7 +25,9 @@ public class Column {
      * 是否为空
      */
     private int nullable;
-
+    /**
+     * 小数部分的位数
+     */
     private int digits;
     /**
      * 描述
@@ -74,5 +80,18 @@ public class Column {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    @Override
+    public String toString() {
+        return "Column{" + "columnName='" + columnName + '\'' + ", columnType='" + columnType + '\'' + ", property='" + property + '\'' + ", columnSize=" + columnSize + ", nullable=" + nullable + ", digits=" + digits + ", remarks='" + remarks + '\'' + '}';
     }
 }

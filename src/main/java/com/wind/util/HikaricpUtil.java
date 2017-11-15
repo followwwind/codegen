@@ -1,9 +1,9 @@
 package com.wind.util;
 
 import com.wind.entity.db.Column;
+import com.wind.entity.db.MyBatisTable;
 import com.wind.entity.db.Table;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -84,27 +84,47 @@ public class HikaricpUtil {
     public static Table getTable(String tableName){
         Connection con = null;
         List<Column> columns = new ArrayList<>();
+        Table table = new MyBatisTable();
         try {
             con = getConn();
             DatabaseMetaData db = con.getMetaData();
+            ResultSet pkRSet = db.getPrimaryKeys(null, null, tableName);
+            while(pkRSet.next()) {
+                System.err.println("TABLE_CAT : "+pkRSet.getObject(1));
+                System.err.println("TABLE_SCHEM: "+pkRSet.getObject(2));
+                System.err.println("TABLE_NAME : "+pkRSet.getObject(3));
+                System.err.println("COLUMN_NAME: "+pkRSet.getObject(4));
+                System.err.println("KEY_SEQ : "+pkRSet.getObject(5));
+                System.err.println("PK_NAME : "+pkRSet.getObject(6));
+                table.setTableCat(pkRSet.getString("TABLE_CAT"));
+                table.setTableName(tableName);
+                table.setAlias(tableName.substring(0, 1));
+                table.setProperty(StringUtils.getCamelCase(tableName, true));
+                table.setPkName(pkRSet.getString("COLUMN_NAME"));
+            }
             ResultSet colRs = db.getColumns(null,"%", tableName,"%");
             while(colRs.next()) {
                 Column column = new Column();
-                column.setColumnName(colRs.getString("COLUMN_NAME"));
+                String colName = colRs.getString("COLUMN_NAME");
+                String property = StringUtils.getCamelCase(colName, false);
+                column.setColumnName(colName);
+                column.setProperty(property);
                 column.setColumnType(colRs.getString("TYPE_NAME"));
                 column.setColumnSize(colRs.getInt("COLUMN_SIZE"));
                 column.setRemarks(colRs.getString("REMARKS"));
-                int digits = colRs.getInt("DECIMAL_DIGITS");
-                int nullable = colRs.getInt("NULLABLE");
+                column.setDigits(colRs.getInt("DECIMAL_DIGITS"));
+                column.setNullable(colRs.getInt("NULLABLE"));
                 columns.add(column);
             }
+
+            table.setColumns(columns);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             close(con);
         }
 
-        return new Table(columns);
+        return table;
     }
 
     /**
@@ -130,5 +150,4 @@ public class HikaricpUtil {
             dataSource.close();
         }
     }
-
 }

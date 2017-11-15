@@ -38,25 +38,39 @@ public class ClassInfo {
      */
     private List<String> imports;
     /**
-     * 字段
+     * 成员属性
      */
     private List<Attribute> attrs;
+    /**
+     * 成员方法
+     */
+    private List<Method> methods;
 
+    private String type;
 
-    public ClassInfo(String packageName, String className, List<Attribute> attrs) {
-        this(Const.SCOPE_PUBLIC, packageName, Const.NULL_STR, className, Const.CLASS, attrs);
+    public ClassInfo() {
+
     }
 
+    public ClassInfo(String packageName, String className, List<Attribute> attrs) {
+        this(Const.SCOPE_PRIVATE, packageName, "", className, Const.CLASS, null, attrs, null, Const.BEAN);
+    }
 
-
-    public ClassInfo(String scope, String packageName, String classRemark, String className, String classType, List<Attribute> attrs) {
+    public ClassInfo(String scope, String packageName, String classRemark, String className, String classType, List<String> imports, List<Attribute> attrs, List<Method> methods, String type) {
         this.scope = scope;
         this.packageName = packageName;
         this.classRemark = classRemark;
         this.className = className;
         this.classType = classType;
         this.attrs = attrs;
-        this.imports = initImports(attrs);
+        this.methods = methods;
+        if(Const.BEAN.equals(type) && imports == null){
+            this.imports = initImports(attrs);
+        }else{
+            this.imports = imports;
+        }
+
+        this.type = type;
     }
 
     private List<String> initImports(List<Attribute> attrs){
@@ -78,6 +92,18 @@ public class ClassInfo {
             });
         }
         return list;
+    }
+
+    /**
+     * 添加import导入语句
+     * @param importStr
+     */
+    public void addImport(String importStr){
+        if(imports == null){
+            imports = new ArrayList<>();
+        }
+
+        imports.add(importStr);
     }
 
     public String getPackageName() {
@@ -134,5 +160,21 @@ public class ClassInfo {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public List<Method> getMethods() {
+        return methods;
+    }
+
+    public void setMethods(List<Method> methods) {
+        this.methods = methods;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

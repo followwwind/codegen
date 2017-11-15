@@ -14,7 +14,28 @@ public enum ClassType {
     /**
      * service 业务层
      */
-    SERVICE("service");
+    SERVICE("service"),
+
+    /**
+     * 类成员属性
+     */
+    FIELD("field"),
+
+    /**
+     * 类成员方法
+     */
+    METHOD("method"),
+
+    /**
+     * 接口
+     */
+    INTERFACE("interface"),
+
+    /**
+     * 类
+     */
+    CLASS("class"),
+    ;
 
     private String name;
 

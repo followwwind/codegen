@@ -22,7 +22,8 @@ public class Method extends Attribute{
      */
     private String body;
 
-    public Method() {
+    public Method(String name, String type) {
+        super(name, type);
     }
 
     public String getResult() {

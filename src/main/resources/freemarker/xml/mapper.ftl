@@ -13,49 +13,33 @@
     </#list>
     </resultMap>
 
+
     <sql id="Base_Column_List" >
-    <#list columns as column>
-        <#assign index=column_index/>
-        ${tableName?substring(0,1)}.${column.columnName}<#if index%7 == 0 && index != (columns?size - 1)>,<#elseif index < (columns?size - 1)>,</#if>
-    </#list>
+        ${join(0, ",")}
     </sql>
 
     <sql id="Column_List" >
-    <#list columns as column>
-        ${column.columnName},
-    </#list>
+        ${join(1, ",")}
     </sql>
 
     <sql id="Column_Selective_List" >
-    <#list columns as column>
-        <if test="${column.property} != null" >
-        , ${column.columnName} = #${lBracket}${column.property},jdbcType=${column.columnType}}
-        </if>
-    </#list>
+        ${join(2, ",")}
     </sql>
 
     <sql id="Column_Selective_And_List" >
-    <#list columns as column>
-        <if test="${column.property} != null" >
-            and ${column.columnName} = #${lBracket}${column.property},jdbcType=${column.columnType}}
-        </if>
-    </#list>
+        ${join(2, "and")}
     </sql>
 
     <sql id="Column_Assign_List" >
-    <#list columns as column>
-        ${column.columnName} = #${lBracket}${column.property},jdbcType=${column.columnType}}
-    </#list>
+        ${join(3, ",")}
     </sql>
 
     <insert id="insert" parameterType="${type}" >
-        insert into ${tableName}
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <include refid="Column_List" />
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <include refid="Column_Assign_List" />
-        </trim>
+        insert into ${tableName} (
+        <include refid="Column_List" />
+        ) values (
+        <include refid="Column_Assign_List" />
+        )
     </insert>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -70,9 +54,7 @@
         <include refid="Base_Column_List" />
         from ${tableName} ${alias}
         where 1 = 1
-        <trim prefix="and (" suffix=")" suffixOverrides="and">
-            <include refid="Column_Selective_And_List" />
-        </trim>
+        <include refid="Column_Selective_And_List" />
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
@@ -82,9 +64,9 @@
 
     <update id="updateByPrimaryKeySelective" parameterType="${type}" >
         update ${tableName}
-        <trim prefix="set" suffixOverrides=",">
+        <set>
             <include refid="Column_Selective_List" />
-        </trim>
+        </set>
         where ${pkName} = #${lBracket}${pkName},jdbcType=${pkType}}
     </update>
 
@@ -92,8 +74,31 @@
         select count(1)
         from ${tableName}
         where 1 = 1
-        <trim prefix="and (" suffix=")" suffixOverrides="and">
-            <include refid="Column_Selective_And_List" />
-        </trim>
+        <include refid="Column_Selective_And_List" />
     </select>
 </mapper>
+
+<#function join type sign>
+<#-- 声明局部变量 -->
+    <#local str = "">
+    <#local str += "<trim prefix=\"\" suffix=\"\" suffixOverrides=\"" + sign + "\">\n\t\t\t">
+    <#list columns as column>
+        <#local s = "">
+        <#if type == 0>
+            <#local s = alias + "." + column.columnName + sign + " ">
+        <#elseif type == 1>
+            <#local s = column.columnName + sign + " ">
+        <#elseif type == 2>
+            <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t\t">
+            <#local s += sign + " " + column.columnName + " = #" + lBracket + column.property
+            + ",jdbcType=" + column.columnType +"}\n\t\t\t">
+            <#local s += "</if>\n\t\t\t">
+        <#elseif type == 3>
+            <#local s = sign + " " + column.columnName + " = #" + lBracket + column.property
+            + ",jdbcType=" + column.columnType +"}\n\t\t\t">
+        </#if>
+        <#local str += s>
+    </#list>
+    <#local str += "\n\t\t</trim>">
+    <#return str>
+</#function>

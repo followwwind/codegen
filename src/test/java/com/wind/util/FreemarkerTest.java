@@ -5,6 +5,7 @@ import com.wind.entity.db.Table;
 import com.wind.entity.freemarker.Attribute;
 import com.wind.entity.freemarker.ClassInfo;
 import com.wind.entity.freemarker.ClassType;
+import com.wind.entity.freemarker.Method;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -59,11 +60,15 @@ public class FreemarkerTest {
             cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
             Template temp = cfg.getTemplate("class.ftl");
 
+            List<Method> methods = new ArrayList<>();
+            methods.add(new Method("bbb", "void"));
             ClassInfo classInfo = new ClassInfo();
             classInfo.setPackageName("com.wind.dao");
             classInfo.setScope("public");
             classInfo.setClassType("interface");
+            classInfo.setClassName("AAA");
             classInfo.setType("interface");
+            classInfo.setMethods(methods);
 
             File dir = new File("E:/Work/Freemarker/src/");
             if(!dir.exists()){

@@ -1,16 +1,18 @@
+<#if packageName??>
 package ${packageName};
-
-<#list imports!"" as import>
+</#if>
+<#if imports??>
+<#list imports as import>
 import ${import};
 </#list>
-
-<#if classRemark != "">
-/**
- * ${classRemark}
- */
 </#if>
+
+/**
+ * ${classRemark!""}
+ */
 ${scope} ${classType} ${className} {
-<#list attrs!"" as attr>
+<#if attrs??>
+<#list attrs as attr>
   <#if attr.remark != "">
   /**
    * ${attr.remark}
@@ -18,9 +20,10 @@ ${scope} ${classType} ${className} {
   </#if>
   ${attr.scope} ${attr.type} ${attr.name};
 </#list>
+</#if>
 
-<#if type == "bean" >
-    <#list attrs!"" as attr>
+<#if type == "bean" && attrs??>
+    <#list attrs as attr>
     public void set${attr.name?cap_first}(${attr.type} ${attr.name}){
         this.${attr.name} = ${attr.name};
     }
@@ -29,22 +32,30 @@ ${scope} ${classType} ${className} {
         return this.${attr.name};
     }
     </#list>
-<#elseif type == "interface">
-    <#list methods!"" as method>
-    <#assign args = method.args>
-    ${method.type} ${method.name} (join(args));
+<#elseif type == "interface" && methods??>
+    <#list methods as method>
+    <#assign args = "">
+    <#if method.args??>
+        <#assign args = method.args>
+    </#if>
+    /**
+     * ${method.remark!""}
+     */
+    ${method.type} ${method.name}(${join(args)});
     </#list>
 </#if>
 }
 
-<#function join args...>
+<#function join args>
 <#-- 声明局部变量 -->
     <#local str = "">
-    <#list args as arg>
-        <#local str += (arg.type + " " + arg.name + ", ")>
-    </#list>
-    <#if str.endsWith(", ")>
-        <#local str = str.substring(0, str.length() - 2)>
+    <#if args != "">
+        <#list args as arg>
+            <#local str += (arg.type + " " + arg.name + ", ")>
+        </#list>
+        <#if str.endsWith(", ")>
+            <#local str = str.substring(0, str.length() - 2)>
+        </#if>
     </#if>
     <#return str>
 </#function>

@@ -45,15 +45,17 @@ public class ClassInfo {
      * 成员方法
      */
     private List<Method> methods;
-
+    /**
+     * 类类型， bean类型等
+     */
     private String type;
 
-    public ClassInfo() {
-
+    public ClassInfo(String className) {
+        this.className = className;
     }
 
     public ClassInfo(String packageName, String className, List<Attribute> attrs) {
-        this(Const.SCOPE_PRIVATE, packageName, "", className, Const.CLASS, null, attrs, null, Const.BEAN);
+        this(Const.NULL_STR, packageName, "", className, Const.CLASS, null, attrs, null, Const.BEAN);
     }
 
     public ClassInfo(String scope, String packageName, String classRemark, String className, String classType, List<String> imports, List<Attribute> attrs, List<Method> methods, String type) {
@@ -64,46 +66,42 @@ public class ClassInfo {
         this.classType = classType;
         this.attrs = attrs;
         this.methods = methods;
-        if(Const.BEAN.equals(type) && imports == null){
-            this.imports = initImports(attrs);
-        }else{
-            this.imports = imports;
-        }
-
         this.type = type;
-    }
-
-    private List<String> initImports(List<Attribute> attrs){
-        List<String> list = new ArrayList<>();
-        if(attrs != null){
-            attrs.forEach(attr -> {
-                String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.NULL_STR;
-                if(type.contains(Const.LIST)){
-                    list.add("java.util.List");
-                }
-
-                if(type.contains(Const.DATE)){
-                    list.add("java.util.Date");
-                }
-
-                if(type.contains(Const.MAP)){
-                    list.add("java.util.Map");
-                }
-            });
-        }
-        return list;
+        initImports();
     }
 
     /**
-     * 添加import导入语句
-     * @param importStr
+     * 初始化import导入语句
      */
-    public void addImport(String importStr){
-        if(imports == null){
-            imports = new ArrayList<>();
+    public void initImports(){
+        if(attrs != null || methods != null){
+            this.imports = this.imports != null ? this.imports : new ArrayList<>();
+            addImport(attrs);
+            addImport(methods);
         }
+    }
 
-        imports.add(importStr);
+    private void addImport(List<? extends Attribute> attrs){
+        if(attrs != null){
+            attrs.forEach(attr -> {
+                if(attr instanceof Method){
+                    Method m = (Method) attr;
+                    addImport(m.getArgs());
+                }
+                String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.NULL_STR;
+                if(type.contains(Const.LIST)){
+                    this.imports.add("java.util.List");
+                }
+
+                if(type.contains(Const.DATE)){
+                    this.imports.add("java.util.Date");
+                }
+
+                if(type.contains(Const.MAP)){
+                    this.imports.add("java.util.Map");
+                }
+            });
+        }
     }
 
     public String getPackageName() {

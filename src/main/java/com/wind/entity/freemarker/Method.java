@@ -23,7 +23,7 @@ public class Method extends Attribute{
     private String body;
 
     public Method(String name, String type) {
-        super(name, type);
+        super(name, type, ClassType.METHOD);
     }
 
     public String getResult() {

@@ -7,6 +7,12 @@ import com.wind.entity.Const;
  * @author wind
  */
 public class Attribute {
+
+    /**
+     * 字段包名
+     */
+    private String packageName;
+
     /**
      * 作用域
      */
@@ -28,15 +34,8 @@ public class Attribute {
      */
     private ClassType classType;
 
-    public Attribute() {
-    }
-
-    public Attribute(String name, String type) {
-        this(Const.SCOPE_PRIVATE, name, type, Const.NULL_STR, ClassType.FIELD);
-    }
-
-    public Attribute(String scope, String name, String type, String remark) {
-        this(scope, name, type, remark, ClassType.FIELD);
+    public Attribute(String name, String type, ClassType classType) {
+        this((classType == ClassType.FIELD ? Const.SCOPE_PRIVATE : Const.NULL_STR), name, type, Const.NULL_STR, classType);
     }
 
     public Attribute(String scope, String name, String type, String remark, ClassType classType) {
@@ -85,5 +84,13 @@ public class Attribute {
 
     public void setClassType(ClassType classType) {
         this.classType = classType;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

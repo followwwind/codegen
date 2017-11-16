@@ -27,6 +27,11 @@ public enum ClassType {
     METHOD("method"),
 
     /**
+     * 参数
+     */
+    ARG("arg"),
+
+    /**
      * 接口
      */
     INTERFACE("interface"),

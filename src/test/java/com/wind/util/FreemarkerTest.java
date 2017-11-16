@@ -1,132 +1,100 @@
 package com.wind.util;
 
 import com.wind.entity.db.MyBatisTable;
-import com.wind.entity.db.Table;
-import com.wind.entity.freemarker.Attribute;
-import com.wind.entity.freemarker.ClassInfo;
-import com.wind.entity.freemarker.ClassType;
-import com.wind.entity.freemarker.Method;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
-
-import java.io.*;
+import com.wind.entity.freemarker.*;
 import java.util.*;
 
 public class FreemarkerTest {
 
     public static void genCode() {
-
-        try {
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File("src/main/resources/freemarker/java"));
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            Template temp = cfg.getTemplate("class.ftl");
-
-            List<Attribute> attrs = new ArrayList<>();
-            attrs.add(new Attribute("private", "name", "String", "姓名"));
-            attrs.add(new Attribute("age", "int"));
-            attrs.add(new Attribute("skills", "List<String>"));
-            ClassInfo classInfo = new ClassInfo("com.wind.entity", "Person", attrs);
-
-
-            File dir = new File("E:/Work/Freemarker/src/");
-            if(!dir.exists()){
-                dir.mkdirs();
-            }
-            OutputStream fos = new FileOutputStream( new File(dir, "Person.java")); //java文件的生成目录
-            Writer out = new OutputStreamWriter(fos);
-            temp.process(ReflectUtil.beanToMap(classInfo, true), out);
-
-            fos.flush();
-            fos.close();
-
-            System.out.println("gen code success!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        List<Attribute> attrs = new ArrayList<>();
+        attrs.add(new Attribute("private", "name", "String", "姓名", ClassType.FIELD));
+        attrs.add(new Attribute("age", "int", ClassType.FIELD));
+        attrs.add(new Attribute("skills", "List<String>", ClassType.FIELD));
+        ClassInfo classInfo = new ClassInfo("com.wind.entity", "Person", attrs);
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "Person.java");
+        freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
+        FreeMarkerUtils.genCode(freeMarker);
     }
 
     public static void genInterface() {
+        List<Method> methods = new ArrayList<>();
+        Attribute attr = new Attribute("user", "User", ClassType.ARG);
+        List<Attribute> args = Arrays.asList(attr);
 
-        try {
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File("src/main/resources/freemarker/java"));
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            Template temp = cfg.getTemplate("class.ftl");
+        Method insert = new Method("insert", "void");
+        insert.setArgs(args);
+        methods.add(insert);
 
-            List<Method> methods = new ArrayList<>();
-            methods.add(new Method("bbb", "void"));
-            ClassInfo classInfo = new ClassInfo();
-            classInfo.setPackageName("com.wind.dao");
-            classInfo.setScope("public");
-            classInfo.setClassType("interface");
-            classInfo.setClassName("AAA");
-            classInfo.setType("interface");
-            classInfo.setMethods(methods);
+        Method selectByPrimaryKey = new Method("selectByPrimaryKey", "User");
+        selectByPrimaryKey.setArgs(Arrays.asList(new Attribute("userId", "String", ClassType.ARG)));
+        methods.add(selectByPrimaryKey);
 
-            File dir = new File("E:/Work/Freemarker/src/");
-            if(!dir.exists()){
-                dir.mkdirs();
-            }
-            OutputStream fos = new FileOutputStream( new File(dir, "AAA.java")); //java文件的生成目录
-            Writer out = new OutputStreamWriter(fos);
-            temp.process(ReflectUtil.beanToMap(classInfo, true), out);
 
-            fos.flush();
-            fos.close();
+        Method selectByCondition = new Method("selectByCondition", "List<User>");
+        selectByCondition.setArgs(args);
+        methods.add(selectByCondition);
 
-            System.out.println("gen code success!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
+        deleteByPrimaryKey.setArgs(Arrays.asList(new Attribute("userId", "String", ClassType.ARG)));
+        methods.add(deleteByPrimaryKey);
+
+        Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
+        updateByPrimaryKeySelective.setArgs(args);
+        methods.add(updateByPrimaryKeySelective);
+
+        Method countByCondition = new Method("countByCondition", "int");
+        countByCondition.setArgs(args);
+        methods.add(countByCondition);
+
+        ClassInfo classInfo = new ClassInfo("UserDao");
+        classInfo.setPackageName("com.wind.dao");
+        classInfo.setScope("public");
+        classInfo.setClassType("interface");
+        classInfo.setType("interface");
+        classInfo.setMethods(methods);
+        classInfo.initImports();
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "UserDao.java");
+        freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
+        FreeMarkerUtils.genCode(freeMarker);
     }
 
     public static void genMapper(){
-        try {
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File("src/main/resources/freemarker/xml"));
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            Template temp = cfg.getTemplate("mapper.ftl");
+        MyBatisTable myBatisTable = new MyBatisTable();
+        myBatisTable.setNamespace("com.wind.dao.UserDao");
+        myBatisTable.setType("com.wind.entity.User");
+        HikaricpUtils.setTable("user", myBatisTable);
 
-            Table table = HikaricpUtil.getTable("user");
-            MyBatisTable myBatisTable = null;
-            if(table instanceof MyBatisTable){
-                myBatisTable = (MyBatisTable) table;
-                myBatisTable.setNamespace("com.wind.dao.userDao");
-                myBatisTable.setType("com.wind.entity.User");
-            }
 
-            File dir = new File("E:/Work/Freemarker/src/");
-            if(!dir.exists()){
-                dir.mkdirs();
-            }
-            OutputStream fos = new FileOutputStream( new File(dir, "mapper.xml")); //java文件的生成目录
-            Writer out = new OutputStreamWriter(fos);
-            temp.process(ReflectUtil.beanToMap(myBatisTable, true), out);
 
-            fos.flush();
-            fos.close();
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/xml", "mapper.ftl",
+                "E:/Work/Freemarker/src/", "UserMapper.xml");
+        freeMarker.setMap(ReflectUtils.beanToMap(myBatisTable, true));
 
-            System.out.println("gen code success!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+
+        FreeMarker freeMarker2 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "User.java");
+
+        FreeMarker freeMarker3 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "UserDao.java");
+
+        ClassInfo classInfo = HikaricpUtils.getBean(myBatisTable);
+        freeMarker2.setMap(ReflectUtils.beanToMap(classInfo, true));
+
+        ClassInfo classInfo2 = HikaricpUtils.getMapper(myBatisTable);
+        freeMarker3.setMap(ReflectUtils.beanToMap(classInfo2, true));
+
+
+        FreeMarkerUtils.genCode(freeMarker);
+        FreeMarkerUtils.genCode(freeMarker2);
+        FreeMarkerUtils.genCode(freeMarker3);
     }
 
     public static void main(String[] args) {
 //        genCode();
-//        genMapper();
-        genInterface();
+        genMapper();
+//        genInterface();
     }
 }

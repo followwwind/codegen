@@ -1,6 +1,5 @@
-<#if packageName??>
-package ${packageName};
-</#if>
+package ${packageName!"com.wind"};
+
 <#if imports??>
 <#list imports as import>
 import ${import};
@@ -10,19 +9,20 @@ import ${import};
 /**
  * ${classRemark!""}
  */
-${scope} ${classType} ${className} {
+${scope!"public"} ${classType!"class"} ${className} {
 <#if attrs??>
 <#list attrs as attr>
   <#if attr.remark != "">
-  /**
-   * ${attr.remark}
-   */
+    /**
+     * ${attr.remark}
+     */
   </#if>
-  ${attr.scope} ${attr.type} ${attr.name};
+    ${attr.scope} ${attr.type} ${attr.name};
 </#list>
 </#if>
 
-<#if type == "bean" && attrs??>
+<#assign t = type!"">
+<#if t == "bean" && attrs??>
     <#list attrs as attr>
     public void set${attr.name?cap_first}(${attr.type} ${attr.name}){
         this.${attr.name} = ${attr.name};
@@ -32,16 +32,17 @@ ${scope} ${classType} ${className} {
         return this.${attr.name};
     }
     </#list>
-<#elseif type == "interface" && methods??>
+<#elseif t == "interface" && methods??>
     <#list methods as method>
-    <#assign args = "">
+    <#assign args = []>
     <#if method.args??>
         <#assign args = method.args>
     </#if>
     /**
      * ${method.remark!""}
      */
-    ${method.type} ${method.name}(${join(args)});
+    ${dealNull(method.scope)}${method.type} ${method.name}(${join(args)});
+
     </#list>
 </#if>
 }
@@ -49,13 +50,24 @@ ${scope} ${classType} ${className} {
 <#function join args>
 <#-- 声明局部变量 -->
     <#local str = "">
-    <#if args != "">
+    <#if args??>
         <#list args as arg>
-            <#local str += (arg.type + " " + arg.name + ", ")>
+            <#if arg_index == (args?size - 1)>
+                <#local str += (arg.type + " " + arg.name)>
+            <#else>
+                <#local str += (arg.type + " " + arg.name + ", ")>
+            </#if>
         </#list>
-        <#if str.endsWith(", ")>
-            <#local str = str.substring(0, str.length() - 2)>
-        </#if>
     </#if>
     <#return str>
+</#function>
+
+<#function dealNull str>
+    <#local s = "">
+    <#if str??>
+        <#local s = "">
+    <#else>
+        <#local s += str + " ">
+    </#if>
+    <#return s>
 </#function>

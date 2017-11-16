@@ -11,7 +11,7 @@ import java.util.*;
  * 类反射工具类
  * @author wind
  */
-public class ReflectUtil {
+public class ReflectUtils {
 
     public void parseClass(Object obj){
         if(obj != null){

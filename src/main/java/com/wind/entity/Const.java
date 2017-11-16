@@ -12,9 +12,9 @@ public interface Const {
 
     String MAP = "map";
 
-    String CLASS = "class";
-
     String BEAN = "bean";
+
+    String CLASS = "class";
 
     String INTERFACE = "interface";
 
@@ -35,4 +35,6 @@ public interface Const {
     String UTF8 = "utf-8";
 
     String UNDERLINE = "_";
+
+    String MAPPER = "Mapper";
 }

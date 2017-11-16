@@ -6,6 +6,7 @@
     <#list columns as column>
         <#if pkName == column.columnName>
         <#assign pkType=column.columnType/>
+        <#assign pkPro=column.property/>
     <id column="${column.columnName}" property="${column.property}" jdbcType="${column.columnType}" />
         <#else>
         <result column="${column.columnName}" property="${column.property}" jdbcType="${column.columnType}" />
@@ -15,23 +16,23 @@
 
 
     <sql id="Base_Column_List" >
-        ${join(0, ",")}
+        ${join(0, ",", 0)}
     </sql>
 
     <sql id="Column_List" >
-        ${join(1, ",")}
+        ${join(1, ",", 0)}
     </sql>
 
     <sql id="Column_Selective_List" >
-        ${join(2, ",")}
+        ${join(2, ",", 1)}
     </sql>
 
     <sql id="Column_Selective_And_List" >
-        ${join(2, "and")}
+        ${join(2, "and", 0)}
     </sql>
 
     <sql id="Column_Assign_List" >
-        ${join(3, ",")}
+        ${join(3, ",", 0)}
     </sql>
 
     <insert id="insert" parameterType="${type}" >
@@ -46,7 +47,7 @@
         select
         <include refid="Base_Column_List" />
         from ${tableName} ${alias}
-        where ${pkName} = #${lBracket}${pkName},jdbcType=${pkType}}
+        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </select>
 
     <select id="selectByCondition" resultMap="BaseResultMap" parameterType="${type}" >
@@ -59,7 +60,7 @@
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
         delete from ${tableName}
-        where ${pkName} = #${lBracket}${pkName},jdbcType=${pkType}}
+        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </delete>
 
     <update id="updateByPrimaryKeySelective" parameterType="${type}" >
@@ -67,10 +68,10 @@
         <set>
             <include refid="Column_Selective_List" />
         </set>
-        where ${pkName} = #${lBracket}${pkName},jdbcType=${pkType}}
+        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </update>
 
-    <select id="countByCondition" resultMap="java.lang.Integer" parameterType="${type}" >
+    <select id="countByCondition" resultType="java.lang.Integer" parameterType="${type}" >
         select count(1)
         from ${tableName}
         where 1 = 1
@@ -78,27 +79,52 @@
     </select>
 </mapper>
 
-<#function join type sign>
+<#function join type sign flag>
 <#-- 声明局部变量 -->
     <#local str = "">
-    <#local str += "<trim prefix=\"\" suffix=\"\" suffixOverrides=\"" + sign + "\">\n\t\t\t">
+    <#if flag == 1>
+        <#local str += "<trim prefix=\"\" suffix=\"\" suffixOverrides=\"" + sign + "\" prefixOverrides=\"" + sign + "\">\n\t\t\t">
+    </#if>
     <#list columns as column>
         <#local s = "">
         <#if type == 0>
-            <#local s = alias + "." + column.columnName + sign + " ">
+            <#local s = alias + "." + column.columnName>
+            <#if column_index < (columns?size - 1)>
+                <#local s += sign>
+            </#if>
+            <#if column_index != 0 && column_index % 7 == 0>
+                <#local s += "\n\t\t\t">
+            </#if>
         <#elseif type == 1>
-            <#local s = column.columnName + sign + " ">
+            <#local s = column.columnName>
+            <#if column_index < (columns?size - 1)>
+                <#local s += sign>
+            </#if>
+            <#if column_index != 0 && column_index % 7 == 0>
+                <#local s += "\n\t\t\t">
+            </#if>
         <#elseif type == 2>
-            <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t\t">
+            <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t">
+            <#if flag == 1><#local s += "\t"></#if>
             <#local s += sign + " " + column.columnName + " = #" + lBracket + column.property
-            + ",jdbcType=" + column.columnType +"}\n\t\t\t">
-            <#local s += "</if>\n\t\t\t">
+            + ",jdbcType=" + column.columnType +"}\n\t\t">
+            <#if flag == 1><#local s += "\t"></#if>
+            <#local s += "</if>\n\t\t">
+            <#if flag == 1><#local s += "\t"></#if>
         <#elseif type == 3>
-            <#local s = sign + " " + column.columnName + " = #" + lBracket + column.property
-            + ",jdbcType=" + column.columnType +"}\n\t\t\t">
+            <#local s += "#" + lBracket + column.property
+            + ",jdbcType=" + column.columnType +"}">
+            <#if column_index < (columns?size - 1)>
+                <#local s += sign>
+            </#if>
+            <#if column_index != 0 && column_index % 4 == 0>
+                <#local s += "\n\t\t">
+            </#if>
         </#if>
         <#local str += s>
     </#list>
-    <#local str += "\n\t\t</trim>">
+    <#if flag == 1>
+        <#local str += "\n\t\t</trim>">
+    </#if>
     <#return str>
 </#function>

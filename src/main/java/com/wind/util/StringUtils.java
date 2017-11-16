@@ -121,14 +121,14 @@ public class StringUtils {
      */
     public static String getCamelCase(String colName, boolean flag){
         String str = colName;
-        if(colName != null && colName.contains(Const.UNDERLINE)){
+        if(colName != null){
             String[] strs = StringUtils.split(colName, Const.UNDERLINE);
             str = "";
             for(int i = 0; i < strs.length; i++){
                 String s = strs[i];
                 if(i == 0){
                     if(flag){
-                        s = s.substring(0, 1).toUpperCase() + s.substring(1);
+                        s = getFirst(s, true);
                     }
                     str += s;
                 }else{
@@ -142,6 +142,28 @@ public class StringUtils {
             }
         }
         return str;
+    }
+
+    /**
+     * 将单词首字母变大小写
+     * @param str
+     * @param flag true变大写， false变小写
+     * @return
+     */
+    public static String getFirst(String str, boolean flag){
+        String s = "";
+        if(str != null && str.length() > 1){
+            String first;
+            if(flag){
+                first = str.substring(0, 1).toUpperCase();
+            }else{
+                first = str.substring(0, 1).toLowerCase();
+            }
+
+            s += (first + str.substring(1));
+        }
+
+        return s;
     }
 
 

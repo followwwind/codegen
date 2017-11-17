@@ -7,7 +7,7 @@ import com.zaxxer.hikari.HikariDataSource;
  * Hikaricp连接池的单例HikariDataSource
  * @author wind
  */
-public enum  HikaricpDs {
+public enum DsUtils {
     /**
      * 单例HikariDataSource
      */
@@ -15,7 +15,7 @@ public enum  HikaricpDs {
 
     private HikariDataSource dataSource;
 
-    HikaricpDs() {
+    DsUtils() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://localhost:3307/follow");
         config.setUsername("root");

@@ -2,7 +2,6 @@ package com.wind.util;
 
 import com.wind.entity.Const;
 import com.wind.entity.db.Column;
-import com.wind.entity.db.MyBatisTable;
 import com.wind.entity.db.Table;
 import com.wind.entity.freemarker.Attribute;
 import com.wind.entity.freemarker.ClassInfo;
@@ -29,7 +28,7 @@ public class HikaricpUtils {
     public static Connection getConn(){
         Connection conn = null;
         try {
-            conn =  HikaricpDs.DATASOURCE.getDataSource().getConnection();
+            conn =  DsUtils.DATASOURCE.getDataSource().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -122,7 +121,6 @@ public class HikaricpUtils {
                 column.setNullable(colRs.getInt("NULLABLE"));
                 columns.add(column);
             }
-
             table.setColumns(columns);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,101 +129,6 @@ public class HikaricpUtils {
         }
     }
 
-    /**
-     * db table转换成java实体类
-     * @param table
-     * @return
-     */
-    public static ClassInfo getBean(Table table){
-        ClassInfo classInfo = null;
-        if(table != null){
-            classInfo = new ClassInfo(table.getProperty());
-            List<Attribute> attrs = new ArrayList<>();
-            List<Column> columns = table.getColumns();
-            if(columns != null && !columns.isEmpty()){
-                columns.forEach(column -> {
-                    String columnType = column.getColumnType();
-                    String property = column.getProperty();
-                    Attribute attribute = new Attribute(property, getFieldType(columnType), ClassType.FIELD);
-                    attribute.setRemark(column.getRemarks());
-                    attrs.add(attribute);
-                });
-            }
-
-            classInfo.setAttrs(attrs);
-            classInfo.setType(Const.BEAN);
-            classInfo.setClassType(Const.CLASS);
-            classInfo.initImports();
-        }
-        return classInfo;
-    }
-
-    /**
-     * 获取mybatis mapper接口
-     * @param table
-     * @return
-     */
-    public static ClassInfo getMapper(Table table){
-        ClassInfo classInfo = null;
-        if(table != null){
-            String property = table.getProperty();
-            classInfo = new ClassInfo(property + Const.MAPPER);
-            List<Method> methods = new ArrayList<>();
-
-            List<Column> columns = table.getColumns();
-            String id = "id";
-            String idType = "String";
-            if(columns.size() > 1){
-                Column idCol = columns.get(0);
-                id = idCol.getProperty();
-                idType = getFieldType(idCol.getColumnType());
-            }
-
-            Attribute attr = new Attribute(StringUtils.getFirst(property, false), property, ClassType.ARG);
-            List<Attribute> args = Arrays.asList(attr);
-
-            Method insert = new Method("insert", "void");
-            insert.setArgs(args);
-            insert.setRemark("添加记录");
-            methods.add(insert);
-
-            Method selectByPrimaryKey = new Method("selectByPrimaryKey", property);
-            selectByPrimaryKey.setArgs(Arrays.asList(new Attribute(id, idType, ClassType.ARG)));
-            selectByPrimaryKey.setRemark("id查询单条记录");
-            methods.add(selectByPrimaryKey);
-
-
-            Method selectByCondition = new Method("selectByCondition", "List<" + property + ">");
-            selectByCondition.setArgs(args);
-            selectByCondition.setRemark("条件批量查询记录");
-            methods.add(selectByCondition);
-
-            Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
-            deleteByPrimaryKey.setArgs(Arrays.asList(new Attribute(id, idType, ClassType.ARG)));
-            deleteByPrimaryKey.setRemark("删除记录");
-            methods.add(deleteByPrimaryKey);
-
-            Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
-            updateByPrimaryKeySelective.setArgs(args);
-            updateByPrimaryKeySelective.setRemark("更新记录");
-            methods.add(updateByPrimaryKeySelective);
-
-            Method countByCondition = new Method("countByCondition", "int");
-            countByCondition.setArgs(args);
-            countByCondition.setRemark("查询批量记录条数");
-            methods.add(countByCondition);
-
-            classInfo.setPackageName("com.wind.dao");
-            classInfo.setScope("public");
-            classInfo.setClassType("interface");
-            classInfo.setType("interface");
-            classInfo.setMethods(methods);
-            classInfo.setType(Const.INTERFACE);
-            classInfo.setClassType(Const.INTERFACE);
-            classInfo.initImports();
-        }
-        return classInfo;
-    }
 
     /**
      * 表字段类型转换成java类型

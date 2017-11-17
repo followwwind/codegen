@@ -6,23 +6,41 @@ package com.wind.entity;
  */
 public interface Const {
 
-    String DATE = "date";
-
-    String LIST = "list";
-
-    String MAP = "map";
-
-    String BEAN = "bean";
-
-    String CLASS = "class";
-
-    String INTERFACE = "interface";
 
     String SCOPE_PUBLIC = "public";
 
     String SCOPE_PRIVATE = "private";
 
     String SCOPE_PROTECTED = "protected";
+
+    String CLASS = "class";
+
+    String INTERFACE = "interface";
+
+    String ENUM = "enum";
+
+    String ANNOTATION = "annotation";
+
+
+    String DATE = "date";
+
+    String LIST = "list";
+
+    String MAP = "map";
+
+    String INT = "int";
+
+    String STRING = "string";
+
+    String VOID = "void";
+
+
+
+
+    String BEAN = "bean";
+
+    String MAPPER = "mapper";
+
 
     String SPACE_STR = " ";
     /**
@@ -35,6 +53,4 @@ public interface Const {
     String UTF8 = "utf-8";
 
     String UNDERLINE = "_";
-
-    String MAPPER = "Mapper";
 }

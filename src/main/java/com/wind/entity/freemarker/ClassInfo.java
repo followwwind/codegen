@@ -1,82 +1,65 @@
 package com.wind.entity.freemarker;
 
 import com.wind.entity.Const;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * freemarker 类模板描述
  * @author wind
  */
-public class ClassInfo {
-    /**
-     * 作用域
-     */
-    private String scope;
+public class ClassInfo extends Attribute{
 
     /**
      * 包名
      */
     private String packageName;
-    /**
-     * 类注释
-     */
-    private String classRemark;
-    /**
-     * 类名
-     */
-    private String className;
-
-    /**
-     * 类修饰类型，比如class,interface
-     */
-    private String classType;
 
     /**
      * import语句
      */
-    private List<String> imports;
+    private Set<String> imports;
     /**
      * 成员属性
      */
-    private List<Attribute> attrs;
+    private List<Field> fields;
     /**
      * 成员方法
      */
     private List<Method> methods;
+
     /**
-     * 类类型， bean类型等
+     * 继承
      */
-    private String type;
+    private ClassInfo extend;
+
+    /**
+     * 实现
+     */
+    private List<ClassInfo> impls;
+
+    /**
+     * 类类型，比如bean，dao，service等
+     */
+    private ClassType classType;
 
     public ClassInfo(String className) {
-        this.className = className;
+        super(className);
     }
 
-    public ClassInfo(String packageName, String className, List<Attribute> attrs) {
-        this(Const.NULL_STR, packageName, "", className, Const.CLASS, null, attrs, null, Const.BEAN);
-    }
-
-    public ClassInfo(String scope, String packageName, String classRemark, String className, String classType, List<String> imports, List<Attribute> attrs, List<Method> methods, String type) {
-        this.scope = scope;
-        this.packageName = packageName;
-        this.classRemark = classRemark;
-        this.className = className;
+    public ClassInfo(String name, ClassType classType, String type) {
+        super(name, type);
         this.classType = classType;
-        this.attrs = attrs;
-        this.methods = methods;
-        this.type = type;
-        initImports();
     }
 
     /**
      * 初始化import导入语句
      */
     public void initImports(){
-        if(attrs != null || methods != null){
-            this.imports = this.imports != null ? this.imports : new ArrayList<>();
-            addImport(attrs);
+        if(fields != null || methods != null){
+            this.imports = this.imports != null ? this.imports : new HashSet<>();
+            addImport(fields);
             addImport(methods);
         }
     }
@@ -112,52 +95,20 @@ public class ClassInfo {
         this.packageName = packageName;
     }
 
-    public String getClassRemark() {
-        return classRemark;
-    }
-
-    public void setClassRemark(String classRemark) {
-        this.classRemark = classRemark;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public List<String> getImports() {
+    public Set<String> getImports() {
         return imports;
     }
 
-    public void setImports(List<String> imports) {
+    public void setImports(Set<String> imports) {
         this.imports = imports;
     }
 
-    public List<Attribute> getAttrs() {
-        return attrs;
+    public List<Field> getFields() {
+        return fields;
     }
 
-    public void setAttrs(List<Attribute> attrs) {
-        this.attrs = attrs;
-    }
-
-    public String getClassType() {
-        return classType;
-    }
-
-    public void setClassType(String classType) {
-        this.classType = classType;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
     }
 
     public List<Method> getMethods() {
@@ -168,11 +119,27 @@ public class ClassInfo {
         this.methods = methods;
     }
 
-    public String getType() {
-        return type;
+    public ClassInfo getExtend() {
+        return extend;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setExtend(ClassInfo extend) {
+        this.extend = extend;
+    }
+
+    public List<ClassInfo> getImpls() {
+        return impls;
+    }
+
+    public void setImpls(List<ClassInfo> impls) {
+        this.impls = impls;
+    }
+
+    public ClassType getClassType() {
+        return classType;
+    }
+
+    public void setClassType(ClassType classType) {
+        this.classType = classType;
     }
 }

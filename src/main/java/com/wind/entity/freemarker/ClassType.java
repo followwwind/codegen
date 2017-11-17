@@ -1,5 +1,9 @@
 package com.wind.entity.freemarker;
 
+/**
+ * 类型
+ * @author wind
+ */
 public enum ClassType {
     /**
      * dao层

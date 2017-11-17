@@ -26,21 +26,26 @@ public class FtlUtils {
      */
     public static void genCode(FreeMarker freeMarker){
         try {
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File(freeMarker.getCfgDir()));
-            cfg.setDefaultEncoding(Const.UTF8);
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            Template temp = cfg.getTemplate(freeMarker.getCfgName());
             File dir = new File(freeMarker.getFileDir());
+            boolean sign = true;
             if(!dir.exists()){
-                dir.mkdirs();
+                sign = dir.mkdirs();
             }
-            OutputStream fos = new FileOutputStream( new File(dir, freeMarker.getFileName()));
-            Writer out = new OutputStreamWriter(fos);
-            temp.process(freeMarker.getMap(), out);
-            fos.flush();
-            out.close();
-            System.out.println("gen code success!");
+
+            if(sign){
+                Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
+                cfg.setDirectoryForTemplateLoading(new File(freeMarker.getCfgDir()));
+                cfg.setDefaultEncoding(Const.UTF8);
+                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+                Template temp = cfg.getTemplate(freeMarker.getCfgName());
+
+                OutputStream fos = new FileOutputStream( new File(dir, freeMarker.getFileName()));
+                Writer out = new OutputStreamWriter(fos);
+                temp.process(freeMarker.getMap(), out);
+                fos.flush();
+                out.close();
+                System.out.println("gen code success!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TemplateException e) {

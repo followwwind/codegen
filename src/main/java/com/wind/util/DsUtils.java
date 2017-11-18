@@ -3,6 +3,8 @@ package com.wind.util;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import javax.sql.DataSource;
+
 /**
  * Hikaricp连接池的单例HikariDataSource
  * @author wind
@@ -13,7 +15,7 @@ public enum DsUtils {
      */
     DATASOURCE;
 
-    private HikariDataSource dataSource;
+    private DataSource dataSource;
 
     DsUtils() {
         HikariConfig config = new HikariConfig();
@@ -23,10 +25,14 @@ public enum DsUtils {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        dataSource =  new HikariDataSource(config);
+        dataSource = new HikariDataSource(config);
     }
 
-    public HikariDataSource getDataSource() {
+    public DataSource getDataSource() {
         return dataSource;
+    }
+
+    public void setDatasource(HikariConfig config){
+        dataSource = new HikariDataSource(config);
     }
 }

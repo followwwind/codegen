@@ -10,29 +10,40 @@ import java.util.*;
  */
 public class PropUtils {
     /**
-     * 解析properties文件，用map存储
+     * 解析properties文件
      * @param filePath
      * @return
      */
-    public static Map<String,String> readProp(String filePath){
+    public static Properties readProp(String filePath){
         Properties props = new Properties();
-        Map<String,String> map = new HashMap<>();
         try {
             InputStream in = new BufferedInputStream(new FileInputStream(filePath));
             props.load(in);
-            Enumeration<?> enums = props.propertyNames();
-            while(enums.hasMoreElements()){
-                String key = (String)enums.nextElement();
-                String value = props.getProperty(key);
-                map.put(key, value);
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return map;
+
+        return props;
     }
+
+    /**
+     * 解析properties文件
+     * @param in
+     * @return
+     */
+    public static Properties readProp(InputStream in){
+        Properties props = new Properties();
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return props;
+    }
+
 
     /**
      * 写入properties信息

@@ -53,18 +53,6 @@ public class FtlUtils {
         }
     }
 
-
-    /**
-     * 初始化classinfo信息，包括类型，import导入语句等
-     * @param classInfo
-     */
-    public static void initClassInfo(ClassInfo classInfo){
-        if(classInfo != null){
-            classInfo.initImports();
-        }
-    }
-
-
     /**
      * db table转换成java实体类
      * @param table
@@ -91,64 +79,52 @@ public class FtlUtils {
         return classInfo;
     }
 
-    /**
-     * 获取mybatis mapper接口
-     * @param table
-     * @return
-     */
-    public static ClassInfo getMapper(Table table, String name){
-        ClassInfo classInfo = null;
-        if(table != null){
-            String property = table.getProperty();
-            classInfo = new ClassInfo(name, ClassType.DAO, Const.INTERFACE);
-            List<Method> methods = new ArrayList<>();
+    public static ClassInfo getMapper(String name, Attribute id, Attribute r){
+        ClassInfo classInfo = new ClassInfo(name, ClassType.INTERFACE, Const.INTERFACE);
 
-            List<Column> columns = table.getColumns();
-            String id = "id";
-            String idType = "String";
-            if(columns.size() > 1){
-                Column idCol = columns.get(0);
-                id = idCol.getProperty();
-                idType = HikaricpUtils.getFieldType(idCol.getColumnType());
-            }
+        List<Attribute> ids = new ArrayList<>();
+        ids.add(id);
 
-            Attribute attr = new Attribute(StringUtils.getFirst(property, false), property);
-            List<Attribute> args = Arrays.asList(attr);
+        List<Attribute> rs = new ArrayList<>();
+        rs.add(r);
 
-            Method insert = new Method("insert", "void");
-            insert.setArgs(args);
-            insert.setRemark("添加记录");
-            methods.add(insert);
+        List<Method> methods = new ArrayList<>();
+        String rType = r.getType();
 
-            Method selectByPrimaryKey = new Method("selectByPrimaryKey", property);
-            selectByPrimaryKey.setArgs(Arrays.asList(new Attribute(id, idType)));
-            selectByPrimaryKey.setRemark("id查询单条记录");
-            methods.add(selectByPrimaryKey);
+        Method insert = new Method("insert", "void");
+        insert.setArgs(rs);
+        insert.setRemark("添加记录");
+        methods.add(insert);
+
+        Method selectByPrimaryKey = new Method("selectByPrimaryKey", rType);
+        selectByPrimaryKey.setArgs(ids);
+        selectByPrimaryKey.setRemark("id查询单条记录");
+        methods.add(selectByPrimaryKey);
 
 
-            Method selectByCondition = new Method("selectByCondition", "List<" + property + ">");
-            selectByCondition.setArgs(args);
-            selectByCondition.setRemark("条件批量查询记录");
-            methods.add(selectByCondition);
+        Method selectByCondition = new Method("selectByCondition", "List<" + rType + ">");
+        selectByCondition.setArgs(rs);
+        selectByCondition.setRemark("条件批量查询记录");
+        methods.add(selectByCondition);
 
-            Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
-            deleteByPrimaryKey.setArgs(Arrays.asList(new Attribute(id, idType)));
-            deleteByPrimaryKey.setRemark("删除记录");
-            methods.add(deleteByPrimaryKey);
+        Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
+        deleteByPrimaryKey.setArgs(ids);
+        deleteByPrimaryKey.setRemark("删除记录");
+        methods.add(deleteByPrimaryKey);
 
-            Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
-            updateByPrimaryKeySelective.setArgs(args);
-            updateByPrimaryKeySelective.setRemark("更新记录");
-            methods.add(updateByPrimaryKeySelective);
+        Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
+        updateByPrimaryKeySelective.setArgs(rs);
+        updateByPrimaryKeySelective.setRemark("更新记录");
+        methods.add(updateByPrimaryKeySelective);
 
-            Method countByCondition = new Method("countByCondition", "int");
-            countByCondition.setArgs(args);
-            countByCondition.setRemark("查询批量记录条数");
-            methods.add(countByCondition);
+        Method countByCondition = new Method("countByCondition", "int");
+        countByCondition.setArgs(rs);
+        countByCondition.setRemark("查询批量记录条数");
+        methods.add(countByCondition);
 
-            classInfo.setMethods(methods);
-            classInfo.initImports();
-        }
+        classInfo.setMethods(methods);
+        classInfo.initImports();
+
         return classInfo;
     }
 }

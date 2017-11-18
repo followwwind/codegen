@@ -1,5 +1,7 @@
 package com.wind.entity;
 
+import java.io.File;
+
 /**
  * java类字符串常量
  * @author wind
@@ -14,6 +16,8 @@ public interface Const {
     String SCOPE_PROTECTED = "protected";
 
     String CLASS = "class";
+
+    String ABSTRACT = "abstract class";
 
     String INTERFACE = "interface";
 
@@ -35,14 +39,11 @@ public interface Const {
     String VOID = "void";
 
 
-
-
     String BEAN = "bean";
 
     String MAPPER = "mapper";
 
 
-    String SPACE_STR = " ";
     /**
      * 空字符串
      */
@@ -53,4 +54,20 @@ public interface Const {
     String UTF8 = "utf-8";
 
     String UNDERLINE = "_";
+
+    /**********************************************分隔符常量************************************************/
+
+    String POINT_STR = ".";
+
+    String SPACE_STR = " ";
+
+    String SYS_SEPARATOR = File.separator;
+
+    String FILE_SEPARATOR = "/";
+
+    String BRACKET_LEFT = "[";
+
+    String BRACKET_RIGHT = "]";
+
+    String USER_DIR = "user.dir";
 }

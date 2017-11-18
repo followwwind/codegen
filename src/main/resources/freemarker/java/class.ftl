@@ -57,11 +57,11 @@ ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
      */
     ${method.type} ${method.name}(${join(args, "," , 0)});
 
-        <#elseif type == "class">
-    ${dealNull(method.scope)}${method.type} ${method.name}(${join(args, "," , 0)}){
+        <#elseif type?contains("class")>
+    ${dealNull(method.scope!"public")}${method.type} ${method.name}(${join(args, "," , 0)}){
         ${method.body!""}
         <#if method.type != "void">
-        return ${method.result};
+        return ${method.result!"null"};
         </#if>
     }
 
@@ -75,7 +75,7 @@ ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
 <#-- 声明局部变量 -->
     <#local str = "">
     <#if args??>
-        <#if type == 1 && !(args?size <= 0)>
+        <#if (type == 1 && args?size != 0)>
             <#local str = " implements ">
         </#if>
         <#list args as arg>

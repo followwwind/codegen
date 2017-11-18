@@ -27,85 +27,88 @@ public class FreemarkerTest {
         myBatisTable.setType("com.wind.entity.User");
         HikaricpUtils.setTable("user", myBatisTable);
 
-
-
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/xml", "mapper.ftl",
                 "E:/Work/Freemarker/src/", "UserMapper.xml");
         freeMarker.setMap(ReflectUtils.beanToMap(myBatisTable, true));
-
-
-        FreeMarker freeMarker2 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
-                "E:/Work/Freemarker/src/", "User.java");
-
-        FreeMarker freeMarker3 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
-                "E:/Work/Freemarker/src/", "UserDao.java");
-
-        ClassInfo classInfo = FtlUtils.getBean(myBatisTable);
-        freeMarker2.setMap(ReflectUtils.beanToMap(classInfo, true));
-
-        ClassInfo classInfo2 = FtlUtils.getMapper(myBatisTable, "UserDao");
-        freeMarker3.setMap(ReflectUtils.beanToMap(classInfo2, true));
-
-
         FtlUtils.genCode(freeMarker);
-        FtlUtils.genCode(freeMarker2);
-        FtlUtils.genCode(freeMarker3);
+
     }
 
     public static void genBaseMapper(){
-        List<Method> methods = new ArrayList<>();
-        Attribute attr = new Attribute("r", "R");
-        List<Attribute> args = Arrays.asList(attr);
 
-        Method insert = new Method("insert", "void");
-        insert.setArgs(args);
-        methods.add(insert);
+        String idType = "PK";
+        String rType = "R";
+        Attribute id = new Attribute("id", idType);
+        Attribute r = new Attribute("r", rType);
 
-        Method selectByPrimaryKey = new Method("selectByPrimaryKey", "User");
-        selectByPrimaryKey.setArgs(Arrays.asList(new Attribute("userId", "PK")));
-        methods.add(selectByPrimaryKey);
-
-
-        Method selectByCondition = new Method("selectByCondition", "List<User>");
-        selectByCondition.setArgs(args);
-        methods.add(selectByCondition);
-
-        Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
-        deleteByPrimaryKey.setArgs(Arrays.asList(new Attribute("userId", "PK")));
-        methods.add(deleteByPrimaryKey);
-
-        Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
-        updateByPrimaryKeySelective.setArgs(args);
-        methods.add(updateByPrimaryKeySelective);
-
-        Method countByCondition = new Method("countByCondition", "int");
-        countByCondition.setArgs(args);
-        methods.add(countByCondition);
-
-        ClassInfo classInfo = new ClassInfo("BaseMapper<R, PK>", ClassType.INTERFACE, Const.INTERFACE);
-        classInfo.setPackageName("com.wind.dao");
-        classInfo.setMethods(methods);
-        classInfo.initImports();
+        ClassInfo classInfo = FtlUtils.getMapper("BaseMapper<R, PK>", id, r);
 
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
                 "E:/Work/Freemarker/src/", "BaseMapper.java");
         freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
         FtlUtils.genCode(freeMarker);
 
-        ClassInfo classInfo2 = new ClassInfo("UserMapper", ClassType.DAO, Const.INTERFACE);
+        ClassInfo userMapper = new ClassInfo("UserMapper", ClassType.INTERFACE, Const.INTERFACE);
         classInfo.setName("BaseMapper<User, String>");
-        classInfo2.setExtend(classInfo);
-        classInfo2.setPackageName("com.wind.dao");
-        classInfo2.initImports();
+        userMapper.setExtend(classInfo);
         FreeMarker freeMarker2 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
                 "E:/Work/Freemarker/src/", "UserMapper.java");
-        freeMarker2.setMap(ReflectUtils.beanToMap(classInfo2, true));
+        freeMarker2.setMap(ReflectUtils.beanToMap(userMapper, true));
         FtlUtils.genCode(freeMarker2);
     }
+
+    public static void genService(){
+
+        String idType = "PK";
+        String rType = "R";
+        Attribute id = new Attribute("id", idType);
+        Attribute r = new Attribute("r", rType);
+
+        ClassInfo classInfo = FtlUtils.getMapper("BaseService<R, PK>", id, r);
+
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "BaseService.java");
+        freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
+        FtlUtils.genCode(freeMarker);
+
+        FreeMarker freeMarker2 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "BaseServiceImpl.java");
+
+        ClassInfo impl = new ClassInfo("BaseServiceImpl<R, PK>", ClassType.CLASS, Const.ABSTRACT);
+        impl.setImpls(Arrays.asList(classInfo));
+        impl.setMethods(classInfo.getMethods());
+
+        freeMarker2.setMap(ReflectUtils.beanToMap(impl, true));
+        FtlUtils.genCode(freeMarker2);
+
+        ClassInfo iservice = new ClassInfo("UserService", ClassType.INTERFACE, Const.INTERFACE);
+        classInfo.setName("BaseService<User, String>");
+        iservice.setExtend(classInfo);
+
+        FreeMarker freeMarker3 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "UserService.java");
+
+        freeMarker3.setMap(ReflectUtils.beanToMap(iservice, true));
+        FtlUtils.genCode(freeMarker3);
+
+        ClassInfo service = new ClassInfo("UserServiceImpl", ClassType.CLASS, Const.CLASS);
+        impl.setName("BaseServiceImpl<User, String>");
+        service.setExtend(impl);
+
+        FreeMarker freeMarker4 = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/Work/Freemarker/src/", "UserServiceImpl.java");
+
+        freeMarker4.setMap(ReflectUtils.beanToMap(service, true));
+        FtlUtils.genCode(freeMarker4);
+
+    }
+
+
 
     public static void main(String[] args) {
 //        genCode();
 //        genMapper();
-        genBaseMapper();
+//        genBaseMapper();
+        genService();
     }
 }

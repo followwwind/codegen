@@ -1,19 +1,13 @@
 package com.wind.util;
 
-import com.wind.entity.Const;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.Table;
-import com.wind.entity.freemarker.Attribute;
-import com.wind.entity.freemarker.ClassInfo;
-import com.wind.entity.freemarker.ClassType;
-import com.wind.entity.freemarker.Method;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

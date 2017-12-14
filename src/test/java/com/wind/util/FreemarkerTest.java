@@ -3,11 +3,14 @@ package com.wind.util;
 import com.wind.entity.Const;
 import com.wind.entity.db.MyBatisTable;
 import com.wind.entity.freemarker.*;
+import org.junit.Test;
+
 import java.util.*;
 
 public class FreemarkerTest {
 
-    public static void genCode() {
+    @Test
+    public void genCode() {
         List<Field> fields = new ArrayList<>();
         fields.add(new Field("private", "name", "String", "姓名"));
         fields.add(new Field("age", "int"));
@@ -21,11 +24,12 @@ public class FreemarkerTest {
         FtlUtils.genCode(freeMarker);
     }
 
-    public static void genMapper(){
+    @Test
+    public void genMapper(){
         MyBatisTable myBatisTable = new MyBatisTable();
         myBatisTable.setNamespace("com.wind.dao.UserDao");
         myBatisTable.setType("com.wind.entity.User");
-        HikaricpUtils.setTable("user", myBatisTable);
+        HikaricpUtils.setTable(null,"user", myBatisTable);
 
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/xml", "mapper.ftl",
                 "E:/Work/Freemarker/src/", "UserMapper.xml");
@@ -34,7 +38,8 @@ public class FreemarkerTest {
 
     }
 
-    public static void genBaseMapper(){
+    @Test
+    public void genBaseMapper(){
 
         String idType = "PK";
         String rType = "R";
@@ -57,7 +62,8 @@ public class FreemarkerTest {
         FtlUtils.genCode(freeMarker2);
     }
 
-    public static void genService(){
+    @Test
+    public void genService(){
 
         String idType = "PK";
         String rType = "R";
@@ -103,12 +109,32 @@ public class FreemarkerTest {
 
     }
 
+    @Test
+    public void genEntity(){
+        List<String> tables = HikaricpUtils.getTables("book");
 
+        for (String table : tables){
+            MyBatisTable myBatisTable = new MyBatisTable();
+            HikaricpUtils.setTable("book", table, myBatisTable);
 
-    public static void main(String[] args) {
-//        genCode();
-//        genMapper();
-//        genBaseMapper();
-        genService();
+            FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                    "E:/Work/Freemarker/src/", myBatisTable.getProperty() + ".java");
+
+            ClassInfo classInfo = new ClassInfo(myBatisTable.getProperty(), ClassType.BEAN, Const.CLASS);
+
+            List<Field> fields = new ArrayList<>();
+
+            myBatisTable.getColumns().forEach(column -> {
+                fields.add(new Field("private", column.getProperty(),
+                        HikaricpUtils.getFieldType(column.getColumnType()), column.getRemarks()));
+            });
+
+            classInfo.setFields(fields);
+            classInfo.initImports();
+            freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
+            FtlUtils.genCode(freeMarker);
+
+        }
+
     }
 }

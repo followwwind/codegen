@@ -18,6 +18,7 @@ import ${import};
  * ${remark!"@author wind"}
  */
 ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
+
 <#if fields??>
 <#list fields as field>
   <#if field.remark != "" && field.remark??>

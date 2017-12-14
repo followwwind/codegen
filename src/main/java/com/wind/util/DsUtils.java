@@ -19,9 +19,9 @@ public enum DsUtils {
 
     DsUtils() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3307/follow");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mysm");
         config.setUsername("root");
-        config.setPassword("123456");
+        config.setPassword("0follow0");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

@@ -78,15 +78,17 @@ public class HikaricpUtils {
 
     /**
      * 获取数据库表的描述信息
+     * @param catalog
      * @param tableName
+     * @param table
      */
-    public static void setTable(String tableName, Table table){
+    public static void setTable(String catalog, String tableName, Table table){
         Connection con = null;
         List<Column> columns = new ArrayList<>();
         try {
             con = getConn();
             DatabaseMetaData db = con.getMetaData();
-            ResultSet pkRSet = db.getPrimaryKeys(null, null, tableName);
+            ResultSet pkRSet = db.getPrimaryKeys(catalog, null, tableName);
             while(pkRSet.next()) {
                 System.err.println("TABLE_CAT : "+pkRSet.getObject(1));
                 System.err.println("TABLE_SCHEM: "+pkRSet.getObject(2));
@@ -100,7 +102,7 @@ public class HikaricpUtils {
                 table.setProperty(StringUtils.getCamelCase(tableName, true));
                 table.setPkName(pkRSet.getString("COLUMN_NAME"));
             }
-            ResultSet colRs = db.getColumns(null,"%", tableName,"%");
+            ResultSet colRs = db.getColumns(catalog,"%", tableName,"%");
             while(colRs.next()) {
                 Column column = new Column();
                 String colName = colRs.getString("COLUMN_NAME");
@@ -133,6 +135,7 @@ public class HikaricpUtils {
         String result;
         columnType = columnType != null ? columnType : "";
         switch (columnType){
+            case "CHAR" : result = "String";break;
             case "VARCHAR" : result = "String";break;
             case "INT" : result = "Integer";break;
             case "TIMESTAMP" : result = "Date";break;

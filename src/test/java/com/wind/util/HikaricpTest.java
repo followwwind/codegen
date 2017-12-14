@@ -2,6 +2,7 @@ package com.wind.util;
 
 import com.wind.entity.db.MyBatisTable;
 import com.wind.entity.db.Table;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,20 +12,17 @@ import java.util.List;
  */
 public class HikaricpTest {
 
-    public static void printAllDb(){
+    @Test
+    public void printAllDb(){
         List<String> dbs = HikaricpUtils.getAllDb();
         System.out.println(dbs);
     }
 
-    public static void printTable(){
+    @Test
+    public void printTable(){
         Table table = new MyBatisTable();
-        HikaricpUtils.setTable("user", table);
+        HikaricpUtils.setTable("book","books", table);
         System.out.println(Arrays.asList(table.getColumns()));
     }
 
-
-    public static void main(String[] args) {
-//        printAllDb();
-        printTable();
-    }
 }

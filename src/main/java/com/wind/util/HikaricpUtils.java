@@ -138,6 +138,7 @@ public class HikaricpUtils {
             case "CHAR" : result = "String";break;
             case "VARCHAR" : result = "String";break;
             case "INT" : result = "Integer";break;
+            case "INTEGER" : result = "Integer";break;
             case "TIMESTAMP" : result = "Date";break;
             default: result = "String"; break;
         }

@@ -111,16 +111,19 @@ public class FreemarkerTest {
 
     @Test
     public void genEntity(){
-        List<String> tables = HikaricpUtils.getTables("book");
+        List<String> tables = HikaricpUtils.getTables("car-system");
 
         for (String table : tables){
             MyBatisTable myBatisTable = new MyBatisTable();
-            HikaricpUtils.setTable("book", table, myBatisTable);
+            HikaricpUtils.setTable("car-system", table, myBatisTable);
 
             FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
-                    "E:/Work/Freemarker/src/", myBatisTable.getProperty() + ".java");
+                    "E:/work/Freemarker/src/", myBatisTable.getProperty() + ".java");
 
-            ClassInfo classInfo = new ClassInfo(myBatisTable.getProperty(), ClassType.BEAN, Const.CLASS);
+
+            ClassInfo classInfo = FtlUtils.getBean(myBatisTable);
+
+            classInfo.setPackageName("com.wind.entity");
 
             List<Field> fields = new ArrayList<>();
 

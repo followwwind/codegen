@@ -22,7 +22,7 @@ public class StringUtils {
      * @return
      */
     public static boolean isEmpty(String str){
-        return str == null ? true : ("".equals(str.trim()) ? true : false);
+        return str != null && "".equals(str.trim());
     }
 
     /**
@@ -116,7 +116,7 @@ public class StringUtils {
     /**
      * 将数据库列名翻译成java驼峰命名的类成员字段名
      * @param colName 数据库列名
-     * @param flag 字段方法命名为false， 类命名为true
+     * @param flag 首字母小写为false， 大写为true
      * @return
      */
     public static String getCamelCase(String colName, boolean flag){

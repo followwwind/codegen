@@ -1,5 +1,6 @@
 package com.wind.util;
 
+import com.wind.entity.DataPool;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -11,28 +12,49 @@ import javax.sql.DataSource;
  */
 public enum DsUtils {
     /**
-     * 单例HikariDataSource
+     * 默认单例HikariDataSource
      */
-    DATASOURCE;
+    DATASOURCE(DataPool.HikariCP);
 
     private DataSource dataSource;
 
-    DsUtils() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/mysm");
-        config.setUsername("root");
-        config.setPassword("0follow0");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        dataSource = new HikariDataSource(config);
+    private DataPool dataPool;
+
+    DsUtils(DataPool dataPool) {
+        this.dataPool = dataPool;
+        init();
     }
 
+    /**
+     * 切换连接池或者修改数据库连接
+     * @param dataPool
+     */
+    public void setDataPool(DataPool dataPool){
+        this.dataPool = dataPool;
+        init();
+    }
+
+
+    /**
+     * 获取数据库连接池
+     * @return
+     */
     public DataSource getDataSource() {
-        return dataSource;
+        return  dataSource;
     }
 
-    public void setDatasource(HikariConfig config){
-        dataSource = new HikariDataSource(config);
+    /**
+     * 初始化
+     */
+    private void init(){
+        switch (dataPool){
+            case HikariCP:
+                HikariConfig config = new HikariConfig("src/main/resources/jdbc.properties");
+                dataSource = new HikariDataSource(config);
+                break;
+            default:break;
+        }
     }
+
+
 }

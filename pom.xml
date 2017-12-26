@@ -37,12 +37,22 @@
         </dependency>
 
         <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+
+
+        <dependency>
             <!-- 使用junit4 -->
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+
 
     </dependencies>
 </project>

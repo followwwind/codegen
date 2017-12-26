@@ -6,7 +6,7 @@ import java.util.List;
  * 数据库表详情类
  * @author wind
  */
-public abstract class Table {
+public class Table {
     /**
      * 数据库实例名
      */
@@ -22,18 +22,18 @@ public abstract class Table {
     private String property;
 
     /**
-     * 表别名
+     * 主键
      */
-    private String alias;
-
-    /**
-     * 主键名称
-     */
-    private String pkName;
+    private List<PrimaryKey> primaryKeys;
     /**
      * 所有列的信息
      */
     private List<Column> columns;
+
+    /**
+     * 表注释
+     */
+    private String remarks;
 
     public Table() {
     }
@@ -66,12 +66,12 @@ public abstract class Table {
         this.tableName = tableName;
     }
 
-    public String getPkName() {
-        return pkName;
+    public List<PrimaryKey> getPrimaryKeys() {
+        return primaryKeys;
     }
 
-    public void setPkName(String pkName) {
-        this.pkName = pkName;
+    public void setPrimaryKeys(List<PrimaryKey> primaryKeys) {
+        this.primaryKeys = primaryKeys;
     }
 
     public String getProperty() {
@@ -82,11 +82,11 @@ public abstract class Table {
         this.property = property;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

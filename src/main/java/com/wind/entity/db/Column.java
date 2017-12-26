@@ -17,12 +17,21 @@ public class Column {
      * 数据库列名对应的java类字段名
      */
     private String property;
+
+    /**
+     * 数据库表对应java类型
+     */
+    private String type;
+
     /**
      * 占用字节
      */
     private int columnSize;
     /**
      * 是否为空
+     * 1.columnNoNulls - 可能不允许使用 NULL 值
+     * 2.columnNullable - 明确允许使用 NULL 值
+     * 3.columnNullableUnknown - 不知道是否可使用 null
      */
     private int nullable;
     /**
@@ -90,8 +99,11 @@ public class Column {
         this.property = property;
     }
 
-    @Override
-    public String toString() {
-        return "Column{" + "columnName='" + columnName + '\'' + ", columnType='" + columnType + '\'' + ", property='" + property + '\'' + ", columnSize=" + columnSize + ", nullable=" + nullable + ", digits=" + digits + ", remarks='" + remarks + '\'' + '}';
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -23,11 +23,11 @@ public class ClassInfo extends Attribute{
     /**
      * 成员属性
      */
-    private List<Field> fields;
+    private List<ClassField> fields;
     /**
      * 成员方法
      */
-    private List<Method> methods;
+    private List<ClassMethod> methods;
 
     /**
      * 继承
@@ -67,8 +67,8 @@ public class ClassInfo extends Attribute{
     private void addImport(List<? extends Attribute> attrs){
         if(attrs != null){
             attrs.forEach(attr -> {
-                if(attr instanceof Method){
-                    Method m = (Method) attr;
+                if(attr instanceof ClassMethod){
+                    ClassMethod m = (ClassMethod) attr;
                     addImport(m.getArgs());
                 }
                 String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.NULL_STR;
@@ -103,19 +103,19 @@ public class ClassInfo extends Attribute{
         this.imports = imports;
     }
 
-    public List<Field> getFields() {
+    public List<ClassField> getFields() {
         return fields;
     }
 
-    public void setFields(List<Field> fields) {
+    public void setFields(List<ClassField> fields) {
         this.fields = fields;
     }
 
-    public List<Method> getMethods() {
+    public List<ClassMethod> getMethods() {
         return methods;
     }
 
-    public void setMethods(List<Method> methods) {
+    public void setMethods(List<ClassMethod> methods) {
         this.methods = methods;
     }
 

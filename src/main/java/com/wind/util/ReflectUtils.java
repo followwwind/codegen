@@ -19,7 +19,7 @@ public class ReflectUtils {
             // 获取实体类的所有属性，返回Field数组
             Field[] fields = c.getDeclaredFields();
             for(Field field : fields){
-
+                System.out.println(field.getName());
             }
 
             Method[] methods = c.getDeclaredMethods();
@@ -30,20 +30,25 @@ public class ReflectUtils {
     }
 
     /**
-     * 获取该类所有父类的成员属性
+     * 获取类成员属性
      * @param c
-     * @param fieldList
+     * @param flag false表示只获取当前类的成员属性 true表示获取父类的私有成员属性
+     * @return
      */
-    public static void getParentField(Class c, List<Field> fieldList, List<Method> methodList){
-        if(c != null){
+    public static List<Field> getFields(Class c, boolean flag){
+        List<Field> fields = new ArrayList<>();
+        if(c == null){
+            return fields;
+        }
+
+        fields.addAll(Arrays.asList(c.getDeclaredFields()));
+        if(flag){
             Class supperClass = c.getSuperclass();
-            if(Object.class.equals(supperClass)){
-                fieldList.addAll(Arrays.asList(c.getDeclaredFields()));
-                methodList.addAll(Arrays.asList(c.getDeclaredMethods()));
-            }else{
-                getParentField(supperClass, fieldList, methodList);
+            if(!Object.class.equals(supperClass)){
+                fields.addAll(getFields(supperClass, flag));
             }
         }
+        return fields;
     }
 
     /**
@@ -62,7 +67,7 @@ public class ReflectUtils {
             if(flag){
                 List<Field> fieldList = new ArrayList<>();
                 methodList = new ArrayList<>();
-                getParentField(c, fieldList, methodList);
+//                getParentField(c, fieldList, methodList);
                 if(!fieldList.isEmpty()){
                     int srcLength = fields.length;
                     int size = fieldList.size();
@@ -92,6 +97,7 @@ public class ReflectUtils {
     }
 
     public static void main(String[] args) {
+
 
     }
 }

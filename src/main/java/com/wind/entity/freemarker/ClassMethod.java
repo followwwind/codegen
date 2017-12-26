@@ -6,7 +6,7 @@ import java.util.List;
  * 类成员方法描述
  * @author wind
  */
-public class Method extends Attribute{
+public class ClassMethod extends Attribute{
     /**
      * 返回结果
      */
@@ -23,7 +23,7 @@ public class Method extends Attribute{
     private String body;
 
 
-    public Method(String name, String type) {
+    public ClassMethod(String name, String type) {
         super(name, type);
     }
 

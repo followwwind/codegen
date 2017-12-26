@@ -1,10 +1,12 @@
-package com.wind.entity.db;
+package com.wind.entity.ftl;
+
+import com.wind.entity.db.Table;
 
 /**
  * MyBatis对应的table实体类
  * @author wind
  */
-public class MyBatisTable extends Table{
+public class MyBatis{
     /**
      * mybatis对应命名空间
      */
@@ -14,7 +16,12 @@ public class MyBatisTable extends Table{
      */
     private String type;
 
-    public MyBatisTable() {
+    /**
+     * 表数据
+     */
+    private Table table;
+
+    public MyBatis() {
     }
 
     public String getNamespace() {
@@ -31,5 +38,13 @@ public class MyBatisTable extends Table{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
     }
 }

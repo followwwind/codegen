@@ -10,7 +10,6 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,13 +61,12 @@ public class FtlUtils {
         ClassInfo classInfo = null;
         if(table != null){
             classInfo = new ClassInfo(table.getProperty(), ClassType.BEAN, Const.CLASS);
-            List<Field> fields = new ArrayList<>();
+            List<ClassField> fields = new ArrayList<>();
             List<Column> columns = table.getColumns();
             if(columns != null && !columns.isEmpty()){
                 columns.forEach(column -> {
-                    String columnType = column.getColumnType();
                     String property = column.getProperty();
-                    Field field = new Field(property, HikaricpUtils.getFieldType(columnType));
+                    ClassField field = new ClassField(property, column.getType());
                     field.setRemark(column.getRemarks());
                     fields.add(field);
                 });
@@ -88,36 +86,36 @@ public class FtlUtils {
         List<Attribute> rs = new ArrayList<>();
         rs.add(r);
 
-        List<Method> methods = new ArrayList<>();
+        List<ClassMethod> methods = new ArrayList<>();
         String rType = r.getType();
 
-        Method insert = new Method("insert", "void");
+        ClassMethod insert = new ClassMethod("insert", "void");
         insert.setArgs(rs);
         insert.setRemark("添加记录");
         methods.add(insert);
 
-        Method selectByPrimaryKey = new Method("selectByPrimaryKey", rType);
+        ClassMethod selectByPrimaryKey = new ClassMethod("selectByPrimaryKey", rType);
         selectByPrimaryKey.setArgs(ids);
         selectByPrimaryKey.setRemark("id查询单条记录");
         methods.add(selectByPrimaryKey);
 
 
-        Method selectByCondition = new Method("selectByCondition", "List<" + rType + ">");
+        ClassMethod selectByCondition = new ClassMethod("selectByCondition", "List<" + rType + ">");
         selectByCondition.setArgs(rs);
         selectByCondition.setRemark("条件批量查询记录");
         methods.add(selectByCondition);
 
-        Method deleteByPrimaryKey = new Method("deleteByPrimaryKey", "int");
+        ClassMethod deleteByPrimaryKey = new ClassMethod("deleteByPrimaryKey", "int");
         deleteByPrimaryKey.setArgs(ids);
         deleteByPrimaryKey.setRemark("删除记录");
         methods.add(deleteByPrimaryKey);
 
-        Method updateByPrimaryKeySelective = new Method("updateByPrimaryKeySelective", "int");
+        ClassMethod updateByPrimaryKeySelective = new ClassMethod("updateByPrimaryKeySelective", "int");
         updateByPrimaryKeySelective.setArgs(rs);
         updateByPrimaryKeySelective.setRemark("更新记录");
         methods.add(updateByPrimaryKeySelective);
 
-        Method countByCondition = new Method("countByCondition", "int");
+        ClassMethod countByCondition = new ClassMethod("countByCondition", "int");
         countByCondition.setArgs(rs);
         countByCondition.setRemark("查询批量记录条数");
         methods.add(countByCondition);

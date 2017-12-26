@@ -1,7 +1,7 @@
 package com.wind.util;
 
 import com.wind.entity.Const;
-import com.wind.entity.db.MyBatisTable;
+import com.wind.entity.ftl.MyBatis;
 import com.wind.entity.freemarker.*;
 import org.junit.Test;
 
@@ -11,10 +11,10 @@ public class FreemarkerTest {
 
     @Test
     public void genCode() {
-        List<Field> fields = new ArrayList<>();
-        fields.add(new Field("private", "name", "String", "姓名"));
-        fields.add(new Field("age", "int"));
-        fields.add(new Field("skills", "List<String>"));
+        List<ClassField> fields = new ArrayList<>();
+        fields.add(new ClassField("private", "name", "String", "姓名"));
+        fields.add(new ClassField("age", "int"));
+        fields.add(new ClassField("skills", "List<String>"));
         ClassInfo classInfo = new ClassInfo("Person", ClassType.BEAN, Const.CLASS);
         classInfo.setFields(fields);
         classInfo.initImports();
@@ -26,10 +26,10 @@ public class FreemarkerTest {
 
     @Test
     public void genMapper(){
-        MyBatisTable myBatisTable = new MyBatisTable();
+        MyBatis myBatisTable = new MyBatis();
         myBatisTable.setNamespace("com.wind.dao.UserDao");
         myBatisTable.setType("com.wind.entity.User");
-        HikaricpUtils.setTable(null,"user", myBatisTable);
+        myBatisTable.setTable(DbUtils.getTable("follow", "user"));
 
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/xml", "mapper.ftl",
                 "E:/Work/Freemarker/src/", "UserMapper.xml");
@@ -111,33 +111,6 @@ public class FreemarkerTest {
 
     @Test
     public void genEntity(){
-        List<String> tables = HikaricpUtils.getTables("car-system");
-
-        for (String table : tables){
-            MyBatisTable myBatisTable = new MyBatisTable();
-            HikaricpUtils.setTable("car-system", table, myBatisTable);
-
-            FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
-                    "E:/work/Freemarker/src/", myBatisTable.getProperty() + ".java");
-
-
-            ClassInfo classInfo = FtlUtils.getBean(myBatisTable);
-
-            classInfo.setPackageName("com.wind.entity");
-
-            List<Field> fields = new ArrayList<>();
-
-            myBatisTable.getColumns().forEach(column -> {
-                fields.add(new Field("private", column.getProperty(),
-                        HikaricpUtils.getFieldType(column.getColumnType()), column.getRemarks()));
-            });
-
-            classInfo.setFields(fields);
-            classInfo.initImports();
-            freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));
-            FtlUtils.genCode(freeMarker);
-
-        }
 
     }
 }

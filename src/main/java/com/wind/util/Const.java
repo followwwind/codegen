@@ -1,13 +1,12 @@
-package com.wind.entity;
+package com.wind.util;
 
 import java.io.File;
 
 /**
- * java类字符串常量
+ * 常量字符集合
  * @author wind
  */
 public interface Const {
-
 
     String SCOPE_PUBLIC = "public";
 
@@ -47,17 +46,13 @@ public interface Const {
     /**
      * 空字符串
      */
-    String NULL_STR = "";
-
     int MAP_SIZE = 16;
-
-    String UTF8 = "utf-8";
-
-    String UNDERLINE = "_";
 
     /**********************************************分隔符常量************************************************/
 
     String POINT_STR = ".";
+
+    String BLANK_STR = "";
 
     String SPACE_STR = " ";
 
@@ -69,5 +64,32 @@ public interface Const {
 
     String BRACKET_RIGHT = "]";
 
+    String UNDERLINE = "_";
+
     String USER_DIR = "user.dir";
+
+    /**********************************************日期时间常量************************************************/
+
+    String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+
+    String DATE_STR = "yyyy-MM-dd";
+
+    int SECOND = 1000;
+
+    int MINUTE = 60 * SECOND;
+
+    int HOUR = 60 * MINUTE;
+
+    int DAY = 24 * HOUR;
+
+    /**********************************************编码格式************************************************/
+
+    String UTF8 = "UTF-8";
+
+
+    /**********************************************正则表达式************************************************/
+    String NUMBER = "^[0-9]*$";
+
+    String FLOAT = "^\\d+\\.\\d+$";
+
 }

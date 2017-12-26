@@ -29,6 +29,7 @@ public class DbUtils {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+
             e.printStackTrace();
         }
         return conn;

@@ -1,6 +1,7 @@
 package com.wind.entity.freemarker;
 
-import com.wind.entity.Const;
+import com.wind.util.Const;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,7 +72,7 @@ public class ClassInfo extends Attribute{
                     ClassMethod m = (ClassMethod) attr;
                     addImport(m.getArgs());
                 }
-                String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.NULL_STR;
+                String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.BLANK_STR;
                 if(type.contains(Const.LIST)){
                     this.imports.add("java.util.List");
                 }

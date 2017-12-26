@@ -1,6 +1,5 @@
 package com.wind.util;
 
-import com.wind.entity.Const;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.Table;
 import com.wind.entity.freemarker.*;

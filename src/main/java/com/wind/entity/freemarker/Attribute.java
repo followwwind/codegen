@@ -1,7 +1,7 @@
 package com.wind.entity.freemarker;
 
 
-import com.wind.entity.Const;
+import com.wind.util.Const;
 
 /**
  * java 类,成员属性或方法基础信息描述
@@ -34,7 +34,7 @@ public class Attribute {
     }
 
     public Attribute(String name, String type) {
-        this(null, name, type, Const.NULL_STR);
+        this(null, name, type, Const.BLANK_STR);
     }
 
     public Attribute(String scope, String name, String type, String remark) {

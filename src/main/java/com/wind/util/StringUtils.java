@@ -1,7 +1,5 @@
 package com.wind.util;
 
-import com.wind.entity.Const;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;

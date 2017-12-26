@@ -13,12 +13,24 @@ public class ReflectTest {
 
     @Test
     public void test(){
-
         Class c = ClassMethod.class;
         List<Field> fields = ReflectUtils.getFields(c, true);
         for(Field field : fields){
             System.out.println(field.getName());
         }
+    }
 
+    @Test
+    public void setField(){
+        char c = '*';
+    }
+
+    @Test
+    public void testDefault(){
+        Clazz clazz = new Clazz();
+        System.out.println(clazz.getInteger());
+        System.out.println(clazz.getI());
+
+        System.out.println(clazz.getCh());
     }
 }

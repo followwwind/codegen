@@ -1,10 +1,9 @@
 package com.wind.util;
 
-import com.wind.entity.Const;
+
+import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -12,22 +11,6 @@ import java.util.*;
  * @author wind
  */
 public class ReflectUtils {
-
-    public void parseClass(Object obj){
-        if(obj != null){
-            Class c = obj.getClass();
-            // 获取实体类的所有属性，返回Field数组
-            Field[] fields = c.getDeclaredFields();
-            for(Field field : fields){
-                System.out.println(field.getName());
-            }
-
-            Method[] methods = c.getDeclaredMethods();
-            for(Method method : methods){
-
-            }
-        }
-    }
 
     /**
      * 获取类成员属性
@@ -40,7 +23,6 @@ public class ReflectUtils {
         if(c == null){
             return fields;
         }
-
         fields.addAll(Arrays.asList(c.getDeclaredFields()));
         if(flag){
             Class supperClass = c.getSuperclass();
@@ -52,52 +34,59 @@ public class ReflectUtils {
     }
 
     /**
-     * bean实体类转换成map，字段名为key，值为value
-     * @param obj
-     * @param flag 若为false,则不获取父类成员属性，true则获取
-     * @return
+     * 类成员属性赋值
+     * @param instance 实例
+     * @param name 属性名称
+     * @param value 属性值
      */
-    public static Map<String, Object> beanToMap(Object obj, boolean flag){
-        Map<String, Object> map = null;
-        if(obj != null){
-            map = new HashMap<>(Const.MAP_SIZE);
-            Class c = obj.getClass();
-            Field[] fields = c.getDeclaredFields();
-            List<Method> methodList = null;
-            if(flag){
-                List<Field> fieldList = new ArrayList<>();
-                methodList = new ArrayList<>();
-//                getParentField(c, fieldList, methodList);
-                if(!fieldList.isEmpty()){
-                    int srcLength = fields.length;
-                    int size = fieldList.size();
-                    int length = fields.length + fieldList.size();
-                    fields = Arrays.copyOf(fields, length);
-                    System.arraycopy(fieldList.toArray(new Field[size]), 0, fields, srcLength, size);
-                }
+    public static void setField(Object instance, String name, Object value){
+        if(instance != null && !(instance instanceof Class)){
+            try {
+                Field field = instance.getClass().getDeclaredField(name);
+                setField(instance, field, value);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
             }
-            for(Field field : fields){
-                try {
-                    String key = field.getName();
-                    String methodName = key.substring(0, 1).toUpperCase() + key.substring(1);
-                    Method m = c.getMethod("get" + methodName);
-                    Object value = m.invoke(obj);
-                    map.put(key, value);
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.println(map);
         }
-        return map;
     }
 
-    public static void main(String[] args) {
+    /**
+     * 类成员属性赋值
+     * @param instance 实例
+     * @param field 属性Field实例
+     * @param value 属性值
+     */
+    public static void setField(Object instance, Field field, Object value){
+        if(instance != null && !(instance instanceof Class)){
+            if(value == null || field == null){
+                return;
+            }
+            try {
+                // 参数值为true，禁止访问控制检查
+                Class<?> clazz = field.getType();
+                field.setAccessible(true);
+                String valStr = value.toString();
+                if(clazz.equals(Integer.class) || clazz.equals(int.class)){
+                    field.set(instance, Integer.valueOf(valStr));
+                }else if(clazz.equals(Double.class) || clazz.equals(double.class)){
+                    field.set(instance, Double.valueOf(valStr));
+                }else if(clazz.equals(Float.class) || clazz.equals(float.class)){
+                    field.set(instance, Float.valueOf(valStr));
+                }else if(clazz.equals(Short.class) || clazz.equals(short.class)){
+                    field.set(instance, Short.valueOf(valStr));
+                }else if(clazz.equals(Boolean.class) || clazz.equals(boolean.class)){
+                    field.set(instance, Boolean.valueOf(valStr));
+                }else if(clazz.equals(Character.class) || clazz.equals(char.class)){
+                    if(valStr.length() == 1){
+                        field.set(instance, valStr.charAt(0));
+                    }
+                }else if(clazz.equals(String.class)){
+                    field.set(instance, valStr);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
-
+        }
     }
 }

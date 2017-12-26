@@ -3,8 +3,6 @@ package com.wind.util;
 
 
 
-import com.wind.entity.Const;
-
 import java.io.InputStream;
 import java.net.URL;
 
@@ -56,7 +54,7 @@ public class ResourceUtils {
      * @return  /E:/code/javacode/javautils/target/classes/
      */
     public static String getClassPath(){
-        return Thread.currentThread().getContextClassLoader().getResource(Const.NULL_STR).getPath();
+        return Thread.currentThread().getContextClassLoader().getResource(Const.BLANK_STR).getPath();
     }
 
     /**

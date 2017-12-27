@@ -1,5 +1,6 @@
 package com.wind.util;
 
+import com.wind.entity.db.Table;
 import com.wind.entity.ftl.MyBatis;
 import com.wind.entity.freemarker.*;
 import org.junit.Test;
@@ -19,23 +20,32 @@ public class FreemarkerTest {
         classInfo.initImports();
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
                 "E:/Work/Freemarker/src/", "Person.java");
-        /*freeMarker.setMap(ReflectUtils.beanToMap(classInfo, true));*/
+        freeMarker.setMap(JsonUtils.beanToMap(classInfo, true));
         FtlUtils.genCode(freeMarker);
     }
 
     @Test
     public void genMapper(){
-        MyBatis myBatisTable = new MyBatis();
-        myBatisTable.setNamespace("com.wind.dao.UserDao");
-        myBatisTable.setType("com.wind.entity.User");
-        myBatisTable.setTable(DbUtils.getTable("follow", "user"));
+        MyBatis table = new MyBatis();
+        table.setNamespace("com.wind.dao.UserDao");
+        table.setType("com.wind.entity.User");
+        table.setTable(DbUtils.getTable("follow", "user"));
 
         FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/xml", "mapper.ftl",
                 "E:/Work/Freemarker/src/", "UserMapper.xml");
-        /*freeMarker.setMap(ReflectUtils.beanToMap(myBatisTable, true));*/
+        freeMarker.setMap(JsonUtils.beanToMap(table, true));
         FtlUtils.genCode(freeMarker);
 
     }
+
+    @Test
+    public void genJDBC(){
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "baseDao.ftl",
+                "E:/Work/Freemarker/src/", "BaseDao.java");
+        FtlUtils.genCode(freeMarker);
+    }
+
+
 
     @Test
     public void genBaseMapper(){
@@ -110,6 +120,14 @@ public class FreemarkerTest {
 
     @Test
     public void genEntity(){
-
+        Table table = DbUtils.getTable("car-system", "user_info");
+        ClassInfo classInfo = FtlUtils.getBean(table);
+        System.out.println(JsonUtils.toJson(classInfo));
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "class.ftl",
+                "E:/work/freemarker/src/", table.getProperty() + ".java");
+        Map<String, Object> map = JsonUtils.beanToMap(classInfo, true);
+        System.out.println(map);
+        freeMarker.setMap(map);
+        FtlUtils.genCode(freeMarker);
     }
 }

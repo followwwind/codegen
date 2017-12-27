@@ -15,7 +15,8 @@ import ${import};
     <#assign imp = impls>
 </#if>
 /**
- * ${remark!"@author wind"}
+ * ${remark!""}
+ * @author wind
  */
 ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
 

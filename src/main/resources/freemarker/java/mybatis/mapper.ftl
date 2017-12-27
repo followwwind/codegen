@@ -2,22 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="${namespace}" >
     <resultMap id="BaseResultMap" type="${type}" >
-    <#assign lBracket="{"/>
+    <#assign lBracket = "{"/>
+    <#assign columns = table.columns/>
+    <#assign primaryKeys = table.primaryKeys/>
+    <#assign tableName = table.tableName/>
+    <#assign tableName = table.tableName/>
+    <#assign pkName = "">
+    <#assign pkType = "">
+    <#assign pkPro = "">
     <#list columns as column>
-        <#if pkName == column.columnName>
-        <#assign pkType=column.columnType/>
-        <#assign pkPro=column.property/>
-    <id column="${column.columnName}" property="${column.property}" jdbcType="${column.columnType}" />
+        <#if contains(primaryKeys, column.columnName) == true>
+        <#assign pkName = column.columnName>
+        <#assign pkType = column.columnType>
+        <#assign pkPro = column.property>
+        <id column="${column.columnName}" property="${column.property}" jdbcType="${replace(column.columnType)}" />
         <#else>
-        <result column="${column.columnName}" property="${column.property}" jdbcType="${column.columnType}" />
+        <result column="${column.columnName}" property="${column.property}" jdbcType="${replace(column.columnType)}" />
         </#if>
     </#list>
     </resultMap>
 
-
-    <sql id="Base_Column_List" >
+    <#--<sql id="Base_Column_List" >
         ${join(0, ",", 0)}
-    </sql>
+    </sql>-->
 
     <sql id="Column_List" >
         ${join(1, ",", 0)}
@@ -28,7 +35,7 @@
     </sql>
 
     <sql id="Column_Selective_And_List" >
-        ${join(2, "and", 0)}
+        ${join(2, "and", 1)}
     </sql>
 
     <sql id="Column_Assign_List" >
@@ -43,32 +50,32 @@
         )
     </insert>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
-        <include refid="Base_Column_List" />
-        from ${tableName} ${alias}
-        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        <include refid="Column_List" />
+        from ${tableName}
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </select>
 
-    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="${type}" >
+    <select id="findByCondition" resultMap="BaseResultMap" parameterType="${type}" >
         select
-        <include refid="Base_Column_List" />
-        from ${tableName} ${alias}
+        <include refid="Column_List" />
+        from ${tableName}
         where 1 = 1
         <include refid="Column_Selective_And_List" />
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <delete id="deleteById" parameterType="java.lang.String" >
         delete from ${tableName}
-        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </delete>
 
-    <update id="updateByPrimaryKeySelective" parameterType="${type}" >
+    <update id="updateByCondition" parameterType="${type}" >
         update ${tableName}
         <set>
             <include refid="Column_Selective_List" />
         </set>
-        where ${pkName} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </update>
 
     <select id="countByCondition" resultType="java.lang.Integer" parameterType="${type}" >
@@ -79,6 +86,25 @@
     </select>
 </mapper>
 
+<#function contains primaryKeys colName>
+    <#local b = false>
+    <#list primaryKeys![] as primaryKey>
+        <#if primaryKey.colName = colName>
+            <#local b = true>
+            <#break>
+        </#if>
+    </#list>
+    <#return b>
+</#function>
+
+<#function replace columnType>
+    <#local b = columnType>
+    <#if columnType == "INT">
+        <#local b = "INTEGER">
+    </#if>
+    <#return b>
+</#function>
+
 <#function join type sign flag>
 <#-- 声明局部变量 -->
     <#local str = "">
@@ -88,7 +114,7 @@
     <#list columns as column>
         <#local s = "">
         <#if type == 0>
-            <#local s = alias + "." + column.columnName>
+            <#local s = column.columnName>
             <#if column_index < (columns?size - 1)>
                 <#local s += sign>
             </#if>
@@ -107,13 +133,13 @@
             <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t">
             <#if flag == 1><#local s += "\t"></#if>
             <#local s += sign + " " + column.columnName + " = #" + lBracket + column.property
-            + ",jdbcType=" + column.columnType +"}\n\t\t">
+            + ",jdbcType=" + replace(column.columnType) +"}\n\t\t">
             <#if flag == 1><#local s += "\t"></#if>
             <#local s += "</if>\n\t\t">
-            <#if flag == 1><#local s += "\t"></#if>
+            <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>
         <#elseif type == 3>
             <#local s += "#" + lBracket + column.property
-            + ",jdbcType=" + column.columnType +"}">
+            + ",jdbcType=" + replace(column.columnType) +"}">
             <#if column_index < (columns?size - 1)>
                 <#local s += sign>
             </#if>
@@ -124,7 +150,7 @@
         <#local str += s>
     </#list>
     <#if flag == 1>
-        <#local str += "\n\t\t</trim>">
+        <#local str += "</trim>">
     </#if>
     <#return str>
 </#function>

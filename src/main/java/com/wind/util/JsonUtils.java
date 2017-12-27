@@ -63,7 +63,7 @@ public class JsonUtils {
 	 * @return
 	 */
 	public static Map<String, Object> beanToMap(Object obj, boolean flag){
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(Const.MAP_SIZE);
 		if(obj != null && !(obj instanceof Class)){
 			List<Field> fields = ReflectUtils.getFields(obj.getClass(), flag);
 			fields.forEach(field -> {
@@ -75,7 +75,6 @@ public class JsonUtils {
 				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
-
 			});
 		}
 		return map;

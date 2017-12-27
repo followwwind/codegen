@@ -60,6 +60,7 @@ public class FtlUtils {
         ClassInfo classInfo = null;
         if(table != null){
             classInfo = new ClassInfo(table.getProperty(), ClassType.BEAN, Const.CLASS);
+            classInfo.setRemark(table.getRemarks());
             List<ClassField> fields = new ArrayList<>();
             List<Column> columns = table.getColumns();
             if(columns != null && !columns.isEmpty()){

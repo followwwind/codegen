@@ -1,5 +1,6 @@
 package com.wind.util;
 
+import com.wind.entity.freemarker.ClassInfo;
 import com.wind.entity.freemarker.ClassMethod;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class ReflectTest {
 
     @Test
     public void test(){
-        Class c = ClassMethod.class;
+        Class c = ClassInfo.class;
         List<Field> fields = ReflectUtils.getFields(c, true);
         for(Field field : fields){
             System.out.println(field.getName());
@@ -33,4 +34,6 @@ public class ReflectTest {
 
         System.out.println(clazz.getCh());
     }
+
+
 }

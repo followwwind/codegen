@@ -1,18 +1,20 @@
 package com.wind.service.impl;
 
 import java.util.List;
-
-import com.wind.dao.CarDao;
-import com.wind.dao.CarOrderDao;
-import com.wind.dao.impl.CarDaoImpl;
-import com.wind.dao.impl.CarOrderDaoImpl;
-import com.wind.entity.Car;
-import com.wind.entity.CarOrder;
-import com.wind.service.CarOrderService;
+import com.wind.dao.${property}Dao;
+import com.wind.dao.impl.${property}DaoImpl;
+import com.wind.entity.${property};
+import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
 import com.wind.util.StringUtil;
+<#assign key = getKey(columns, primaryKeys[0])>
+<#assign type = key.type>
 
-public class ${property}ServiceImpl extends BaseServiceImpl<${property}, String> implements ${property}Service{
+/**
+ *
+ * @author wind
+ */
+public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}> implements ${property}Service{
 
     private ${property}Dao dao = new ${property}DaoImpl();
 
@@ -24,12 +26,12 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, String>
     }
 
     @Override
-    public int deleteById(String id) {
+    public int deleteById(${type} id) {
         return dao.deleteById(id);
     }
 
     @Override
-    public ${property} findById(String id) {
+    public ${property} findById(${type} id) {
         return dao.findById(id);
     }
 
@@ -43,5 +45,14 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, String>
         return dao.updateConditionById(r);
     }
 
-
 }
+
+<#function getKey columns primary>
+    <#local b = {}>
+    <#list columns as column>
+        <#if primary.colName == column.columnName>
+            <#local b = column>
+        </#if>
+    </#list>
+    <#return b>
+</#function>

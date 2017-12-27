@@ -1,4 +1,4 @@
-package com.wind.entity.callback;
+package com.wind.callback;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;

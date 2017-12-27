@@ -82,4 +82,21 @@ public class FreeMarker {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+
+    public void setData(String cfgName, Map<String, Object> map, String fileName){
+        this.cfgName = cfgName;
+        this.map = map;
+        this.fileName = fileName;
+    }
+
+    public void setData(String cfgName, String fileName){
+        this.cfgName = cfgName;
+        this.fileName = fileName;
+    }
+
+    public void setData(Map<String, Object> map, String fileName){
+        this.map = map;
+        this.fileName = fileName;
+    }
 }

@@ -4,6 +4,7 @@ import com.wind.util.DbUtils;
 import com.zaxxer.hikari.HikariConfig;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Test {
@@ -36,7 +37,6 @@ public class Test {
 
     public static void main(String[] args) {
         /*testDatasource();*/
-        String aa = "1231\"";
-        System.out.println(aa.replaceAll("\"", "'"));
+        System.out.println();
     }
 }

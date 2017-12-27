@@ -1,6 +1,6 @@
 package com.wind.util;
 
-import com.wind.entity.callback.DbCallBack;
+import com.wind.callback.DbCallBack;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.PrimaryKey;
 import com.wind.entity.db.Table;

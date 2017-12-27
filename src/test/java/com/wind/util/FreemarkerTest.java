@@ -40,9 +40,20 @@ public class FreemarkerTest {
 
     @Test
     public void genJDBC(){
-        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "baseDao.ftl",
+        /*FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java", "baseDao.ftl",
                 "E:/Work/Freemarker/src/", "BaseDao.java");
+        FtlUtils.genCode(freeMarker);*/
+
+        Table table = DbUtils.getTable("car-system", "user_info");
+        FreeMarker freeMarker = new FreeMarker("src/main/resources/freemarker/java/jdbc", "rDaoImpl.ftl",
+                "E:/Work/Freemarker/src/", table.getProperty() + "DaoImpl.java");
+//        System.out.println(JsonUtils.toJson(table));
+        freeMarker.setMap(JsonUtils.beanToMap(table, true));
         FtlUtils.genCode(freeMarker);
+
+        freeMarker.setData("rServiceImpl.ftl", table.getProperty() + "ServiceImpl.java");
+        FtlUtils.genCode(freeMarker);
+
     }
 
 

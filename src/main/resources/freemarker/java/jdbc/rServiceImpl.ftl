@@ -6,12 +6,11 @@ import com.wind.dao.impl.${property}DaoImpl;
 import com.wind.entity.${property};
 import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
-import com.wind.util.StringUtil;
 <#assign key = getKey(columns, primaryKeys[0])>
 <#assign type = key.type>
 
 /**
- *
+ * ${remarks!""} service接口实现
  * @author wind
  */
 public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}> implements ${property}Service{
@@ -41,10 +40,14 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
     }
 
     @Override
-    public int updateByCondition(${property} r) {
-        return dao.updateConditionById(r);
+    public void findPageList(R r, Page page){
+        dao.findPageList(r, page);
     }
 
+    @Override
+    public int updateByCondition(${property} r) {
+        return dao.updateByCondition(r);
+    }
 }
 
 <#function getKey columns primary>

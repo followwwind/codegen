@@ -18,13 +18,15 @@ import java.util.Properties;
 */
 public class DbUtil {
 
+    public static Properties props;
     /**
      * 代码静态块，在DbUtil被引用时加载执行
      * 此处用于解析数据库配置文件
      */
     static {
+        props = PropUtil.readProp("src/main/resources/jdbc.properties");
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(props.getProperty("driverClass"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -49,12 +51,12 @@ public class DbUtil {
     * @param conn
     */
     public static void close(Connection conn){
-    try {
-    if(conn != null){
-    conn.close();
-    }
-    } catch (Exception e) {
-    e.printStackTrace();
-    }
+        try {
+            if(conn != null){
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

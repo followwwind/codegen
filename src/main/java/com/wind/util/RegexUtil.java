@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
  * 正则表达式工具类
  * @author wind
  */
-public class RegexUtils {
+public class RegexUtil {
 
     /**
      * 判断是否为数字

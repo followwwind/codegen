@@ -8,7 +8,7 @@ import java.util.*;
  * 解析properties文件工具类
  * @author wind
  */
-public class PropUtils {
+public class PropUtil {
     /**
      * 解析properties文件
      * @param filePath

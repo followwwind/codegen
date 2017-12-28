@@ -9,7 +9,7 @@ import com.wind.entity.base.Page;
  * @param <R> 数据库表关联的实体类
  * @param <PK> 主键类型
  */
-public interface BaseService<R, PK> {
+public interface BaseDao<R, PK> {
     /**
      * 添加纪录
      * @param r
@@ -25,14 +25,14 @@ public interface BaseService<R, PK> {
     int deleteById(PK id);
 
     /**
-     * 通过id查询
+     * 通过id查询单条记录
      * @param id
      * @return
      */
     R findById(PK id);
 
     /**
-     * 通过条件查找
+     * 条件批量查询记录
      * @param r
      * @return
      */
@@ -51,4 +51,11 @@ public interface BaseService<R, PK> {
      * @return
      */
     int updateByCondition(R r);
+
+    /**
+     * 查询批量记录条数
+     * @param r
+     * @return
+     */
+    int countByCondition(R r);
 }

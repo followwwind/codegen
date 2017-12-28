@@ -23,6 +23,15 @@ public abstract class BaseDaoImpl<R, PK> implements BaseDao<R, PK>{
      */
     public abstract R parseTable(ResultSet rs) throws SQLException;
 
+    /**
+     * 拼接sql语句
+     * @param r
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return
+     */
+    public abstract String joinSql(R r, String prefix, String suffix);
+
 
     /**
      * 执行查询语句， ps不赋值回调
@@ -38,7 +47,11 @@ public abstract class BaseDaoImpl<R, PK> implements BaseDao<R, PK>{
      * @param psBack
      */
     public List<R> executeQuery(String sql, PsBack psBack){
+        <#if (JDK_VERSION >= 8)>
+        List<R> list = new ArrayList<>();
+        <#else>
         List<R> list = new ArrayList<R>();
+        </#if>
         Connection conn = DbUtil.getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -56,6 +69,33 @@ public abstract class BaseDaoImpl<R, PK> implements BaseDao<R, PK>{
         }
         return list;
     }
+
+    /**
+     * 执行查询记录条数语句， ps赋值回调
+     * @param sql
+     * @param psBack
+     * @param
+     */
+    public int countQuery(String sql, PsBack psBack){
+        Connection conn = DbUtil.getConnection();
+        int i = 0;
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            if(psBack != null){
+                psBack.call(ps);
+            }
+            ResultSet rs = ps.executeQuery();
+            if(rs != null && rs.first()){
+                i = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.close(conn);
+        }
+        return i;
+    }
+
 
     /**
      * 执行添加， 删除， 更新等操作

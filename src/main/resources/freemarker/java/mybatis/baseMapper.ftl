@@ -1,6 +1,7 @@
 package com.wind.dao;
 
 import java.util.List;
+import com.wind.entity.base.Page;
 
 /**
  * 数据库dao通用接口
@@ -8,7 +9,7 @@ import java.util.List;
  * @param <R> 数据库表关联的实体类
  * @param <PK> 主键类型
  */
-public interface BaseDao<R, PK> {
+public interface BaseMapper<R, PK> {
     /**
      * 添加纪录
      * @param r
@@ -24,18 +25,25 @@ public interface BaseDao<R, PK> {
     int deleteById(PK id);
 
     /**
-     * 通过id查询
+     * 通过id查询单条记录
      * @param id
      * @return
      */
     R findById(PK id);
 
     /**
-     * 通过条件查找
+     * 条件批量查询记录
      * @param r
      * @return
      */
     List<R> findByCondition(R r);
+
+    /**
+     * 分页查询
+     * @param r
+     * @param page
+     */
+    void findPageList(R r, Page page);
 
     /**
      * 通过id更新记录
@@ -45,7 +53,7 @@ public interface BaseDao<R, PK> {
     int updateByCondition(R r);
 
     /**
-     * 通过条件计算记录条数
+     * 查询批量记录条数
      * @param r
      * @return
      */

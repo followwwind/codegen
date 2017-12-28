@@ -12,7 +12,7 @@ import net.sf.json.processors.JsonValueProcessor;
  * @author wind
  *
  */
-public class JsonUtils {
+public class JsonUtil {
 	
 	/**
 	 * 将实体类对象转换成字符串
@@ -35,7 +35,7 @@ public class JsonUtils {
 			
 			private Object process(Object value){  
 		        if(value instanceof Date){    
-		            return DateUtils.getDateStr((Date)value, Const.DATE_TIME);
+		            return DateUtil.getDateStr((Date)value, Const.DATE_TIME);
 		        }    
 		        return value == null ? "" : value.toString();    
 		    }  
@@ -65,7 +65,7 @@ public class JsonUtils {
 	public static Map<String, Object> beanToMap(Object obj, boolean flag){
 		Map<String, Object> map = new HashMap<>(Const.MAP_SIZE);
 		if(obj != null && !(obj instanceof Class)){
-			List<Field> fields = ReflectUtils.getFields(obj.getClass(), flag);
+			List<Field> fields = ReflectUtil.getFields(obj.getClass(), flag);
 			fields.forEach(field -> {
 				field.setAccessible(true);
 				try {
@@ -101,14 +101,14 @@ public class JsonUtils {
 				Object value = jsonObject.get(key);
 				if(value instanceof JSONObject){
 					Field field = c.getDeclaredField(key);
-					ReflectUtils.setField(instance, field, toEntity(value.toString(), field.getType()));
+					ReflectUtil.setField(instance, field, toEntity(value.toString(), field.getType()));
 				}else if(value instanceof JSONArray){
 					JSONArray jsonArray = (JSONArray) value;
 					for(int i = 0; i < jsonArray.size(); i++){
 						
 					}
 				}else{
-					ReflectUtils.setField(instance, key, value);
+					ReflectUtil.setField(instance, key, value);
 				}
 			}
 		} catch (InstantiationException e) {

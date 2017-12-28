@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 字符串工具类
  * @author wind
  */
-public class StringUtils {
+public class StringUtil {
 
     private static AtomicLong next = new AtomicLong(1);
 
@@ -120,7 +120,7 @@ public class StringUtils {
     public static String getCamelCase(String colName, boolean flag){
         String str = colName;
         if(colName != null){
-            String[] strs = StringUtils.split(colName, Const.UNDERLINE);
+            String[] strs = StringUtil.split(colName, Const.UNDERLINE);
             str = "";
             for(int i = 0; i < strs.length; i++){
                 String s = strs[i];

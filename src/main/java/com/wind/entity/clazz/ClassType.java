@@ -1,4 +1,4 @@
-package com.wind.entity.freemarker;
+package com.wind.entity.clazz;
 
 /**
  * 类型

@@ -10,39 +10,68 @@ import com.wind.dao.${property}Dao;
 import com.wind.dao.base.BaseDaoImpl;
 import com.wind.dao.callback.PsBack;
 import com.wind.entity.${property};
-import com.wind.util.Const;
+import com.wind.entity.base.Page;
 <#assign key = getKey(columns, primaryKeys[0])>
 <#assign pkName = key.columnName>
 <#assign pkPro = key.property>
 <#assign type = key.type>
 
 /**
- *
+ * ${remarks!""} dao接口实现
  * @author wind
  */
-public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implements ${property}Dao{
+public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implements ${property}Dao{
 
     @Override
     public int insert(${property} r) {
         String sql = "insert into ${tableName} values (${join(columns?size)})";
+        if(r == null){
+            return -1;
+        }
+        <#if (JDK_VERSION >= 8)>
+        return executeUpdate(sql, ps -> {
+        <#list columns as column>
+            <#assign columnType = getType(column.columnType)>
+            <#if columnType == "Timestamp">
+            Date ${column.property} = r.get${column.property?cap_first}();
+            ps.set${columnType}(${column_index + 1}, new Timestamp(${column.property} != null ? ${column.property}.getTime() : System.currentTimeMillis()));
+            <#elseif columnType == "String">
+            ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}());
+            <#elseif columnType == "Double">
+            ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0.0);
+            <#elseif columnType == "Int">
+            ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0);
+            </#if>
+        </#list>
+        });
+        <#else>
         return executeUpdate(sql, new PsBack() {
             @Override
             public void call(PreparedStatement ps) throws SQLException {
                 <#list columns as column>
-                <#if column.columnType == "TIMESTAMP">
-                Date ${column.property} = r.get${column.property?cap_first}();
-                ps.set${getType(column.columnType)}(${column_index + 1}, ${column.property} != null ? ${column.property}.getTime() : System.currentTimeMillis());
-                <#else>
-                ps.set${getType(column.columnType)}(${column_index + 1}, r.get${column.property?cap_first}());
-                </#if>
+                    <#assign columnType = getType(column.columnType)>
+                    <#if columnType == "Timestamp">
+                    Date ${column.property} = r.get${column.property?cap_first}();
+                    ps.set${columnType}(${column_index + 1}, new Timestamp(${column.property} != null ? ${column.property}.getTime() : System.currentTimeMillis()));
+                    <#elseif columnType == "String">
+                    ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}());
+                    <#elseif columnType == "Double">
+                    ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0.0);
+                    <#elseif columnType == "Int">
+                    ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0);
+                    </#if>
                 </#list>
             }
         });
+        </#if>
     }
 
     @Override
     public int deleteById(String id) {
         String sql = "delete from ${tableName} where ${pkName} = ?";
+        <#if (JDK_VERSION >= 8)>
+        return executeUpdate(sql, ps -> ps.setString(1, id));
+        <#else>
         return executeUpdate(sql, new PsBack() {
             @Override
             public void call(PreparedStatement ps) throws SQLException {
@@ -51,11 +80,15 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
                 </#if>
             }
         });
+        </#if>
     }
 
     @Override
     public ${property} findById(String id) {
         String sql = "select * from ${tableName} where ${pkName} = ?";
+        <#if (JDK_VERSION >= 8)>
+        List<${property}> entitys = executeQuery(sql, ps -> ps.setString(1, id));
+        <#else>
         List<${property}> entitys = executeQuery(sql, new PsBack() {
             @Override
             public void call(PreparedStatement ps) throws SQLException {
@@ -64,6 +97,7 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
                 </#if>
             }
         });
+        </#if>
         if(entitys.size() == 1){
             return entitys.get(0);
         }
@@ -73,51 +107,71 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
     @Override
     public List<${property}> findByCondition(${property} r) {
         String sql = "select * from ${tableName} where 1 = 1 ";
-        String whereClause = "";
-
-        <#list columns as column>
-        ${column.type} ${column.property} = r.get${column.property?cap_first}();
-        if(${column.property} != null){
-        <#if column.columnType == "INT">
-            whereClause += " and ${column.columnName} = " + ${column.property};
-        <#elseif column.columnType == "VARCHAR">
-            whereClause += " and ${column.columnName} = " + "'" + ${column.property} + "'";
-        <#elseif column.columnType == "TIMESTAMP">
-
-        </#if>
+        String joinSql = "";
+        if(r != null){
+            joinSql += joinSql(r, " and ", "");
         }
-        </#list>
-
-        sql += whereClause;
+        sql += joinSql;
+        <#if (JDK_VERSION >= 8)>
+        return executeQuery(sql, ps -> {});
+        <#else>
         return executeQuery(sql, new PsBack() {
             @Override
             public void call(PreparedStatement ps) throws SQLException {
 
             }
         });
+        </#if>
+    }
+
+    @Override
+    public void findPageList(${property} r, Page page){
+        String sql = "select count(1) from ${tableName} where 1 = 1 ";
+        String joinSql = "";
+        if(r != null){
+            joinSql += joinSql(r, " and ", "");
+        }
+        sql += joinSql;
+        <#if (JDK_VERSION >= 8)>
+        int totalCount =  countQuery(sql, ps -> {});
+        <#else>
+        int totalCount = countQuery(sql, new PsBack() {
+            @Override
+            public void call(PreparedStatement ps) throws SQLException {
+
+            }
+        });
+        page.setTotalCount(totalCount);
+        </#if>
+        sql += " limit " + page.getStartRow() + ", " + page.getLineNumber();
+        <#if (JDK_VERSION >= 8)>
+        List<${property}> entitys =  executeQuery(sql.replace("count(1)", "*"), ps -> {});
+        <#else>
+        List<${property}> entitys =  executeQuery(sql.replace("count(1)", "*"), new PsBack() {
+            @Override
+            public void call(PreparedStatement ps) throws SQLException {
+
+            }
+        });
+        </#if>
+        page.setResult(entitys);
     }
 
     @Override
     public int updateByCondition(${property} r) {
         String sql = "update ${tableName} ";
-        String setSql = "set ";
-        String id = r.get${pkPro?cap_first}();
-
-        <#list columns as column>
-        ${column.type} ${column.property} = r.get${column.property?cap_first}();
-        if(${column.property} != null){
-            <#if column.columnType == "INT">
-            setSql += " ${column.columnName} = " + ${column.property} + ", ";
-            <#elseif column.columnType == "VARCHAR">
-            setSql += " ${column.columnName} = " + "'" + ${column.property} + "'" + ", ";
-            </#if>
+        if(r != null){
+            return -1;
         }
-        </#list>
-
-        if(id != null && setSql.contains(Const.STR_COMMA)){
+        String setSql = "set " + joinSql(r, "", ", ");
+        String id = r.get${pkPro?cap_first}();
+        if(id != null && setSql.contains(", ")){
             sql += setSql.substring(0, setSql.length() - 2);
             sql += " where ${pkName} = ?";
-            return super.executeUpdate(sql, new PsBack() {
+            <#if (JDK_VERSION >= 8)>
+            return executeUpdate(sql, ps -> ps.setString(1, id));
+            <#else>
+            return executeUpdate(sql, new PsBack() {
                 @Override
                 public void call(PreparedStatement ps) throws SQLException {
                     <#if type == "String">
@@ -125,36 +179,29 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
                     </#if>
                 }
             });
+            </#if>
         }
-
         return -1;
     }
 
     @Override
-    public int countByCondition(R r){
-        String sql = "count (1) from ${tableName} where 1 = 1 ";
-        String whereClause = "";
-
-        <#list columns as column>
-        ${column.type} ${column.property} = r.get${column.property?cap_first}();
-        if(${column.property} != null){
-            <#if column.columnType == "INT">
-            whereClause += " and ${column.columnName} = " + ${column.property};
-            <#elseif column.columnType == "VARCHAR">
-            whereClause += " and ${column.columnName} = " + "'" + ${column.property} + "'";
-            <#elseif column.columnType == "TIMESTAMP">
-
-            </#if>
+    public int countByCondition(${property} r){
+        String sql = "select count(1) from ${tableName} where 1 = 1 ";
+        String joinSql = "";
+        if(r != null){
+            joinSql += joinSql(r, " and ", "");
         }
-        </#list>
-
-        sql += whereClause;
-        return executeQuery(sql, new PsBack() {
+        sql += joinSql;
+        <#if (JDK_VERSION >= 8)>
+        return countQuery(sql, ps -> {});
+        <#else>
+        return countQuery(sql, new PsBack() {
             @Override
             public void call(PreparedStatement ps) throws SQLException {
 
             }
         });
+        </#if>
     }
 
     @Override
@@ -172,6 +219,26 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
             </#list>
         }
         return entity;
+    }
+
+    @Override
+    public String joinSql(${property} r, String prefix, String suffix){
+        String joinSql = "";
+        <#list columns as column>
+        <#if column.columnName != pkName>
+        ${column.type} ${column.property} = r.get${column.property?cap_first}();
+        if(${column.property} != null){
+            <#if column.columnType == "INT">
+            joinSql += prefix + "${column.columnName} = " + ${column.property} + suffix;
+            <#elseif column.columnType == "VARCHAR">
+            joinSql += prefix + "${column.columnName} = " + "'" + ${column.property} + "'" + suffix;
+            <#elseif column.columnType == "TIMESTAMP">
+
+            </#if>
+        }
+        </#if>
+        </#list>
+        return joinSql;
     }
 }
 
@@ -195,6 +262,10 @@ public class ${property}Impl extends BaseDaoImpl<${property}, ${type}> implement
         <#local b += "Int"/>
     <#elseif columnType == "TIMESTAMP">
         <#local b += "Timestamp"/>
+    <#elseif columnType == "TEXT">
+        <#local b += "String"/>
+    <#elseif columnType == "DOUBLE">
+        <#local b += "Double"/>
     </#if>
     <#return b>
 </#function>

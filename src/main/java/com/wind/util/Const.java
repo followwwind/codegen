@@ -92,4 +92,27 @@ public interface Const {
 
     String FLOAT = "^\\d+\\.\\d+$";
 
+
+    String FTL_JAVA = "src/main/resources/freemarker/java";
+
+    String FTL_DIR = "E:/work/freemarker/src";
+
+    String FTL_ENTITY = "/entity";
+
+    String FTL_DAO = "/dao";
+
+    String FTL_SERVICE = "/service";
+
+    String FTL_IMPL = "/impl";
+
+    String FTL_BASE = "/base";
+
+    String FTL_CALLBACK = "/callback";
+
+    String FTL_UTIL = "/util";
+
+    String FTL_TEST = "/test";
+
+    int JDK_VERSION = 8;
+
 }

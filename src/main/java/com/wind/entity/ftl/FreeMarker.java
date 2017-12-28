@@ -1,4 +1,4 @@
-package com.wind.entity.freemarker;
+package com.wind.entity.ftl;
 
 import java.util.Map;
 
@@ -29,6 +29,11 @@ public class FreeMarker {
     private String fileName;
 
     public FreeMarker() {
+    }
+
+    public FreeMarker(String cfgDir, String fileDir) {
+        this.cfgDir = cfgDir;
+        this.fileDir = fileDir;
     }
 
     public FreeMarker(String cfgDir, String cfgName, String fileDir, String fileName) {

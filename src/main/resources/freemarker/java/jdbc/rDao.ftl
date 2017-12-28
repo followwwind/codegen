@@ -5,7 +5,7 @@ import com.wind.entity.${property};
 <#assign key = getKey(columns, primaryKeys[0])>
 <#assign type = key.type>
 /**
- * 通用数据库操作方法封装
+ * ${remarks!""} dao接口
  * @author wind
  */
 public interface ${property}Dao extends BaseDao<${property}, ${type}>{

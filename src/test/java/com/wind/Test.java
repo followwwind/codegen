@@ -1,10 +1,9 @@
 package com.wind;
 
-import com.wind.util.DbUtils;
+import com.wind.util.DbUtil;
 import com.zaxxer.hikari.HikariConfig;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Test {
@@ -21,7 +20,7 @@ public class Test {
 
     public static void testDatasource(){
 
-        DbUtils.getAllDb();
+        DbUtil.getAllDb();
         System.out.println("-------------------------------------------------");
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://192.168.1.35:3307/business-v2");
@@ -30,7 +29,7 @@ public class Test {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        DbUtils.getAllDb();
+        DbUtil.getAllDb();
 
     }
 

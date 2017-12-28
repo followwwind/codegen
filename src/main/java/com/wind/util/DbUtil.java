@@ -14,7 +14,7 @@ import java.util.Properties;
  * Db工具类
  * @author wind
  */
-public class DbUtils {
+public class DbUtil {
     /**
      * 获取数据库连接
      * @return
@@ -22,8 +22,7 @@ public class DbUtils {
     private static Connection getConn(){
         Connection conn = null;
         try {
-//            conn =  DsUtils.DATASOURCE.getDataSource().getConnection();
-            Properties props = PropUtils.readProp("src/main/resources/jdbc.properties");
+            Properties props = PropUtil.readProp("src/main/resources/jdbc.properties");
             Class.forName(props.getProperty("driverClass"));
             conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
         } catch (SQLException e) {
@@ -98,7 +97,7 @@ public class DbUtils {
                 table = new Table();
                 String tableName = rs.getString("TABLE_NAME");
                 table.setTableName(tableName);
-                table.setProperty(StringUtils.getCamelCase(tableName, true));
+                table.setProperty(StringUtil.getCamelCase(tableName, true));
                 String catalog = rs.getString("TABLE_CAT");
                 table.setTableCat(catalog);
                 table.setRemarks(rs.getString("REMARKS"));
@@ -129,7 +128,7 @@ public class DbUtils {
                 String typeName = rs.getString("TYPE_NAME");
                 column.setColumnName(colName);
                 column.setColumnType(typeName);
-                column.setProperty(StringUtils.getCamelCase(colName, false));
+                column.setProperty(StringUtil.getCamelCase(colName, false));
                 column.setType(getFieldType(typeName));
                 column.setColumnSize(rs.getInt("COLUMN_SIZE"));
                 column.setNullable(rs.getInt("NULLABLE"));

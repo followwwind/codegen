@@ -10,7 +10,7 @@ import java.util.*;
  * 类反射工具类
  * @author wind
  */
-public class ReflectUtils {
+public class ReflectUtil {
 
     /**
      * 获取类成员属性

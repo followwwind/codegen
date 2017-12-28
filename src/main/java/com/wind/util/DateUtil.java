@@ -10,7 +10,7 @@ import java.util.Date;
  * @author wind
  *
  */
-public class DateUtils {
+public class DateUtil {
     /**
      * 日期按照指定格式转换成字符串
      * @param date  日期

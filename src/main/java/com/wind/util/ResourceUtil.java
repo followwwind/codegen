@@ -12,7 +12,7 @@ import java.net.URL;
  * 资源文件加载工具类
  * @author wind
  */
-public class ResourceUtils {
+public class ResourceUtil {
 
     /**
      * 获取资源文件的输入流
@@ -23,7 +23,7 @@ public class ResourceUtils {
         InputStream in = null;
         if(fileName != null){
             if(fileName.startsWith(Const.FILE_SEPARATOR)){
-                in = ResourceUtils.class.getResourceAsStream(fileName);
+                in = ResourceUtil.class.getResourceAsStream(fileName);
             }else{
                 in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName);
             }
@@ -40,7 +40,7 @@ public class ResourceUtils {
         URL url = null;
         if(fileName != null){
             if(fileName.startsWith(Const.FILE_SEPARATOR)){
-                url = ResourceUtils.class.getResource(fileName);
+                url = ResourceUtil.class.getResource(fileName);
             }else{
                 url = ClassLoader.getSystemClassLoader().getResource(fileName);
             }

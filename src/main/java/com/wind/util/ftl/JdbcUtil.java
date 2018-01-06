@@ -33,6 +33,9 @@ public class JdbcUtil {
         freeMarker.setData("jdbc/dbUtil.ftl", "DbUtil.java");
         freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_UTIL);
         FtlUtil.genCode(freeMarker);
+
+        freeMarker.setData("jdbc/propUtil.ftl", "PropUtil.java");
+        FtlUtil.genCode(freeMarker);
     }
 
     /**

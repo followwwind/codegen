@@ -1,4 +1,4 @@
-package com.wind.dao;
+package com.wind.service.base;
 
 import java.util.List;
 import com.wind.entity.base.Page;

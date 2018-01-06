@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class JdbcTest {
 
-    List<Table> tables = DbUtil.getTables("java_exp");
+    List<Table> tables = DbUtil.getTables("book-system");
 
     Table table = DbUtil.getTable("car-system", "user_info");
 
@@ -83,15 +83,15 @@ public class JdbcTest {
     @Test
     public void genAllCode(){
         JdbcUtil.genCommon();
-//        FtlUtil.genPage();
-//        JdbcUtil.genBaseDao();
-//        FtlUtil.genBaseService();
-//        tables.forEach(table -> {
-//            FtlUtil.genEntity(table);
-//            JdbcUtil.genDao(table, true);
-//            JdbcUtil.genService(table, true);
-//            JdbcUtil.genTest(table);
-//        });
+        FtlUtil.genPage();
+        JdbcUtil.genBaseDao();
+        FtlUtil.genBaseService();
+        tables.forEach(table -> {
+            FtlUtil.genEntity(table);
+            JdbcUtil.genDao(table, true);
+            JdbcUtil.genService(table, true);
+            JdbcUtil.genTest(table);
+        });
     }
 
 }

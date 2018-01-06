@@ -67,6 +67,7 @@ public class FtlUtil {
         FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY);
         freeMarker.setData("class.ftl", table.getProperty() + ".java");
         ClassInfo classInfo = ClassUtil.getBean(table);
+        classInfo.setPackageName("com.wind.entity");
         freeMarker.setMap(JsonUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }

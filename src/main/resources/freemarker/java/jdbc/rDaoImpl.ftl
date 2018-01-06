@@ -197,7 +197,7 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
     @Override
     public int updateByCondition(${property} r) {
         String sql = "update ${tableName} ";
-        if(r != null){
+        if(r == null){
             return -1;
         }
         String setSql = "set " + joinSql(r, "", ", ");

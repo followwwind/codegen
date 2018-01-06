@@ -6,6 +6,7 @@ import com.wind.dao.impl.${property}DaoImpl;
 import com.wind.entity.${property};
 import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
+import com.wind.entity.base.Page;
 <#if primaryKeys?? && primaryKeys?size gt 0>
     <#assign key = getKey(columns, primaryKeys[0])>
     <#assign type = key.type>

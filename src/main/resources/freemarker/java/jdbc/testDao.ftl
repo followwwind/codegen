@@ -1,10 +1,11 @@
-package com.wind.dao;
+package com.wind.test;
 
 import java.util.List;
 import com.wind.dao.${property}Dao;
 import com.wind.dao.impl.${property}DaoImpl;
 import com.wind.entity.${property};
 import com.wind.entity.base.Page;
+import org.junit.Test;
 
 
 /**

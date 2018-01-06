@@ -273,6 +273,8 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
         if(${column.property} != null){
             <#if column.columnType == "INT">
             joinSql += prefix + "${column.columnName} = " + ${column.property} + suffix;
+            <#elseif column.columnType == "DOUBLE">
+            joinSql += prefix + "${column.columnName} = " + ${column.property} + suffix;
             <#elseif column.columnType == "VARCHAR">
             joinSql += prefix + "${column.columnName} = " + "'" + ${column.property} + "'" + suffix;
             <#elseif column.columnType == "TIMESTAMP">

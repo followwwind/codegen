@@ -11,10 +11,16 @@ import com.wind.dao.base.BaseDaoImpl;
 import com.wind.dao.callback.PsBack;
 import com.wind.entity.${property};
 import com.wind.entity.base.Page;
-<#assign key = getKey(columns, primaryKeys[0])>
-<#assign pkName = key.columnName>
-<#assign pkPro = key.property>
-<#assign type = key.type>
+<#if primaryKeys?? && primaryKeys?size gt 0>
+    <#assign key = getKey(columns, primaryKeys[0])>
+    <#assign pkName = key.columnName>
+    <#assign pkPro = key.property>
+    <#assign type = key.type>
+<#else>
+    <#assign pkName = "">
+    <#assign pkPro = "">
+    <#assign type = "String">
+</#if>
 
 /**
  * ${remarks!""} dao接口实现
@@ -68,6 +74,7 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
 
     @Override
     public int deleteById(String id) {
+        <#if pkName != "">
         String sql = "delete from ${tableName} where ${pkName} = ?";
         <#if (JDK_VERSION >= 8)>
         return executeUpdate(sql, ps -> ps.setString(1, id));
@@ -81,10 +88,39 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
             }
         });
         </#if>
+        <#else>
+        return 0;
+        </#if>
     }
 
     @Override
+    public int deleteByCondition(${property} r){
+        String joinSql = "";
+        if(r != null){
+            joinSql += joinSql(r, " and ", "");
+        }
+        int i = -1;
+        if(!"".equals(joinSql)){
+            String sql = "delete from ${tableName} where 1=1" + joinSql;
+            <#if (JDK_VERSION >= 8)>
+            return executeUpdate(sql, ps -> {});
+            <#else>
+            return executeUpdate(sql, new PsBack() {
+                @Override
+                public void call(PreparedStatement ps) throws SQLException {
+
+                }
+            });
+            </#if>
+        }
+        return i;
+    }
+
+
+
+    @Override
     public ${property} findById(String id) {
+        <#if pkName != "">
         String sql = "select * from ${tableName} where ${pkName} = ?";
         <#if (JDK_VERSION >= 8)>
         List<${property}> entitys = executeQuery(sql, ps -> ps.setString(1, id));
@@ -101,6 +137,7 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
         if(entitys.size() == 1){
             return entitys.get(0);
         }
+        </#if>
         return null;
     }
 
@@ -164,17 +201,23 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
             return -1;
         }
         String setSql = "set " + joinSql(r, "", ", ");
+        <#if pkPro != "">
         String id = r.get${pkPro?cap_first}();
+        <#else>
+        String id = "";
+        </#if>
         if(id != null && setSql.contains(", ")){
             sql += setSql.substring(0, setSql.length() - 2);
+            <#if pkName != "">
             sql += " where ${pkName} = ?";
+            </#if>
             <#if (JDK_VERSION >= 8)>
             return executeUpdate(sql, ps -> ps.setString(1, id));
             <#else>
             return executeUpdate(sql, new PsBack() {
                 @Override
                 public void call(PreparedStatement ps) throws SQLException {
-                    <#if type == "String">
+                    <#if type == "String" && pkPro != "">
                     ps.setString(1, id);
                     </#if>
                 }
@@ -225,7 +268,7 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
     public String joinSql(${property} r, String prefix, String suffix){
         String joinSql = "";
         <#list columns as column>
-        <#if column.columnName != pkName>
+        <#if column.columnName != pkName!''>
         ${column.type} ${column.property} = r.get${column.property?cap_first}();
         if(${column.property} != null){
             <#if column.columnType == "INT">

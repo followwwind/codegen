@@ -2,13 +2,15 @@ package com.wind.service;
 
 import com.wind.entity.${property};
 import com.wind.service.base.BaseService;
-<#assign key = getKey(columns, primaryKeys[0])>
-<#assign type = key.type>
+<#if primaryKeys?? && primaryKeys?size gt 0>
+  <#assign key = getKey(columns, primaryKeys[0])>
+  <#assign type = key.type>
+</#if>
 /**
  * ${remarks!""} service接口
  * @author wind
  */
-public interface ${property}Service extends BaseService<${property}, ${type}>{
+public interface ${property}Service extends BaseService<${property}, ${type!"String"}>{
 
 }
 

@@ -2,13 +2,15 @@ package com.wind.dao;
 
 import com.wind.dao.base.BaseDao;
 import com.wind.entity.${property};
+<#if primaryKeys?? && primaryKeys?size gt 0>
 <#assign key = getKey(columns, primaryKeys[0])>
 <#assign type = key.type>
+</#if>
 /**
  * ${remarks!""} dao接口
  * @author wind
  */
-public interface ${property}Dao extends BaseDao<${property}, ${type}>{
+public interface ${property}Dao extends BaseDao<${property}, ${type!"String"}>{
 
 }
 

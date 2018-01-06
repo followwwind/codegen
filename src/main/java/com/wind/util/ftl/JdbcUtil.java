@@ -16,9 +16,9 @@ public class JdbcUtil {
      */
     public static void genBaseDao(){
         FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_DAO + Const.FTL_BASE);
-        freeMarker.setData("baseMapper.ftl",  "BaseDao.java");
+        freeMarker.setData("jdbc/baseDao.ftl",  "BaseDao.java");
         FtlUtil.genCode(freeMarker);
-        freeMarker.setData("baseDaoImpl.ftl",  "BaseDaoImpl.java");
+        freeMarker.setData("jdbc/baseDaoImpl.ftl",  "BaseDaoImpl.java");
         FtlUtil.genCode(freeMarker);
     }
 

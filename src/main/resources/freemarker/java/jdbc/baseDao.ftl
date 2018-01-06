@@ -25,6 +25,13 @@ public interface BaseDao<R, PK> {
     int deleteById(PK id);
 
     /**
+     * 批量删除记录
+     * @param r
+     * @return
+     */
+    int deleteByCondition(R r);
+
+    /**
      * 通过id查询单条记录
      * @param id
      * @return

@@ -113,6 +113,6 @@ public interface Const {
 
     String FTL_TEST = "/test";
 
-    int JDK_VERSION = 8;
+    int JDK_VERSION = 7;
 
 }

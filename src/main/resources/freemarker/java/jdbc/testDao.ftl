@@ -16,7 +16,7 @@ public class ${property}DaoTest{
     ${property}Dao dao = new ${property}DaoImpl();
 
     @Test
-    public int insert() {
+    public void insert() {
         ${property} entity = new ${property}();
         dao.insert(entity);
     }
@@ -56,7 +56,7 @@ public class ${property}DaoTest{
     }
 
     @Test
-    public int countByCondition(){
+    public void countByCondition(){
         ${property} entity = new ${property}();
         int count = dao.countByCondition(entity);
         System.out.println(count);

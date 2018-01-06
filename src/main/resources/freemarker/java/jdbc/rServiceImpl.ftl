@@ -6,8 +6,12 @@ import com.wind.dao.impl.${property}DaoImpl;
 import com.wind.entity.${property};
 import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
-<#assign key = getKey(columns, primaryKeys[0])>
-<#assign type = key.type>
+<#if primaryKeys?? && primaryKeys?size gt 0>
+    <#assign key = getKey(columns, primaryKeys[0])>
+    <#assign type = key.type>
+<#else>
+    <#assign type = "String">
+</#if>
 
 /**
  * ${remarks!""} service接口实现
@@ -40,7 +44,7 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
     }
 
     @Override
-    public void findPageList(R r, Page page){
+    public void findPageList(${property} r, Page page){
         dao.findPageList(r, page);
     }
 

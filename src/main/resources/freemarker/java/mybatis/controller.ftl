@@ -1,4 +1,4 @@
-package com.wind.service.impl;
+package com.wind.controller;
 
 import java.util.List;
 import net.sf.json.JSONObject;
@@ -29,11 +29,11 @@ public class ${property}Controller{
 
     /**
      * 添加记录接口
-     * ${property?uncap_first}/save.json
+     * ${property?uncap_first}/save
      * @param r
      * @return
      */
-    @RequestMapping(value = "save.json")
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     @ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")
     public String save(${property} r) {
         int i = ${service}.insert(r);
@@ -44,11 +44,11 @@ public class ${property}Controller{
 
     /**
      * 删除记录接口
-     * ${property?uncap_first}/delete.json
+     * ${property?uncap_first}/delete
      * @param r
      * @return
      */
-    @RequestMapping(value = "delete.json")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")
     public String delete(${property} r) {
         int i = ${service}.deleteByCondition(r);
@@ -59,11 +59,11 @@ public class ${property}Controller{
 
     /**
      * 单条记录查询接口
-     * ${property?uncap_first}/findEntity.json
+     * ${property?uncap_first}/findEntity
      * @param r
      * @return
      */
-    @RequestMapping(value = "findEntity.json")
+    @RequestMapping(value = "findEntity", method = RequestMethod.POST)
     @ApiOperation(value="${property} 单条记录查询接口", notes="${property} 单条记录查询接口")
     public ${property} find${property}(${property} r) {
         return ${service}.findEntity(r);
@@ -71,11 +71,11 @@ public class ${property}Controller{
 
     /**
      * 批量查询记录接口
-     * ${property?uncap_first}/findList.json
+     * ${property?uncap_first}/findList
      * @param r
      * @return
      */
-    @RequestMapping(value = "findList.json")
+    @RequestMapping(value = "findList", method = RequestMethod.POST)
     @ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")
     public List<${property}> findByCondition(${property} r) {
         return ${service}.findByCondition(r);
@@ -83,11 +83,11 @@ public class ${property}Controller{
 
     /**
      * 分页查询记录接口
-     * ${property?uncap_first}/findPageList.json
+     * ${property?uncap_first}/findPageList
      * @param r
      * @return
      */
-    @RequestMapping(value = "findPageList.json")
+    @RequestMapping(value = "findPageList", method = RequestMethod.POST)
     @ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")
     public Page findPageList(${property} r, Page page){
         return page;
@@ -95,11 +95,11 @@ public class ${property}Controller{
 
     /**
      * 修改记录接口
-     * ${property?uncap_first}/update.json
+     * ${property?uncap_first}/update
      * @param r
      * @return
      */
-    @RequestMapping(value = "update.json")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     @ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")
     public String updateByCondition(${property} r) {
         int i = ${service}.updateByCondition(r);

@@ -18,21 +18,22 @@ public interface BaseService<R, PK> {
     int insert(R r);
 
     /**
-     * 通过id删除记录
+     * 删除记录
      * @param id
      * @return
      */
-    int deleteById(PK id);
+    int deleteByCondition(R r);
 
     /**
-     * 通过id查询
+     * 查询单条记录
      * @param id
      * @return
      */
-    R findById(PK id);
+    R findEntity(R r);
+
 
     /**
-     * 通过条件查找
+     * 批量查询记录
      * @param r
      * @return
      */
@@ -46,9 +47,16 @@ public interface BaseService<R, PK> {
     void findPageList(R r, Page page);
 
     /**
-     * 通过id更新记录
+     * 更新记录
      * @param r
      * @return
      */
     int updateByCondition(R r);
+
+    /**
+     * 条件查询记录条数
+     * @param r
+     * @return
+     */
+    int countByCondition(R r);
 }

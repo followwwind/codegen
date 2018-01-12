@@ -1,4 +1,4 @@
-package com.wind.dao;
+package com.wind.dao.base;
 
 import java.util.List;
 import com.wind.entity.base.Page;
@@ -25,6 +25,13 @@ public interface BaseMapper<R, PK> {
     int deleteById(PK id);
 
     /**
+     * 批量删除记录
+     * @param r
+     * @return
+     */
+    int deleteByCondition(R r);
+
+    /**
      * 通过id查询单条记录
      * @param id
      * @return
@@ -37,13 +44,6 @@ public interface BaseMapper<R, PK> {
      * @return
      */
     List<R> findByCondition(R r);
-
-    /**
-     * 分页查询
-     * @param r
-     * @param page
-     */
-    void findPageList(R r, Page page);
 
     /**
      * 通过id更新记录

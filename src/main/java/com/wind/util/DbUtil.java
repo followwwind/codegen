@@ -22,7 +22,7 @@ public class DbUtil {
     private static Connection getConn(){
         Connection conn = null;
         try {
-            Properties props = PropUtil.readProp("src/main/resources/jdbc.properties");
+            Properties props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
             Class.forName(props.getProperty("driverClass"));
             conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
         } catch (SQLException e) {
@@ -206,6 +206,7 @@ public class DbUtil {
             case "INT" : result = "Integer";break;
             case "DOUBLE" : result = "Double";break;
             case "TIMESTAMP" : result = "Date";break;
+            case "DATE" : result = "Date";break;
             default: result = "String"; break;
         }
         return result;

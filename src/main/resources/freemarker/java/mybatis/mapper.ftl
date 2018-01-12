@@ -50,6 +50,16 @@
         )
     </insert>
 
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from ${tableName}
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
+    </delete>
+
+    <delete id="deleteByCondition" parameterType="${type}" >
+        delete from ${tableName} where 1 = 1
+        <include refid="Column_Selective_And_List" />
+    </delete>
+
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
         <include refid="Column_List" />
@@ -64,11 +74,6 @@
         where 1 = 1
         <include refid="Column_Selective_And_List" />
     </select>
-
-    <delete id="deleteById" parameterType="java.lang.String" >
-        delete from ${tableName}
-        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
-    </delete>
 
     <update id="updateByCondition" parameterType="${type}" >
         update ${tableName}

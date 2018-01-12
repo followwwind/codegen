@@ -24,7 +24,7 @@ public class DbUtil {
      * 此处用于解析数据库配置文件
      */
     static {
-        props = PropUtil.readProp("src/main/resources/jdbc.properties");
+        props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
         try {
             Class.forName(props.getProperty("driverClass"));
         } catch (ClassNotFoundException e) {

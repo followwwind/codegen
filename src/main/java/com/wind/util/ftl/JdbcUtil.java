@@ -67,7 +67,7 @@ public class JdbcUtil {
         freeMarker.setMap(JsonUtil.beanToMap(table, true));
         String property = table.getProperty();
         if(flag){
-            freeMarker.setData("jdbc/rService.ftl", property + "Service.java");
+            freeMarker.setData("rService.ftl", property + "Service.java");
             FtlUtil.genCode(freeMarker);
         }
 

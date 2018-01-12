@@ -1,68 +1,66 @@
-package com.wind.test;
+package com.wind.dao;
 
 import java.util.List;
-import com.wind.dao.${property}Dao;
-import com.wind.dao.impl.${property}DaoImpl;
+import com.wind.dao.${property}Mapper;
 import com.wind.entity.${property};
 import com.wind.entity.base.Page;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 /**
  * ${remarks!""} dao测试
  * @author wind
  */
-public class ${property}DaoTest{
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"classpath:/spring/applicationContext.xml"})
+public class ${property}MapperTest{
 
-    ${property}Dao dao = new ${property}DaoImpl();
+    @Autowired
+    ${property}Mapper mapper;
 
     @Test
     public void insert() {
         ${property} entity = new ${property}();
-        int i = dao.insert(entity);
+        int i = mapper.insert(entity);
         System.out.println(i);
     }
 
     @Test
     public void deleteByCondition() {
         ${property} entity = new ${property}();
-        int i = dao.deleteByCondition(entity);
+        int i = mapper.deleteByCondition(entity);
         System.out.println(i);
     }
 
     @Test
     public void findEntity() {
         ${property} entity = new ${property}();
-        List<${property}> entitys = dao.findByCondition(entity);
+        List<${property}> entitys = mapper.findByCondition(entity);
         System.out.println(entitys.size());
     }
 
     @Test
     public void findByCondition() {
         ${property} entity = new ${property}();
-        List<${property}> entitys = dao.findByCondition(entity);
+        List<${property}> entitys = mapper.findByCondition(entity);
         System.out.println(entitys.size());
-    }
-
-    @Test
-    public void findPageList(){
-        ${property} entity = new ${property}();
-        Page page = new Page();
-        dao.findPageList(entity, page);
-        System.out.println(page);
     }
 
     @Test
     public void updateByCondition() {
         ${property} entity = new ${property}();
-        int i = dao.updateByCondition(entity);
+        int i = mapper.updateByCondition(entity);
         System.out.println(i);
     }
 
     @Test
     public void countByCondition(){
         ${property} entity = new ${property}();
-        int count = dao.countByCondition(entity);
+        int count = mapper.countByCondition(entity);
         System.out.println(count);
     }
 }

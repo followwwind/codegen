@@ -97,9 +97,13 @@ public interface Const {
 
     String FTL_DIR = "E:/work/freemarker/src";
 
+    String FTL_CONTROLLER = "/controller";
+
     String FTL_ENTITY = "/entity";
 
     String FTL_DAO = "/dao";
+
+    String FTL_MAPPER = "/mapper";
 
     String FTL_SERVICE = "/service";
 

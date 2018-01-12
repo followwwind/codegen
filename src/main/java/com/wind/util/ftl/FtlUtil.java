@@ -72,6 +72,16 @@ public class FtlUtil {
         genCode(freeMarker);
     }
 
+
+    /**
+     * 生成分页实体类
+     */
+    public static void genPage(){
+        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY + Const.FTL_BASE);
+        freeMarker.setData("page.ftl", "Page.java");
+        FtlUtil.genCode(freeMarker);
+    }
+
     /**
      * 生成通用顶层service
      */
@@ -80,15 +90,6 @@ public class FtlUtil {
         freeMarker.setData("baseService.ftl", "BaseService.java");
         FtlUtil.genCode(freeMarker);
         freeMarker.setData("baseServiceImpl.ftl", "BaseServiceImpl.java");
-        FtlUtil.genCode(freeMarker);
-    }
-
-    /**
-     * 生成分页实体类
-     */
-    public static void genPage(){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY + Const.FTL_BASE);
-        freeMarker.setData("page.ftl", "Page.java");
         FtlUtil.genCode(freeMarker);
     }
 }

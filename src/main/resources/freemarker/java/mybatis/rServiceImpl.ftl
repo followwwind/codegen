@@ -1,12 +1,13 @@
 package com.wind.service.impl;
 
 import java.util.List;
-import com.wind.dao.${property}Dao;
-import com.wind.dao.impl.${property}DaoImpl;
+import com.wind.dao.${property}Mapper;
 import com.wind.entity.${property};
 import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
 import com.wind.entity.base.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 <#if primaryKeys?? && primaryKeys?size gt 0>
     <#assign key = getKey(columns, primaryKeys[0])>
     <#assign type = key.type>
@@ -18,46 +19,49 @@ import com.wind.entity.base.Page;
  * ${remarks!""} service接口实现
  * @author wind
  */
+@Service
+//@Transactional
 public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}> implements ${property}Service{
 
-    private ${property}Dao dao = new ${property}DaoImpl();
+    @Autowired
+    private ${property}Mapper mapper;
 
 
     @Override
     public int insert(${property} r) {
-        int i = dao.insert(r);
+        int i = mapper.insert(r);
         return i;
     }
 
     @Override
     public int deleteByCondition(${property} r) {
-        return dao.deleteByCondition(r);
+        return mapper.deleteByCondition(r);
     }
 
     @Override
     public ${property} findEntity(${property} r) {
-        List<${property}> entitys = dao.findByCondition(r);
+        List<${property}> entitys = mapper.findByCondition(r);
         return entitys.size() == 1 ? entitys.get(0) : null;
     }
 
     @Override
     public List<${property}> findByCondition(${property} r) {
-        return dao.findByCondition(r);
+        return mapper.findByCondition(r);
     }
 
     @Override
     public void findPageList(${property} r, Page page){
-        dao.findPageList(r, page);
+
     }
 
     @Override
     public int updateByCondition(${property} r) {
-        return dao.updateByCondition(r);
+        return mapper.updateByCondition(r);
     }
 
     @Override
     public int countByCondition(${property} r){
-        return dao.countByCondition(r);
+        return mapper.countByCondition(r);
     }
 }
 

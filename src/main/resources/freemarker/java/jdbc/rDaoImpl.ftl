@@ -47,6 +47,8 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
             ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0.0);
             <#elseif columnType == "Int">
             ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0);
+            <#elseif columnType == "Date">
+            ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}());
             </#if>
         </#list>
         });
@@ -65,6 +67,8 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
                     ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0.0);
                     <#elseif columnType == "Int">
                     ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}() != null ? r.get${column.property?cap_first}() : 0);
+                    <#elseif columnType == "Date">
+                    ps.set${columnType}(${column_index + 1}, r.get${column.property?cap_first}());
                     </#if>
                 </#list>
             }
@@ -278,7 +282,7 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
             <#elseif column.columnType == "VARCHAR">
             joinSql += prefix + "${column.columnName} = " + "'" + ${column.property} + "'" + suffix;
             <#elseif column.columnType == "TIMESTAMP">
-
+            <#elseif column.columnType == "DATE">
             </#if>
         }
         </#if>
@@ -311,6 +315,8 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
         <#local b += "String"/>
     <#elseif columnType == "DOUBLE">
         <#local b += "Double"/>
+    <#elseif columnType == "DATE">
+        <#local b += "Date"/>
     </#if>
     <#return b>
 </#function>

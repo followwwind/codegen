@@ -35,7 +35,7 @@
     </sql>
 
     <sql id="Column_Selective_And_List" >
-        ${join(2, "and", 1)}
+        ${join(2, "and", 0)}
     </sql>
 
     <sql id="Column_Assign_List" >

@@ -90,6 +90,7 @@ public class ${property}Controller{
     @RequestMapping(value = "findPageList", method = RequestMethod.POST)
     @ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")
     public Page findPageList(${property} r, Page page){
+    	${service}.findPageList(r, page);
         return page;
     }
 

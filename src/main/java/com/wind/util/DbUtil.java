@@ -24,10 +24,7 @@ public class DbUtil {
         props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
         try {
             Class.forName(props.getProperty("driverClass"));
-            conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -39,9 +36,7 @@ public class DbUtil {
      */
     private static Connection getConn(){
         try {
-            if(conn == null){
-                conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
-            }
+            conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
         } catch (SQLException e) {
             e.printStackTrace();
         }

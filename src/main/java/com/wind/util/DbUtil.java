@@ -220,9 +220,10 @@ public class DbUtil {
             case "TEXT" : result = "String";break;
             case "INT" : result = "Integer";break;
             case "DOUBLE" : result = "Double";break;
+            case "FLOAT" : result = "Float";break;
             case "TIMESTAMP" : result = "Date";break;
             case "DATE" : result = "Date";break;
-            default: result = "String"; break;
+            default: result = ""; break;
         }
         return result;
     }

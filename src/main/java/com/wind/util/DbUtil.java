@@ -15,20 +15,34 @@ import java.util.Properties;
  * @author wind
  */
 public class DbUtil {
+
+    private static Properties props;
+
+    private static Connection conn;
+
+    static {
+        props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
+        try {
+            Class.forName(props.getProperty("driverClass"));
+            conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * 获取数据库连接
      * @return
      */
     private static Connection getConn(){
-        Connection conn = null;
         try {
-            Properties props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
-            Class.forName(props.getProperty("driverClass"));
-            conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
+            if(conn == null){
+                conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-
             e.printStackTrace();
         }
         return conn;
@@ -203,6 +217,7 @@ public class DbUtil {
         switch (columnType){
             case "CHAR" : result = "String";break;
             case "VARCHAR" : result = "String";break;
+            case "TEXT" : result = "String";break;
             case "INT" : result = "Integer";break;
             case "DOUBLE" : result = "Double";break;
             case "TIMESTAMP" : result = "Date";break;

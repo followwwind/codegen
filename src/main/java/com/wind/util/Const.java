@@ -93,7 +93,7 @@ public interface Const {
     String FLOAT = "^\\d+\\.\\d+$";
 
 
-    String FTL_JAVA = "src/main/resources/freemarker/java";
+    String FTL_JAVA = "src/main/resources/ftl/java";
 
     String FTL_DIR = "E:/work/freemarker/src";
 

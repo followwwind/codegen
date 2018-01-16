@@ -1,4 +1,4 @@
-package com.wind.freemarker;
+package com.wind.ftl;
 
 import com.wind.entity.db.Table;
 import com.wind.util.DbUtil;

@@ -51,7 +51,10 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
 
     @Override
     public void findPageList(${property} r, Page page){
-
+        int totalCount = mapper.countByCondition(r);
+        List<${property}> entitys = mapper.findPageList(r);
+        page.setTotalCount(totalCount);
+        page.setResult(entitys);
     }
 
     @Override

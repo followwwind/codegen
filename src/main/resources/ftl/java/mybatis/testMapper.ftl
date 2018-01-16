@@ -53,6 +53,13 @@ public class ${property}MapperTest{
     }
 
     @Test
+    public void findPageList(){
+        ${property} entity = new ${property}();
+        List<${property}> entitys = mapper.findPageList(entity);
+        System.out.println(entitys.size());
+    }
+
+    @Test
     public void updateByCondition() {
         ${property} entity = new ${property}();
         int i = mapper.updateByCondition(entity);

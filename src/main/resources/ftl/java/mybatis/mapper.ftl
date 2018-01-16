@@ -75,6 +75,14 @@
         <include refid="Column_Selective_And_List" />
     </select>
 
+    <select id="findPageList" resultMap="BaseResultMap" parameterType="${type}" >
+        select
+        <include refid="Column_List" />
+        from ${tableName}
+        where 1 = 1
+        <include refid="Column_Selective_And_List" />
+    </select>
+
     <update id="updateByCondition" parameterType="${type}" >
         update ${tableName}
         <set>

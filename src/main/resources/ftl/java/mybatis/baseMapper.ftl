@@ -46,6 +46,13 @@ public interface BaseMapper<R, PK> {
     List<R> findByCondition(R r);
 
     /**
+     * 分页查询记录
+     * @param r
+     * @return
+     */
+    List<R> findPageList(R r);
+
+    /**
      * 通过id更新记录
      * @param r
      * @return

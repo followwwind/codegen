@@ -272,7 +272,6 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
     public String joinSql(${property} r, String prefix, String suffix){
         String joinSql = "";
         <#list columns as column>
-        <#if column.columnName != pkName!''>
         ${column.type} ${column.property} = r.get${column.property?cap_first}();
         if(${column.property} != null){
             <#if column.columnType == "INT">
@@ -285,7 +284,6 @@ public class ${property}DaoImpl extends BaseDaoImpl<${property}, ${type}> implem
             <#elseif column.columnType == "DATE">
             </#if>
         }
-        </#if>
         </#list>
         return joinSql;
     }

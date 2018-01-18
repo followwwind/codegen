@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,10 +27,6 @@
 </head>
 <body>
 <div class="content">
-    <!--<fieldset class="content">
-        <legend align="center">
-            注册页面
-        </legend>-->
     <form action="http://127.0.0.1:8080" method="post">
         <table border="1">
             <tr>
@@ -115,7 +112,6 @@
             </tr>
         </table>
     </form>
-    <!--</fieldset>-->
 </div>
 </body>
 </html>

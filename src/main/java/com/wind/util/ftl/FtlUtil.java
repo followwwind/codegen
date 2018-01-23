@@ -1,6 +1,7 @@
 package com.wind.util.ftl;
 
 import com.wind.entity.clazz.ClassInfo;
+import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.util.ClassUtil;
@@ -60,18 +61,29 @@ public class FtlUtil {
     }
 
     /**
-     * 生成表关联对应的实体类
+     * 生成表关联对应的实体类以及拓展类
      * @param table
      */
     public static void genEntity(Table table){
         FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY);
+        String className = table.getProperty();
+        ClassInfo extend = new ClassInfo(className + "Extend", ClassType.CLASS, Const.ABSTRACT);
+        extend.setPackageName("com.wind.entity.extend");
+        freeMarker.setData("class.ftl", table.getProperty() + "Extend.java");
+        freeMarker.setMap(JsonUtil.beanToMap(extend, true));
+        freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_ENTITY + Const.FTL_EXTEND);
+        genCode(freeMarker);
+        
         freeMarker.setData("class.ftl", table.getProperty() + ".java");
         ClassInfo classInfo = ClassUtil.getBean(table);
+        classInfo.setExtend(extend);
         classInfo.setPackageName("com.wind.entity");
+        classInfo.initImports();
+        freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_ENTITY);
         freeMarker.setMap(JsonUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }
-
+    
 
     /**
      * 生成分页实体类

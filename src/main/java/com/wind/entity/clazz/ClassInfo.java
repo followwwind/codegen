@@ -63,6 +63,10 @@ public class ClassInfo extends Attribute{
             addImport(fields);
             addImport(methods);
         }
+        
+        if(extend != null){
+        	this.imports.add(extend.getPackageName() + Const.POINT_STR +extend.getName());
+        }
     }
 
     private void addImport(List<? extends Attribute> attrs){

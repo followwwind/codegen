@@ -36,7 +36,6 @@ public class ClassUtil {
                 });
             }
             classInfo.setFields(fields);
-            classInfo.initImports();
         }
         return classInfo;
     }

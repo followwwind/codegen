@@ -112,6 +112,8 @@ public interface Const {
     String FTL_BASE = "/base";
 
     String FTL_CALLBACK = "/callback";
+    
+    String FTL_EXTEND = "/extend";
 
     String FTL_UTIL = "/util";
 

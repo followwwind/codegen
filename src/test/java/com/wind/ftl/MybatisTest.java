@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class MybatisTest {
 
-    List<Table> tables = DbUtil.getTables("book-system");
+    List<Table> tables = DbUtil.getTables("test");
 
-    Table table = DbUtil.getTable("car-system", "user_info");
+    Table table = DbUtil.getTable("test", "user_info");
 
     @Test
     public void genMapper(){

@@ -1,8 +1,6 @@
 package com.wind.util;
 
 
-import net.sf.json.JSONObject;
-
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -18,14 +16,14 @@ public class ReflectUtil {
      * @param flag false表示只获取当前类的成员属性 true表示获取父类的私有成员属性
      * @return
      */
-    public static List<Field> getFields(Class c, boolean flag){
+    public static List<Field> getFields(Class<?> c, boolean flag){
         List<Field> fields = new ArrayList<>();
         if(c == null){
             return fields;
         }
         fields.addAll(Arrays.asList(c.getDeclaredFields()));
         if(flag){
-            Class supperClass = c.getSuperclass();
+            Class<?> supperClass = c.getSuperclass();
             if(!Object.class.equals(supperClass)){
                 fields.addAll(getFields(supperClass, flag));
             }

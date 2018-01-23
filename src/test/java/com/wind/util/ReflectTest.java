@@ -13,7 +13,7 @@ public class ReflectTest {
 
     @Test
     public void test(){
-        Class c = ClassInfo.class;
+        Class<?> c = ClassInfo.class;
         List<Field> fields = ReflectUtil.getFields(c, true);
         for(Field field : fields){
             System.out.println(field.getName());

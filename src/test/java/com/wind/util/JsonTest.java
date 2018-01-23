@@ -11,7 +11,7 @@ public class JsonTest {
 
     @Test
     public void toMap(){
-        Class c = ClassMethod.class;
+        Class<?> c = ClassMethod.class;
         System.out.println(c instanceof Class);
         ClassMethod classMethod = new ClassMethod("method", "String");
         classMethod.setArgs(Arrays.asList(new Attribute()));

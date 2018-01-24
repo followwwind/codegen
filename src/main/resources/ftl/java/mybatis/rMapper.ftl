@@ -1,6 +1,7 @@
 package com.wind.dao;
 
 import com.wind.entity.${property};
+import com.wind.entity.example.${property}Example;
 import com.wind.dao.base.BaseMapper;
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>
@@ -10,7 +11,7 @@ import com.wind.dao.base.BaseMapper;
  * ${remarks!""} mapper接口
  * @author wind
  */
-public interface ${property}Mapper extends BaseMapper<${property}, ${type!"String"}>{
+public interface ${property}Mapper extends BaseMapper<${property}, ${type!"String"}, ${property}Example>{
 
 
 }

@@ -8,8 +8,9 @@ import com.wind.entity.base.Page;
  * @author wind
  * @param <R> 数据库表关联的实体类
  * @param <PK> 主键类型
+ * @param <C> 条件
  */
-public interface BaseMapper<R, PK> {
+public interface BaseMapper<R, PK, C> {
     /**
      * 添加纪录
      * @param r
@@ -32,25 +33,18 @@ public interface BaseMapper<R, PK> {
     int deleteByCondition(R r);
 
     /**
-     * 通过id查询单条记录
+     * 通过and拼接查询记录
      * @param id
      * @return
      */
-    R findById(PK id);
+    List<R> findEntitys(R r);
 
     /**
      * 条件批量查询记录
      * @param r
      * @return
      */
-    List<R> findByCondition(R r);
-
-    /**
-     * 分页查询记录
-     * @param r
-     * @return
-     */
-    List<R> findPageList(R r);
+    List<R> findByCondition(C c);
 
     /**
      * 通过id更新记录
@@ -64,5 +58,5 @@ public interface BaseMapper<R, PK> {
      * @param r
      * @return
      */
-    int countByCondition(R r);
+    int countByCondition(C c);
 }

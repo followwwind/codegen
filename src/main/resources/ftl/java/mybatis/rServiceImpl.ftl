@@ -3,6 +3,7 @@ package com.wind.service.impl;
 import java.util.List;
 import com.wind.dao.${property}Mapper;
 import com.wind.entity.${property};
+import com.wind.entity.example.${property}Example;
 import com.wind.service.${property}Service;
 import com.wind.service.base.BaseServiceImpl;
 import com.wind.entity.base.Page;
@@ -40,19 +41,22 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
 
     @Override
     public ${property} findEntity(${property} r) {
-        List<${property}> entitys = mapper.findByCondition(r);
+        List<${property}> entitys = mapper.findEntitys(r);
         return entitys.size() == 1 ? entitys.get(0) : null;
     }
 
     @Override
     public List<${property}> findByCondition(${property} r) {
-        return mapper.findByCondition(r);
+    	${property}Example example = new ${property}Example();
+        return mapper.findByCondition(example);
     }
 
     @Override
     public void findPageList(${property} r, Page page){
-        int totalCount = mapper.countByCondition(r);
-        List<${property}> entitys = mapper.findPageList(r);
+        ${property}Example example = new ${property}Example();
+        int totalCount = mapper.countByCondition(example);
+        example.setLimit(page.getStartRow() + "," + page.getLineNumber());
+        List<${property}> entitys = mapper.findByCondition(example);
         page.setTotalCount(totalCount);
         page.setResult(entitys);
     }
@@ -64,7 +68,8 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
 
     @Override
     public int countByCondition(${property} r){
-        return mapper.countByCondition(r);
+     	${property}Example example = new ${property}Example();
+        return mapper.countByCondition(example);
     }
 }
 

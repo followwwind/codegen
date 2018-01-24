@@ -11,6 +11,27 @@ import com.wind.util.JsonUtil;
  * @author wind
  */
 public class MybatisUtil {
+	
+	/**
+     * 生成基础工具类
+     */
+	public static void genCommon(){
+		FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY + Const.FTL_BASE);
+        freeMarker.setData("mybatis/attrType.ftl",  "AttrType.java");
+        FtlUtil.genCode(freeMarker);
+        
+        freeMarker.setData("mybatis/attr.ftl",  "Attribute.java");
+        FtlUtil.genCode(freeMarker);
+        
+        freeMarker.setData("mybatis/baseBuilder.ftl",  "BaseBuilder.java");
+        FtlUtil.genCode(freeMarker);
+        
+        freeMarker.setData("mybatis/condition.ftl",  "Condition.java");
+        FtlUtil.genCode(freeMarker);
+        
+        freeMarker.setData("mybatis/example.ftl",  "Example.java");
+        FtlUtil.genCode(freeMarker);
+	}
 
     /**
      * 生成通用dao操作类
@@ -32,6 +53,7 @@ public class MybatisUtil {
         String property = table.getProperty();
         myBatis.setNamespace("com.wind.dao." + property + "Mapper");
         myBatis.setType("com.wind.entity." + property);
+        myBatis.setExample("com.wind.entity.example." + property + "Example");
         myBatis.setTable(table);
 
 
@@ -63,6 +85,18 @@ public class MybatisUtil {
 
         freeMarker.setData("mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
         freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_SERVICE + Const.FTL_IMPL);
+        FtlUtil.genCode(freeMarker);
+    }
+    
+    /**
+     * 生成example
+     * @param table
+     */
+    public static void genExample(Table table){
+        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_ENTITY +Const.FTL_EXAMPLE);
+        freeMarker.setMap(JsonUtil.beanToMap(table, true));
+        String property = table.getProperty();
+        freeMarker.setData("mybatis/rExample.ftl", property + "Example.java");
         FtlUtil.genCode(freeMarker);
     }
 

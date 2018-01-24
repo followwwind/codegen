@@ -3,6 +3,7 @@ package com.wind.dao;
 import java.util.List;
 import com.wind.dao.${property}Mapper;
 import com.wind.entity.${property};
+import com.wind.entity.example.${property}Example;
 import com.wind.entity.base.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +28,9 @@ public class ${property}MapperTest{
     @Test
     public void insert() {
         ${property} entity = new ${property}();
-        int i = mapper.insert(entity);
-        System.out.println(i);
+        for(int i = 0; i < 10; i++){
+        	mapper.insert(entity);
+        }
     }
 
     @Test
@@ -41,21 +43,16 @@ public class ${property}MapperTest{
     @Test
     public void findEntity() {
         ${property} entity = new ${property}();
-        List<${property}> entitys = mapper.findByCondition(entity);
+        List<${property}> entitys = mapper.findEntitys(entity);
         System.out.println(entitys.size());
     }
 
     @Test
     public void findByCondition() {
-        ${property} entity = new ${property}();
-        List<${property}> entitys = mapper.findByCondition(entity);
-        System.out.println(entitys.size());
-    }
-
-    @Test
-    public void findPageList(){
-        ${property} entity = new ${property}();
-        List<${property}> entitys = mapper.findPageList(entity);
+        ${property}Example example = new ${property}Example();
+        Page page = new Page();
+        example.setLimit(page.getStartRow() + "," + page.getLineNumber());
+        List<${property}> entitys = mapper.findByCondition(example);
         System.out.println(entitys.size());
     }
 
@@ -68,8 +65,8 @@ public class ${property}MapperTest{
 
     @Test
     public void countByCondition(){
-        ${property} entity = new ${property}();
-        int count = mapper.countByCondition(entity);
+        ${property}Example example = new ${property}Example();
+        int count = mapper.countByCondition(example);
         System.out.println(count);
     }
 }

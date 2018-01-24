@@ -20,25 +20,25 @@ public class DbTest {
 
     @Test
     public void printTables(){
-        List<Table> tables  = DbUtil.getTables("car-system");
+        List<Table> tables  = DbUtil.getTables("test");
         System.out.println(JsonUtil.toJson(tables));
     }
 
     @Test
     public void printKeys(){
-        List<PrimaryKey> keys = DbUtil.getPrimaryKeys("car-system", "user_info");
+        List<PrimaryKey> keys = DbUtil.getPrimaryKeys("test", "user_info");
         System.out.println(keys.size());
     }
 
     @Test
     public void printColumns(){
-        List<Column> columns = DbUtil.getColumns("car-system", "user_info");
+        List<Column> columns = DbUtil.getColumns("test", "user_info");
         System.out.println(JsonUtil.toJson(columns));
     }
 
     @Test
     public void printTable(){
-        Table table = DbUtil.getTable("car-system", "user_info");
+        Table table = DbUtil.getTable("test", "user_info");
         System.out.println(JsonUtil.toJson(table));
     }
 

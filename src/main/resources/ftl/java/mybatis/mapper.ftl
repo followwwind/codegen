@@ -3,9 +3,9 @@
 <mapper namespace="${namespace}" >
     <resultMap id="BaseResultMap" type="${type}" >
     <#assign lBracket = "{"/>
+    <#assign dlBracket = "${"/>
     <#assign columns = table.columns/>
     <#assign primaryKeys = table.primaryKeys/>
-    <#assign tableName = table.tableName/>
     <#assign tableName = table.tableName/>
     <#assign pkName = "">
     <#assign pkType = "">
@@ -21,6 +21,39 @@
         </#if>
     </#list>
     </resultMap>
+    
+    <sql id="Example_Where_Clause" >
+    	<where>
+  			<foreach collection="conditions" item="condition" separator="or" >
+	        	<if test="condition.valid" >
+	          		<trim prefix="(" suffix=")" prefixOverrides="and" >
+		            	<foreach collection="condition.attrs" item="attr" >
+		              		<choose >
+		                		<when test="attr.type == 'no'" >
+		                  			and ${dlBracket}attr.key}
+		                		</when>
+		                		<when test="attr.type == 'single'" >
+		                  			and ${dlBracket}attr.key} #${lBracket}attr.value}
+		                		</when>
+		                		<when test="attr.type == 'between'" >
+		                  			and ${dlBracket}attr.key}
+		                  			<foreach collection="attr.value" item="listItem" open="" close="" separator="and" >
+			                    		#${lBracket}listItem}
+			                  		</foreach>
+		                		</when>
+		                		<when test="attr.type == 'in'" >
+		                  			and ${dlBracket}attr.key}
+			                  		<foreach collection="attr.value" item="listItem" open="(" close=")" separator="," >
+			                    		#${lBracket}listItem}
+			                  		</foreach>
+		                		</when>
+		              		</choose>
+		            	</foreach>
+		          	</trim>
+		        </if>
+	      	</foreach>
+	   </where>
+	</sql>
 
     <#--<sql id="Base_Column_List" >
         ${join(0, ",", 0)}
@@ -60,14 +93,7 @@
         <include refid="Column_Selective_And_List" />
     </delete>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
-        select
-        <include refid="Column_List" />
-        from ${tableName}
-        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
-    </select>
-
-    <select id="findByCondition" resultMap="BaseResultMap" parameterType="${type}" >
+    <select id="findEntitys" resultMap="BaseResultMap" parameterType="${type}" >
         select
         <include refid="Column_List" />
         from ${tableName}
@@ -75,12 +101,22 @@
         <include refid="Column_Selective_And_List" />
     </select>
 
-    <select id="findPageList" resultMap="BaseResultMap" parameterType="${type}" >
+    <select id="findByCondition" resultMap="BaseResultMap" parameterType="${example}" >
         select
         <include refid="Column_List" />
         from ${tableName}
-        where 1 = 1
-        <include refid="Column_Selective_And_List" />
+        <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="groupClause != null" >
+	      group by ${dlBracket}groupClause}
+	    </if>
+	    <if test="orderClause != null" >
+	      order by ${dlBracket}orderClause}
+	    </if>
+	    <if test="limit != null" >
+	      limit ${dlBracket}limit}
+	    </if>
     </select>
 
     <update id="updateByCondition" parameterType="${type}" >
@@ -91,11 +127,21 @@
         where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
     </update>
 
-    <select id="countByCondition" resultType="java.lang.Integer" parameterType="${type}" >
+    <select id="countByCondition" resultType="java.lang.Integer" parameterType="${example}" >
         select count(1)
         from ${tableName}
-        where 1 = 1
-        <include refid="Column_Selective_And_List" />
+        <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="groupClause != null" >
+	      group by ${dlBracket}groupClause}
+	    </if>
+	    <if test="orderClause != null" >
+	      order by ${dlBracket}orderClause}
+	    </if>
+	    <if test="limit != null" >
+	      limit ${dlBracket}limit}
+	    </if>
     </select>
 </mapper>
 

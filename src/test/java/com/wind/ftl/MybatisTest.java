@@ -16,6 +16,11 @@ public class MybatisTest {
     List<Table> tables = DbUtil.getTables("test");
 
     Table table = DbUtil.getTable("test", "user_info");
+    
+    @Test
+    public void genCommon(){
+    	MybatisUtil.genCommon();
+    }
 
     @Test
     public void genMapper(){
@@ -25,6 +30,16 @@ public class MybatisTest {
     @Test
     public void genMappers(){
         tables.forEach(t -> MybatisUtil.genMapper(t, true));
+    }
+    
+    @Test
+    public void genExample(){
+    	MybatisUtil.genExample(table);
+    }
+    
+    @Test
+    public void genExamples(){
+    	tables.forEach(t -> MybatisUtil.genExample(table));
     }
 
     @Test
@@ -75,12 +90,14 @@ public class MybatisTest {
     @Test
     public void genAllCode(){
         FtlUtil.genPage();
+        MybatisUtil.genCommon();
         MybatisUtil.genBaseMapper();
         FtlUtil.genBaseService();
         tables.forEach(table -> {
             MybatisUtil.genController(table);
             FtlUtil.genEntity(table);
             MybatisUtil.genMapper(table, true);
+            MybatisUtil.genExample(table);
             MybatisUtil.genService(table, true);
             MybatisUtil.genTest(table);
         });

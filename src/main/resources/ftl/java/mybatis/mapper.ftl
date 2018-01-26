@@ -124,12 +124,13 @@
         <set>
             <include refid="Column_Selective_List" />
         </set>
-        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        <if test="${pkPro} != null">
+        	where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        </if>
     </update>
 
     <select id="countByCondition" resultType="java.lang.Integer" parameterType="${example}" >
-        select count(1)
-        from ${tableName}
+        select count(1) from ${tableName}
         <if test="_parameter != null" >
 	      <include refid="Example_Where_Clause" />
 	    </if>

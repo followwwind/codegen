@@ -13,9 +13,20 @@ public abstract class BaseBuilder {
 	private List<Attribute> attrs;
 
 	public BaseBuilder() {
-		this.attrs = new ArrayList<>();
+		this.attrs = new ArrayList<Attribute>();
 	}
 	
+	/**
+	 * 清空sql条件
+	 */
+	public void clear(){
+		attrs.clear();
+	}
+	
+	/**
+	 * 生成sql条件
+	 * @return
+	 */
 	public Condition build(){
 		Condition condition = new Condition();
 		condition.setAttrs(attrs);

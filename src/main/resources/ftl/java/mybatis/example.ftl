@@ -27,6 +27,10 @@ public abstract class Example {
 	 */
 	private List<Condition> conditions;
 	
+	public Example() {
+		this.conditions = new ArrayList<Condition>();
+	}
+	
 	/**
 	 * 清空条件
 	 */

@@ -25,7 +25,7 @@ public class Attribute {
 		super();
 		this.key = key;
 		this.value = value;
-		this.type = type.name();
+		this.type = type.getName();
 	}
 
 	public String getKey() {

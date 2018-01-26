@@ -127,6 +127,8 @@ public class StringUtil {
                 if(i == 0){
                     if(flag){
                         s = getFirst(s, true);
+                    }else{
+                    	s = getFirst(s, false);
                     }
                     str += s;
                 }else{

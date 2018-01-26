@@ -11,7 +11,7 @@ import com.wind.util.Const;
 public class HtmlUtil {
 	
 	/**
-     * 生成通用dao操作类
+     * 生成通用form表单操作类
      */
     public static void genBaseForm(){
         FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_HTML);

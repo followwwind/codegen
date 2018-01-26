@@ -122,6 +122,8 @@ public interface Const {
     String FTL_TEST = "/test";
     
     String FTL_HTML = "/html";
+    
+    String FTL_JSP = "/jsp";
 
     int JDK_VERSION = 7;
 

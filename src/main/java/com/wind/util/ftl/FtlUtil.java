@@ -5,7 +5,7 @@ import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.util.ClassUtil;
-import com.wind.util.Const;
+import com.wind.config.Const;
 import com.wind.util.JsonUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

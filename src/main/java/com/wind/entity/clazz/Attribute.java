@@ -1,7 +1,7 @@
 package com.wind.entity.clazz;
 
 
-import com.wind.util.Const;
+import com.wind.config.Const;
 
 /**
  * java 类,成员属性或方法基础信息描述

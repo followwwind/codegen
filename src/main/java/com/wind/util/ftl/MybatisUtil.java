@@ -3,7 +3,7 @@ package com.wind.util.ftl;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.entity.ftl.MyBatis;
-import com.wind.util.Const;
+import com.wind.config.Const;
 import com.wind.util.JsonUtil;
 
 /**

@@ -1,6 +1,6 @@
 package com.wind.entity.clazz;
 
-import com.wind.util.Const;
+import com.wind.config.Const;
 
 import java.util.HashSet;
 import java.util.List;

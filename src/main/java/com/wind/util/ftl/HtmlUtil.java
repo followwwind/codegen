@@ -1,7 +1,7 @@
 package com.wind.util.ftl;
 
 import com.wind.entity.ftl.FreeMarker;
-import com.wind.util.Const;
+import com.wind.config.Const;
 
 /**
  * html模板生成工具类

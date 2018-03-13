@@ -62,88 +62,6 @@ public class DbUtil {
     }
 
     /**
-     * 组装table数据
-     * @param rs
-     * @return
-     * @throws SQLException
-     */
-    private static Table getTable(DatabaseMetaData db, ResultSet rs){
-        Table table = null;
-        try {
-            if(rs != null){
-                table = new Table();
-                String tableName = rs.getString("TABLE_NAME");
-                table.setTableName(tableName);
-                table.setProperty(StringUtil.getCamelCase(tableName, true));
-                String catalog = rs.getString("TABLE_CAT");
-                table.setTableCat(catalog);
-                table.setRemarks(rs.getString("REMARKS"));
-                table.setPrimaryKeys(getPrimaryKeys(db, catalog, tableName));
-                table.setColumns(getColumns(db, catalog, tableName));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return table;
-    }
-    
-    /**
-     * 组装column数据
-     * @param db
-     * @param catalog
-     * @param tableName
-     * @return
-     */
-    private static List<Column> getColumns(DatabaseMetaData db, String catalog, String tableName){
-    	List<Column> columns = new ArrayList<>();   	
-    	try {
-			ResultSet rs = db.getColumns(catalog, "%", tableName, "%");
-			while (rs.next()){
-			    Column column = new Column();
-			    String colName = rs.getString("COLUMN_NAME");
-			    String typeName = rs.getString("TYPE_NAME");
-			    column.setColumnName(colName);
-			    column.setColumnType(typeName);
-			    column.setProperty(StringUtil.getCamelCase(colName, false));
-			    column.setType(getFieldType(typeName));
-			    column.setColumnSize(rs.getInt("COLUMN_SIZE"));
-			    column.setNullable(rs.getInt("NULLABLE"));
-			    column.setRemarks(rs.getString("REMARKS"));
-			    column.setDigits(rs.getInt("DECIMAL_DIGITS"));
-			    columns.add(column);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	
-    	return columns;
-    }
-    
-    /**
-     * 组装primaryKey数据
-     * @param db
-     * @param catalog
-     * @param tableName
-     * @return
-     */
-    private static List<PrimaryKey> getPrimaryKeys(DatabaseMetaData db, String catalog, String tableName){
-        List<PrimaryKey> keys = new ArrayList<>();
-        try {
-			ResultSet rs = db.getPrimaryKeys(catalog, null, tableName);
-			while(rs.next()) {
-			    PrimaryKey primaryKey = new PrimaryKey();
-			    primaryKey.setColName(rs.getString("COLUMN_NAME"));
-			    primaryKey.setPkName(rs.getString("PK_NAME"));
-			    primaryKey.setKeySeq(rs.getShort("KEY_SEQ"));
-			    keys.add(primaryKey);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-        return keys;
-    }
-    
-    /**
      * 表字段类型转换成java类型
      * @param columnType
      * @return
@@ -191,6 +109,7 @@ public class DbUtil {
                 String dbName = rs.getString("TABLE_CAT");
                 dbs.add(dbName);
             }
+            rs.close();
         });
         return dbs;
     }
@@ -207,9 +126,62 @@ public class DbUtil {
             while(rs.next()){
                 tables.add(getTable(db, rs));
             }
+            rs.close();
         });
         return tables;
     }
+
+    /**
+     * 获取数据库表的描述信息
+     * @param catalog
+     * @param tableName
+     * @return
+     */
+    public static Table getTable(String catalog, String tableName){
+        Connection con = getConn();
+        Table table = null;
+        try {
+            DatabaseMetaData db = con.getMetaData();
+            ResultSet rs = db.getTables(catalog, null, tableName, new String[]{"TABLE"});
+            if(rs.next()) {
+                table = getTable(db, rs);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con);
+        }
+        return table;
+    }
+
+    /**
+     * 组装table数据
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
+    private static Table getTable(DatabaseMetaData db, ResultSet rs){
+        Table table = null;
+        try {
+            if(rs != null){
+                table = new Table();
+                String tableName = rs.getString("TABLE_NAME");
+                table.setTableName(tableName);
+                table.setProperty(StringUtil.getCamelCase(tableName, true));
+                String catalog = rs.getString("TABLE_CAT");
+                table.setTableCat(catalog);
+                table.setRemarks(rs.getString("REMARKS"));
+                table.setPrimaryKeys(getPrimaryKeys(db, catalog, tableName));
+                table.setColumns(getColumns(db, catalog, tableName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return table;
+    }
+
+
     
     /**
      * 获取数据库列信息
@@ -220,6 +192,39 @@ public class DbUtil {
     public static List<Column> getColumns(String catalog, String tableName){
         List<Column> columns = new ArrayList<>();
         exec(db -> columns.addAll(DbUtil.getColumns(db, catalog, tableName)));
+        return columns;
+    }
+
+    /**
+     * 组装column数据
+     * @param db
+     * @param catalog
+     * @param tableName
+     * @return
+     */
+    private static List<Column> getColumns(DatabaseMetaData db, String catalog, String tableName){
+        List<Column> columns = new ArrayList<>();
+        try {
+            ResultSet rs = db.getColumns(catalog, "%", tableName, "%");
+            while (rs.next()){
+                Column column = new Column();
+                String colName = rs.getString("COLUMN_NAME");
+                String typeName = rs.getString("TYPE_NAME");
+                column.setColumnName(colName);
+                column.setColumnType(typeName);
+                column.setProperty(StringUtil.getCamelCase(colName, false));
+                column.setType(getFieldType(typeName));
+                column.setColumnSize(rs.getInt("COLUMN_SIZE"));
+                column.setNullable(rs.getInt("NULLABLE"));
+                column.setRemarks(rs.getString("REMARKS"));
+                column.setDigits(rs.getInt("DECIMAL_DIGITS"));
+                columns.add(column);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return columns;
     }
 
@@ -240,27 +245,28 @@ public class DbUtil {
        return keys;
     }
 
-
     /**
-     * 获取数据库表的描述信息
+     * 组装primaryKey数据
+     * @param db
      * @param catalog
      * @param tableName
      * @return
      */
-    public static Table getTable(String catalog, String tableName){
-        Connection con = getConn();
-        Table table = null;
+    private static List<PrimaryKey> getPrimaryKeys(DatabaseMetaData db, String catalog, String tableName){
+        List<PrimaryKey> keys = new ArrayList<>();
         try {
-            DatabaseMetaData db = con.getMetaData();
-            ResultSet rs = db.getTables(catalog, null, tableName, new String[]{"TABLE"});
-            if(rs.first()) {
-                table = getTable(db, rs);
+            ResultSet rs = db.getPrimaryKeys(catalog, null, tableName);
+            while(rs.next()) {
+                PrimaryKey primaryKey = new PrimaryKey();
+                primaryKey.setColName(rs.getString("COLUMN_NAME"));
+                primaryKey.setPkName(rs.getString("PK_NAME"));
+                primaryKey.setKeySeq(rs.getShort("KEY_SEQ"));
+                keys.add(primaryKey);
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            close(con);
         }
-        return table;
+        return keys;
     }
 }

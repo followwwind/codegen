@@ -95,7 +95,7 @@ public interface Const {
 
     String FTL_JAVA = "src/main/resources/ftl/java";
 
-    String FTL_DIR = "E:/work/freemarker/src";
+    String FTL_DIR = "D:/work/freemarker/src";
 
     String FTL_CONTROLLER = "/controller";
 

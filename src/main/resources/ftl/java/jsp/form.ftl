@@ -1,4 +1,4 @@
-<%@page language="java" contentType="text/html;charset=uft-8" pageEncoding="utf-8"%>
+<%@page language="java" contentType="text/html;charset=utf-8" pageEncoding="utf-8"%>
 <%@page import="com.wind.entity.${property}"%>
 <%@page import="com.wind.service.${property}Service"%>
 <%@page import="com.wind.service.impl.${property}ServiceImpl"%>

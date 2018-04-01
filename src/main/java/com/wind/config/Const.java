@@ -1,4 +1,4 @@
-package com.wind.util;
+package com.wind.config;
 
 import java.io.File;
 

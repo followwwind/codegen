@@ -1,6 +1,7 @@
 package com.wind.util;
 
 import com.wind.config.Const;
+import com.wind.config.FtlConst;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -61,7 +62,7 @@ public class StringUtil {
     /**
      * 字符串分隔 StringTokenizer效率是三种分隔方法中最快的
      * @param str
-     * @param sign
+     * @param sign 符号
      * @return
      */
     public static String[] split(String str, String sign){
@@ -114,6 +115,21 @@ public class StringUtil {
     }
 
     /**
+     * 字符串拼接
+     * @param sign
+     * @param strs
+     * @return
+     */
+    public static String joinStr(String sign, String... strs){
+        StringBuilder sb = new StringBuilder();
+        Optional<String> optional  = Arrays.stream(strs).reduce((a, b) -> a + sign + b);
+        if(optional.isPresent()){
+            sb.append(optional.get());
+        }
+        return sb.toString();
+    }
+
+    /**
      * 将数据库列名翻译成java驼峰命名的类成员字段名
      * @param colName 数据库列名
      * @param flag 首字母小写为false， 大写为true
@@ -121,29 +137,19 @@ public class StringUtil {
      */
     public static String getCamelCase(String colName, boolean flag){
         String str = colName;
+        StringBuilder sb = new StringBuilder();
         if(colName != null){
             String[] strs = StringUtil.split(colName, Const.UNDERLINE);
-            str = "";
             for(int i = 0; i < strs.length; i++){
                 String s = strs[i];
                 if(i == 0){
-                    if(flag){
-                        s = getFirst(s, true);
-                    }else{
-                    	s = getFirst(s, false);
-                    }
-                    str += s;
+                    sb.append(getFirst(s, flag));
                 }else{
-                    int len = s.length();
-                    if(len == 1){
-                        str += s.toUpperCase();
-                    }else{
-                        str += (s.substring(0, 1).toUpperCase() + s.substring(1));
-                    }
+                    sb.append(getFirst(s, true));
                 }
             }
         }
-        return str;
+        return sb.toString();
     }
 
     /**
@@ -153,27 +159,32 @@ public class StringUtil {
      * @return
      */
     public static String getFirst(String str, boolean flag){
-        String s = "";
-        if(str != null && str.length() > 1){
-            String first;
+        StringBuilder sb = new StringBuilder();
+        int length = str != null ? str.length() : 0;
+        if(length >= 1){
             if(flag){
-                first = str.substring(0, 1).toUpperCase();
+                sb.append(str.substring(0, 1).toUpperCase());
             }else{
-                first = str.substring(0, 1).toLowerCase();
+                sb.append(str.substring(0, 1).toLowerCase());
             }
-
-            s += (first + str.substring(1));
+            if(length > 1){
+                sb.append(str.substring(1));
+            }
         }
-
-        return s;
+        return sb.toString();
     }
 
 
 
     public static void main(String[] args) {
-        String orginStr = null;
+        /*String orginStr = null;
         String[] strArr = split(orginStr, ".");
-        System.out.println(Arrays.asList(strArr));
+        System.out.println(Arrays.asList(strArr));*/
+
+        String[] strs = split("java.util.Date", Const.POINT_STR);
+        System.out.println(strs.length);
+
+        //System.out.printf(StringUtil.joinStr(Const.POINT_STR, FtlConst.FTL_PACKAGR, FtlConst.FTL_CONTROLLER));
     }
 
 }

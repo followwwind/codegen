@@ -7,42 +7,6 @@ import java.io.File;
  * @author wind
  */
 public interface Const {
-
-    String SCOPE_PUBLIC = "public";
-
-    String SCOPE_PRIVATE = "private";
-
-    String SCOPE_PROTECTED = "protected";
-
-    String CLASS = "class";
-
-    String ABSTRACT = "abstract class";
-
-    String INTERFACE = "interface";
-
-    String ENUM = "enum";
-
-    String ANNOTATION = "annotation";
-
-
-    String DATE = "date";
-
-    String LIST = "list";
-
-    String MAP = "map";
-
-    String INT = "int";
-
-    String STRING = "string";
-
-    String VOID = "void";
-
-
-    String BEAN = "bean";
-
-    String MAPPER = "mapper";
-
-
     /**
      * 空字符串
      */
@@ -91,40 +55,4 @@ public interface Const {
     String NUMBER = "^[0-9]*$";
 
     String FLOAT = "^\\d+\\.\\d+$";
-
-
-    String FTL_JAVA = "src/main/resources/ftl/java";
-
-    String FTL_DIR = "D:/work/freemarker/src";
-
-    String FTL_CONTROLLER = "/controller";
-
-    String FTL_ENTITY = "/entity";
-
-    String FTL_DAO = "/dao";
-
-    String FTL_MAPPER = "/mapper";
-
-    String FTL_SERVICE = "/service";
-
-    String FTL_IMPL = "/impl";
-
-    String FTL_BASE = "/base";
-
-    String FTL_CALLBACK = "/callback";
-    
-    String FTL_EXTEND = "/extend";
-    
-    String FTL_EXAMPLE = "/example";
-
-    String FTL_UTIL = "/util";
-
-    String FTL_TEST = "/test";
-    
-    String FTL_HTML = "/html";
-    
-    String FTL_JSP = "/jsp";
-
-    int JDK_VERSION = 7;
-
 }

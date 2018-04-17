@@ -1,5 +1,6 @@
 package com.wind.entity.ftl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,21 +32,13 @@ public class FreeMarker {
     public FreeMarker() {
     }
 
+    public FreeMarker(String cfgDir) {
+        this.cfgDir = cfgDir;
+    }
+
     public FreeMarker(String cfgDir, String fileDir) {
         this.cfgDir = cfgDir;
         this.fileDir = fileDir;
-    }
-
-    public FreeMarker(String cfgDir, String cfgName, String fileDir, String fileName) {
-        this(cfgDir, cfgName, null, fileDir, fileName);
-    }
-
-    public FreeMarker(String cfgDir, String cfgName, Map<String, Object> map, String fileDir, String fileName) {
-        this.cfgDir = cfgDir;
-        this.cfgName = cfgName;
-        this.map = map;
-        this.fileDir = fileDir;
-        this.fileName = fileName;
     }
 
     public String getCfgDir() {
@@ -103,5 +96,17 @@ public class FreeMarker {
     public void setData(Map<String, Object> map, String fileName){
         this.map = map;
         this.fileName = fileName;
+    }
+
+    /**
+     * 追加模板数据
+     * @param key
+     * @param obj
+     */
+    public void addMap(String key, Object obj){
+        if(map == null){
+            map = new HashMap<>();
+        }
+        map.put(key, obj);
     }
 }

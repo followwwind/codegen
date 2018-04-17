@@ -85,7 +85,7 @@
 
     <delete id="deleteById" parameterType="java.lang.String" >
         delete from ${tableName}
-        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
     </delete>
 
     <delete id="deleteByCondition" parameterType="${type}" >
@@ -93,7 +93,7 @@
         <include refid="Column_Selective_And_List" />
     </delete>
 
-    <select id="findEntitys" resultMap="BaseResultMap" parameterType="${type}" >
+    <select id="findEntitys" resultMap="BaseResultMap" parameterType="${type}">
         select
         <include refid="Column_List" />
         from ${tableName}
@@ -125,7 +125,7 @@
             <include refid="Column_Selective_List" />
         </set>
         <if test="${pkPro} != null">
-        	where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${pkType}}
+        	where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
         </if>
     </update>
 
@@ -161,6 +161,8 @@
     <#local b = columnType>
     <#if columnType == "INT">
         <#local b = "INTEGER">
+    <#elseif columnType == "TEXT">
+        <#local b = "LONGVARCHAR">
     </#if>
     <#return b>
 </#function>

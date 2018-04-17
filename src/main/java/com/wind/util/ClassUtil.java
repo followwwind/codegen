@@ -1,6 +1,6 @@
 package com.wind.util;
 
-import com.wind.config.Const;
+import com.wind.config.JavaConst;
 import com.wind.entity.clazz.ClassField;
 import com.wind.entity.clazz.ClassInfo;
 import com.wind.entity.clazz.ClassType;
@@ -24,7 +24,7 @@ public class ClassUtil {
     public static ClassInfo getBean(Table table){
         ClassInfo classInfo = null;
         if(table != null){
-            classInfo = new ClassInfo(table.getProperty(), ClassType.BEAN, Const.CLASS);
+            classInfo = new ClassInfo(table.getProperty(), ClassType.BEAN, JavaConst.CLASS);
             classInfo.setRemark(table.getRemarks());
             List<ClassField> fields = new ArrayList<>();
             List<Column> columns = table.getColumns();

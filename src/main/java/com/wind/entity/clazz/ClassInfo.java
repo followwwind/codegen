@@ -1,6 +1,8 @@
 package com.wind.entity.clazz;
 
 import com.wind.config.Const;
+import com.wind.config.JavaConst;
+import com.wind.util.StringUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -76,17 +78,26 @@ public class ClassInfo extends Attribute{
                     ClassMethod m = (ClassMethod) attr;
                     addImport(m.getArgs());
                 }
-                String type = attr.getType() != null ? attr.getType().toLowerCase() : Const.BLANK_STR;
-                if(type.contains(Const.LIST)){
-                    this.imports.add("java.util.List");
-                }
-
-                if(type.contains(Const.DATE)){
-                    this.imports.add("java.util.Date");
-                }
-
-                if(type.contains(Const.MAP)){
-                    this.imports.add("java.util.Map");
+                String type = attr.getType();
+                String[] strs = StringUtil.split(type, Const.POINT_STR);
+                int length = strs.length;
+                if(length > 1){
+                    boolean flag = false;
+                    if(JavaConst.LIST.equals(type)){
+                        this.imports.add("java.util.List");
+                        flag = true;
+                    }
+                    if(JavaConst.DATE.equals(type)){
+                        this.imports.add("java.util.Date");
+                        flag = true;
+                    }
+                    if(JavaConst.MAP.equals(type)){
+                        this.imports.add("java.util.Map");
+                        flag = true;
+                    }
+                    if(flag){
+                        attr.setType(strs[length - 1]);
+                    }
                 }
             });
         }

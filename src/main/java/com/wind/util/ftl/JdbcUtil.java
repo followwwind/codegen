@@ -1,9 +1,11 @@
 package com.wind.util.ftl;
 
+import com.wind.config.FtlConst;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.config.Const;
 import com.wind.util.JsonUtil;
+import com.wind.util.StringUtil;
 
 /**
  * jdbc代码生成工具类
@@ -15,7 +17,8 @@ public class JdbcUtil {
      * 生成通用dao操作类
      */
     public static void genBaseDao(){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_DAO + Const.FTL_BASE);
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_DAO, FtlConst.FTL_BASE));
         freeMarker.setData("jdbc/baseDao.ftl",  "BaseDao.java");
         FtlUtil.genCode(freeMarker);
         freeMarker.setData("jdbc/baseDaoImpl.ftl",  "BaseDaoImpl.java");
@@ -26,12 +29,13 @@ public class JdbcUtil {
      * 生成基础工具类
      */
     public static void genCommon(){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_DAO + Const.FTL_CALLBACK);
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_DAO, FtlConst.FTL_CALLBACK));
         freeMarker.setData("jdbc/psBack.ftl",  "PsBack.java");
         FtlUtil.genCode(freeMarker);
 
         freeMarker.setData("util/dbUtil.ftl", "DbUtil.java");
-        freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_UTIL);
+        freeMarker.setFileDir(FtlConst.FTL_DIR + FtlConst.FTL_UTIL);
         FtlUtil.genCode(freeMarker);
 
         freeMarker.setData("util/propUtil.ftl", "PropUtil.java");
@@ -44,7 +48,8 @@ public class JdbcUtil {
      * @param flag true表示重新生成rDao接口， false则否
      */
     public static void genDao(Table table, boolean flag){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_DAO);
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_DAO));
         freeMarker.setMap(JsonUtil.beanToMap(table, true));
         String property = table.getProperty();
         if(flag){
@@ -53,7 +58,7 @@ public class JdbcUtil {
         }
 
         freeMarker.setData("jdbc/rDaoImpl.ftl", property + "DaoImpl.java");
-        freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_DAO + Const.FTL_IMPL);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_DAO, FtlConst.FTL_IMPL));
         FtlUtil.genCode(freeMarker);
     }
 
@@ -63,7 +68,8 @@ public class JdbcUtil {
      * @param flag
      */
     public static void genService(Table table, boolean flag){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_SERVICE);
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_SERVICE));
         freeMarker.setMap(JsonUtil.beanToMap(table, true));
         String property = table.getProperty();
         if(flag){
@@ -72,7 +78,7 @@ public class JdbcUtil {
         }
 
         freeMarker.setData("jdbc/rServiceImpl.ftl", property + "ServiceImpl.java");
-        freeMarker.setFileDir(Const.FTL_DIR + Const.FTL_SERVICE + Const.FTL_IMPL);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_SERVICE, FtlConst.FTL_IMPL));
         FtlUtil.genCode(freeMarker);
     }
 
@@ -80,7 +86,8 @@ public class JdbcUtil {
      * 生成测试类
      */
     public static void genTest(Table table){
-        FreeMarker freeMarker = new FreeMarker(Const.FTL_JAVA, Const.FTL_DIR + Const.FTL_TEST);
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_TEST));
         freeMarker.setMap(JsonUtil.beanToMap(table, true));
         String property = table.getProperty();
         freeMarker.setData("jdbc/testDao.ftl", property + "DaoTest.java");

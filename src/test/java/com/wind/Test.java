@@ -36,6 +36,5 @@ public class Test {
 
     public static void main(String[] args) {
         /*testDatasource();*/
-        System.out.println();
     }
 }

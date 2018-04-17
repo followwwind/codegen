@@ -32,7 +32,7 @@ public class DbTest {
 
     @Test
     public void printColumns(){
-        List<Column> columns = DbUtil.getColumns("test", "user_info");
+        List<Column> columns = DbUtil.getColumns("test", "user");
         System.out.println(JsonUtil.toJson(columns));
     }
 

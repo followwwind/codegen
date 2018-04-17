@@ -1,10 +1,10 @@
-package com.wind.controller;
+package ${package!"com.wind"}.controller;
 
 import java.util.List;
 import net.sf.json.JSONObject;
-import com.wind.entity.${property};
-import com.wind.service.${property}Service;
-import com.wind.entity.base.Page;
+import ${package!"com.wind"}.entity.${property};
+import ${package!"com.wind"}.service.${property}Service;
+import ${package!"com.wind"}.entity.base.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

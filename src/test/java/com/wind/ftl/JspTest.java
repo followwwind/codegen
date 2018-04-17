@@ -6,6 +6,8 @@ import com.wind.util.ftl.JspUtil;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +15,12 @@ import java.util.List;
  */
 public class JspTest {
 
-    List<Table> tables = DbUtil.getTables("test");
-
-    Table table = DbUtil.getTable("test", "user_info");
+    private List<Table> tables = new ArrayList<>();
 
     @Before
     public void init(){
-
+        //tables.addAll(DbUtil.getTables("test"));
+        tables.add(DbUtil.getTable("test", "demo"));
     }
 
 
@@ -28,20 +29,10 @@ public class JspTest {
         tables.forEach(JspUtil::genTable);
     }
 
-
-    @Test
-    public void genTable(){
-        JspUtil.genTable(table);
-    }
     
     @Test
     public void genForms(){
         tables.forEach(JspUtil::genForm);
     }
 
-
-    @Test
-    public void genForm(){
-        JspUtil.genForm(table);
-    }
 }

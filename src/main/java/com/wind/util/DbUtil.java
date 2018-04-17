@@ -1,6 +1,7 @@
 package com.wind.util;
 
 import com.wind.callback.DbCallBack;
+import com.wind.config.MysqlConst;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.PrimaryKey;
 import com.wind.entity.db.Table;
@@ -59,28 +60,6 @@ public class DbUtil {
         } finally {
             close(con);
         }
-    }
-
-    /**
-     * 表字段类型转换成java类型
-     * @param columnType
-     * @return
-     */
-    private static String getFieldType(String columnType){
-        String result;
-        columnType = columnType != null ? columnType : "";
-        switch (columnType){
-            case "CHAR" : result = "String";break;
-            case "VARCHAR" : result = "String";break;
-            case "TEXT" : result = "String";break;
-            case "INT" : result = "Integer";break;
-            case "DOUBLE" : result = "Double";break;
-            case "FLOAT" : result = "Float";break;
-            case "TIMESTAMP" : result = "Date";break;
-            case "DATE" : result = "Date";break;
-            default: result = ""; break;
-        }
-        return result;
     }
 
     /**
@@ -213,7 +192,7 @@ public class DbUtil {
                 column.setColumnName(colName);
                 column.setColumnType(typeName);
                 column.setProperty(StringUtil.getCamelCase(colName, false));
-                column.setType(getFieldType(typeName));
+                column.setType(MysqlConst.getFieldType(typeName));
                 column.setColumnSize(rs.getInt("COLUMN_SIZE"));
                 column.setNullable(rs.getInt("NULLABLE"));
                 column.setRemarks(rs.getString("REMARKS"));

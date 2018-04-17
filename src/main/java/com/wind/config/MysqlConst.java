@@ -14,6 +14,7 @@ public enum MysqlConst {
 	SMALLINT("SMALLINT", "Integer"),
 	MEDIUMINT("MEDIUMINT", "Integer"),
 	INT("INT", "Integer"),
+	INT_UNSIGNED("INT UNSIGNED", "Integer"),
 	BIGINT("BIGINT", "java.math.BigInteger"),
 	FLOAT("FLOAT", "Float"),
 	DOUBLE("DOUBLE", "Double"),
@@ -44,7 +45,7 @@ public enum MysqlConst {
 	DATE("DATE", "java.util.Date"),
 	TIME("TIME", "java.util.Date"),
 	YEAR("YEAR", "java.util.Date"),
-	DATATIME("DATATIME", "java.util.Date"),
+	DATETIME("DATETIME", "java.util.Date"),
 	TIMESTAMP("TIMESTAMP", "java.util.Date")
 	;
 

@@ -161,8 +161,12 @@
     <#local b = columnType>
     <#if columnType == "INT">
         <#local b = "INTEGER">
+    <#elseif columnType == "INT UNSIGNED">
+        <#local b = "INTEGER">
     <#elseif columnType == "TEXT">
         <#local b = "LONGVARCHAR">
+    <#elseif columnType == "DATETIME">
+        <#local b = "TIMESTAMP">
     </#if>
     <#return b>
 </#function>

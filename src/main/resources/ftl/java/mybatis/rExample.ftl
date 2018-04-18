@@ -1,12 +1,13 @@
-package com.wind.entity.example;
+package ${packageName!"com.wind.entity.example"};
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
-import com.wind.entity.base.AttrType;
-import com.wind.entity.base.Attribute;
-import com.wind.entity.base.BaseBuilder;
-import com.wind.entity.base.Example;
+<#if imports??>
+	<#list imports as import>
+import ${import};
+	</#list>
+</#if>
 
 /**
  * ${remarks!""} where条件从句Exmaple

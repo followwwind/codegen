@@ -109,4 +109,22 @@ public class FreeMarker {
         }
         map.put(key, obj);
     }
+
+    /**
+     * 添加Map
+     * @param map
+     */
+    public void addMap(Map<String, Object> map) {
+        if(this.map == null){
+            this.map = new HashMap<>();
+        }
+        this.map.putAll(map);
+    }
+
+    /**
+     * 初始化map
+     */
+    public void initMap(){
+        this.map = null;
+    }
 }

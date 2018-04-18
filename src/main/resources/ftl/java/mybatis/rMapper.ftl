@@ -1,8 +1,10 @@
-package com.wind.dao;
+package ${packageName!"com.wind.dao"};
 
-import com.wind.entity.${property};
-import com.wind.entity.example.${property}Example;
-import com.wind.dao.base.BaseMapper;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type>

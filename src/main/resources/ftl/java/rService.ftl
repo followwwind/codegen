@@ -1,7 +1,10 @@
-package com.wind.service;
+package ${packageName!"com.wind.service"};
 
-import com.wind.entity.${property};
-import com.wind.service.base.BaseService;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 <#if primaryKeys?? && primaryKeys?size gt 0>
   <#assign key = getKey(columns, primaryKeys[0])>
   <#assign type = key.type>

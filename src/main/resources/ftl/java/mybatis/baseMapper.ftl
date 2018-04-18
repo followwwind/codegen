@@ -1,7 +1,11 @@
-package com.wind.dao.base;
+package ${packageName!"com.wind.dao.base"};
 
 import java.util.List;
-import com.wind.entity.base.Page;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 
 /**
  * 数据库dao通用接口

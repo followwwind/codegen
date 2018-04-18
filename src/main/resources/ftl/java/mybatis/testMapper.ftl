@@ -1,10 +1,11 @@
 package com.wind.dao;
 
 import java.util.List;
-import com.wind.dao.${property}Mapper;
-import com.wind.entity.${property};
-import com.wind.entity.example.${property}Example;
-import com.wind.entity.base.Page;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

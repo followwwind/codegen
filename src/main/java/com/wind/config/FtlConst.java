@@ -6,19 +6,20 @@ package com.wind.config;
  */
 public interface FtlConst {
     /**
-     * java代码包名
-     */
-    String FTL_PACKAGR = "com.wind";
-    /**
      * flt模板根路径
      */
     String FTL_JAVA = "src/main/resources/ftl/java";
+
     /**
      * java代码生成根路径
      */
     String FTL_DIR = "D:/work/freemarker/src";
 
     String FTL_CONTROLLER = "controller";
+
+    String FTL_PACKAGR_NAME = "packageName";
+
+    String FTL_IMPORT = "imports";
 
     String FTL_ENTITY = "entity";
 

@@ -1,7 +1,11 @@
-package com.wind.service.base;
+package ${packageName!"com.wind.service.base"};
 
 import java.util.List;
-import com.wind.entity.base.Page;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 
 /**
  * 数据库dao通用接口
@@ -19,14 +23,14 @@ public interface BaseService<R, PK> {
 
     /**
      * 删除记录
-     * @param id
+     * @param r
      * @return
      */
     int deleteByCondition(R r);
 
     /**
      * 查询单条记录
-     * @param id
+     * @param r
      * @return
      */
     R findEntity(R r);

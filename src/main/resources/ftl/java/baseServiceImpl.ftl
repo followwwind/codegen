@@ -1,4 +1,4 @@
-package com.wind.service.base;
+package ${packageName!"com.wind.service.base"};
 
 /**
  *

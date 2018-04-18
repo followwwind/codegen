@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wind
@@ -21,14 +22,18 @@ public class JdbcTest {
     public void init(){
         //tables.addAll(DbUtil.getTables("test"));
         tables.add(DbUtil.getTable("test", "demo"));
+        genCommon();
     }
 
-    @Test
-    public void genAllCode(){
+    private void genCommon(){
         JdbcUtil.genCommon();
         FtlUtil.genPage();
         JdbcUtil.genBaseDao();
         FtlUtil.genBaseService();
+    }
+
+    @Test
+    public void genAllCode(){
         tables.forEach(table -> {
             FtlUtil.genEntity(table);
             JdbcUtil.genDao(table, true);

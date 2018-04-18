@@ -1,12 +1,11 @@
-package com.wind.service.impl;
+package ${packageName!"com.wind.service.impl"};
 
 import java.util.List;
-import com.wind.dao.${property}Mapper;
-import com.wind.entity.${property};
-import com.wind.entity.example.${property}Example;
-import com.wind.service.${property}Service;
-import com.wind.service.base.BaseServiceImpl;
-import com.wind.entity.base.Page;
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 <#if primaryKeys?? && primaryKeys?size gt 0>

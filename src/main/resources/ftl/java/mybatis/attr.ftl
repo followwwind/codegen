@@ -1,4 +1,4 @@
-package com.wind.entity.base;
+package ${packageName!"com.wind.entity.base"};
 
 /**
  * where条件拼接

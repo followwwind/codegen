@@ -1,4 +1,4 @@
-package com.wind.entity.base;
+package ${packageName!"com.wind.entity.base"};
 
 import java.util.ArrayList;
 import java.util.List;

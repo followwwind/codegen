@@ -1,13 +1,11 @@
 package com.wind.util.ftl;
 
-import com.wind.config.FtlConst;
-import com.wind.config.JavaConst;
+import com.wind.config.*;
 import com.wind.entity.clazz.ClassInfo;
 import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.util.ClassUtil;
-import com.wind.config.Const;
 import com.wind.util.JsonUtil;
 import com.wind.util.StringUtil;
 import freemarker.template.Configuration;
@@ -15,7 +13,9 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -68,22 +68,21 @@ public class FtlUtil {
      */
     public static void genEntity(Table table){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-        freeMarker.setFileDir(FtlConst.FTL_DIR + Const.FILE_SEPARATOR + FtlConst.FTL_ENTITY);
         String className = table.getProperty();
         String extendClassName = className + StringUtil.getFirst(FtlConst.FTL_EXTEND, true);
         ClassInfo extend = new ClassInfo(extendClassName, ClassType.CLASS, JavaConst.ABSTRACT + Const.SPACE_STR + JavaConst.CLASS);
-        extend.setPackageName(StringUtil.joinStr(Const.POINT_STR, FtlConst.FTL_PACKAGR, FtlConst.FTL_ENTITY, FtlConst.FTL_EXTEND));
+        extend.setPackageName(PackageConst.FTL_ENTITY_EXTEND_PACKAGE);
         freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, extendClassName, JavaConst.JAVA));
         freeMarker.setMap(JsonUtil.beanToMap(extend, true));
-        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_ENTITY, FtlConst.FTL_EXTEND));
+        freeMarker.setFileDir(PathConst.FTL_ENTITY_EXTEND_PATH);
         genCode(freeMarker);
         
         freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
         ClassInfo classInfo = ClassUtil.getBean(table);
         classInfo.setExtend(extend);
-        classInfo.setPackageName(StringUtil.joinStr(Const.POINT_STR, FtlConst.FTL_PACKAGR, FtlConst.FTL_ENTITY));
+        classInfo.setPackageName(PackageConst.FTL_ENTITY_PACKAGE);
         classInfo.initImports();
-        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_ENTITY));
+        freeMarker.setFileDir(PathConst.FTL_ENTITY_PATH);
         freeMarker.setMap(JsonUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }
@@ -94,7 +93,8 @@ public class FtlUtil {
      */
     public static void genPage(){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_ENTITY, FtlConst.FTL_BASE));
+        freeMarker.setFileDir(PathConst.FTL_PAGE_PATH );
+        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_PAGE_PACKAGE);
         freeMarker.setData("page.ftl", "Page.java");
         FtlUtil.genCode(freeMarker);
     }
@@ -104,9 +104,16 @@ public class FtlUtil {
      */
     public static void genBaseService(){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-        freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, FtlConst.FTL_DIR, FtlConst.FTL_SERVICE, FtlConst.FTL_BASE));
+        freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
         freeMarker.setData("baseService.ftl", "BaseService.java");
+        Map<String, Object> map = new HashMap<>();
+        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_IMPL_PACKAGE);
+        List<String> imports = new ArrayList<>();
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
+        map.put(FtlConst.FTL_IMPORT, imports);
+        freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);
+        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
         freeMarker.setData("baseServiceImpl.ftl", "BaseServiceImpl.java");
         FtlUtil.genCode(freeMarker);
     }

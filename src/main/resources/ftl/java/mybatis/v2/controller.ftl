@@ -6,8 +6,6 @@ package ${packageName!"com.wind.controller"};
 import ${import};
     </#list>
 </#if>
-import com.wind.common.JsonResult;
-import com.wind.common.constant.HttpCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,7 +87,7 @@ public class ${property}Controller{
     @ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")
     public JsonResult findPageList(${property} r, Page page){
     	${service}.findPageList(r, page);
-        return return new JsonResult(page);
+        return new JsonResult(page);
     }
 
     /**

@@ -10,11 +10,13 @@
     <#assign pkName = "">
     <#assign pkType = "">
     <#assign pkPro = "">
+    <#assign pkJType = "">
     <#list columns as column>
         <#if contains(primaryKeys, column.columnName) == true>
         <#assign pkName = column.columnName>
         <#assign pkType = column.columnType>
         <#assign pkPro = column.property>
+        <#assign pkJType = column.type>
         <id column="${column.columnName}" property="${column.property}" jdbcType="${replace(column.columnType)}" />
         <#else>
         <result column="${column.columnName}" property="${column.property}" jdbcType="${replace(column.columnType)}" />
@@ -35,7 +37,7 @@
     </sql>
 
     <sql id="Column_Selective_And_List" >
-        ${join(2, "and", 0)}
+        ${join(5, "and", 0)}
     </sql>
 
     <sql id="Column_Assign_List" >
@@ -70,12 +72,12 @@
         <include refid="Column_Selective_And_List" />
     </delete>
     
-    <select id="findEntity" resultMap="BaseResultMap" parameterType="${type}">
+    <select id="findEntity" resultMap="BaseResultMap" parameterType="${pkJType}">
         select
         <include refid="Column_List" />
         from ${tableName}
         where 1 = 1
-        <if test="${pkPro} != null">
+        <if test="_parameter != null">
         	and ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
         </if>
     </select>
@@ -180,6 +182,21 @@
             <#if column_index != 0 && column_index % 4 == 0>
                 <#local s += "\n\t\t">
             </#if>
+        <#elseif type == 5>
+        	<#if column.type == "String">
+        	<#local s = "<if test=\"" + column.property + "!= null and " + column.property + "!=''\" >\n\t\t\t">
+        	<#if flag == 1><#local s += "\t"></#if>
+            <#local s += sign + " " + column.columnName + " like concat('%',#" + lBracket + column.property
+            + ",jdbcType=" + replace(column.columnType) +"}, '%')\n\t\t">
+            <#else>
+            <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t">
+        	<#if flag == 1><#local s += "\t"></#if>
+            <#local s += sign + " " + column.columnName + " = #" + lBracket + column.property
+            + ",jdbcType=" + replace(column.columnType) +"}\n\t\t">
+        	</#if>
+            <#if flag == 1><#local s += "\t"></#if>
+            <#local s += "</if>\n\t\t">
+            <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>
         </#if>
         <#local str += s>
     </#list>

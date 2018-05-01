@@ -185,15 +185,12 @@
         <#elseif type == 5>
         	<#if column.type == "String">
         	<#local s = "<if test=\"" + column.property + "!= null and " + column.property + "!=''\" >\n\t\t\t">
-        	<#if flag == 1><#local s += "\t"></#if>
-            <#local s += sign + " " + column.columnName + " like concat('%',#" + lBracket + column.property
-            + ",jdbcType=" + replace(column.columnType) +"}, '%')\n\t\t">
             <#else>
             <#local s = "<if test=\"" + column.property + "!= null\" >\n\t\t\t">
+        	</#if>
         	<#if flag == 1><#local s += "\t"></#if>
             <#local s += sign + " " + column.columnName + " = #" + lBracket + column.property
             + ",jdbcType=" + replace(column.columnType) +"}\n\t\t">
-        	</#if>
             <#if flag == 1><#local s += "\t"></#if>
             <#local s += "</if>\n\t\t">
             <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>

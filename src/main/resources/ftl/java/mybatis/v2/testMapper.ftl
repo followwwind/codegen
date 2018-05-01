@@ -35,39 +35,35 @@ public class ${property}MapperTest{
     }
 
     @Test
-    public void deleteByCondition() {
+    public void delete() {
         ${property} entity = new ${property}();
-        int i = mapper.deleteByCondition(entity);
+        int i = mapper.delete(entity);
         System.out.println(i);
     }
 
     @Test
     public void findEntity() {
-        ${property} entity = new ${property}();
-        List<${property}> entitys = mapper.findEntitys(entity);
-        System.out.println(entitys.size());
+        
     }
 
     @Test
-    public void findByCondition() {
-        ${property}Example example = new ${property}Example();
-        Page page = new Page();
-        example.setLimit(page.getStartRow() + "," + page.getLineNumber());
-        List<${property}> entitys = mapper.findByCondition(example);
-        System.out.println(entitys.size());
+    public void findList() {
+        ${property} entity = new ${property}();
+        List<${property}> entities = mapper.findList(entity);
+        System.out.println(entities.size());
     }
 
     @Test
-    public void updateByCondition() {
+    public void update() {
         ${property} entity = new ${property}();
-        int i = mapper.updateByCondition(entity);
+        int i = mapper.update(entity);
         System.out.println(i);
     }
 
     @Test
-    public void countByCondition(){
-        ${property}Example example = new ${property}Example();
-        int count = mapper.countByCondition(example);
+    public void count(){
+        ${property} entity = new ${property}();
+        int count = mapper.count(entity);
         System.out.println(count);
     }
 }

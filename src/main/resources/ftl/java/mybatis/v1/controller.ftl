@@ -53,7 +53,7 @@ public class ${property}Controller{
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")
     public String delete(${property} r) {
-        int i = ${service}.deleteByCondition(r);
+        int i = ${service}.delete(r);
         JSONObject result = new JSONObject();
         result.put("msg", i > 0 ? "success" : "failure");
         return result.toString();
@@ -79,8 +79,8 @@ public class ${property}Controller{
      */
     @RequestMapping(value = "findList", method = RequestMethod.POST)
     @ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")
-    public List<${property}> findByCondition(${property} r) {
-        return ${service}.findByCondition(r);
+    public List<${property}> findList(${property} r) {
+        return ${service}.findList(r);
     }
 
     /**
@@ -104,8 +104,8 @@ public class ${property}Controller{
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")
-    public String updateByCondition(${property} r) {
-        int i = ${service}.updateByCondition(r);
+    public String update(${property} r) {
+        int i = ${service}.update(r);
         JSONObject result = new JSONObject();
         result.put("msg", i > 0 ? "success" : "failure");
         return result.toString();

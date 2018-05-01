@@ -35,5 +35,9 @@ public interface PackageConst {
 
     String FTL_SERVICE_BASE_PACKAGE = FTL_PACKAGR + ".service.base";
 
-    String FTL_TEST_PACKAGE = FTL_PACKAGR + "dao";
+    String FTL_TEST_PACKAGE = FTL_PACKAGR + ".dao";
+    
+    String FTL_COMMON_PACKAGE = FTL_PACKAGR + ".common";
+    
+    String FTL_COMMON_CONSTANT_PACKAGE = FTL_PACKAGR + ".common.constant";
 }

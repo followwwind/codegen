@@ -1,4 +1,4 @@
-package ${packageName!"com.wind.service.base"};
+package ${packageName!"com.wind.dao.base"};
 
 import java.util.List;
 <#if imports??>
@@ -13,51 +13,52 @@ import ${import};
  * @param <R> 数据库表关联的实体类
  * @param <PK> 主键类型
  */
-public interface BaseService<R, PK> {
+public interface BaseMapper<R, PK> {
+
     /**
      * 添加纪录
      * @param r
      * @return
      */
     int insert(R r);
+    
+    /**
+     * 批量添加纪录
+     * @param list
+     * @return
+     */
+    int insertBatch(List<R> list);
 
     /**
-     * 删除记录
+     * 批量删除记录
      * @param r
      * @return
      */
     int delete(R r);
-    
-    /**
-     * 批量单条记录
-     * @param r
-     * @return
-     */
-    R findEntity(R r);
 
     /**
-     * 批量查询记录
+     * 通过and拼接查询记录
+     * @param id
+     * @return
+     */
+    R findEntity(PK id);
+
+    /**
+     * 条件批量查询记录
      * @param r
      * @return
      */
     List<R> findList(R r);
 
     /**
-     * 分页查询
-     * @param r
-     * @param page
-     */
-    void findPageList(R r, Page page);
-
-    /**
-     * 更新记录
+     * 通过id更新记录
      * @param r
      * @return
      */
     int update(R r);
 
     /**
-     * 条件查询记录条数
+     * 查询批量记录条数
      * @param r
      * @return
      */

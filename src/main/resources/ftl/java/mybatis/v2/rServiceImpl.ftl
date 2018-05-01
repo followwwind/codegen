@@ -6,6 +6,8 @@ import java.util.List;
 import ${import};
     </#list>
 </#if>
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 <#if primaryKeys?? && primaryKeys?size gt 0>
@@ -34,41 +36,38 @@ public class ${property}ServiceImpl extends BaseServiceImpl<${property}, ${type}
     }
 
     @Override
-    public int deleteByCondition(${property} r) {
-        return mapper.deleteByCondition(r);
+    public int delete(${property} r) {
+        return mapper.delete(r);
     }
-
+    
     @Override
     public ${property} findEntity(${property} r) {
-        List<${property}> entitys = mapper.findEntitys(r);
-        return entitys.size() == 1 ? entitys.get(0) : null;
+    	List<${property}> entities = mapper.findList(r);
+        return entities.size() == 1 ? entities.get(0) : null;
     }
 
     @Override
-    public List<${property}> findByCondition(${property} r) {
-    	${property}Example example = new ${property}Example();
-        return mapper.findByCondition(example);
+    public List<${property}> findList(${property} r) {
+        return mapper.findList(r);
     }
 
     @Override
-    public void findPageList(${property} r, Page page){
-        ${property}Example example = new ${property}Example();
-        int totalCount = mapper.countByCondition(example);
-        example.setLimit(page.getStartRow() + "," + page.getLineNumber());
-        List<${property}> entitys = mapper.findByCondition(example);
-        page.setTotalCount(totalCount);
+    public void findPageList(${property} r, Page page){ 
+        PageHelper.startPage(page.getPageNumber(), page.getLineNumber());
+        List<${property}> entitys = mapper.findList(r);
+        PageInfo<${property}> info = new PageInfo<>(entitys);
         page.setResult(entitys);
+        page.setTotalCount(info.getTotal());
     }
 
     @Override
-    public int updateByCondition(${property} r) {
-        return mapper.updateByCondition(r);
+    public int update(${property} r) {
+        return mapper.update(r);
     }
 
     @Override
-    public int countByCondition(${property} r){
-     	${property}Example example = new ${property}Example();
-        return mapper.countByCondition(example);
+    public int count(${property} r){
+        return mapper.count(r);
     }
 }
 

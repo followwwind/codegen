@@ -64,19 +64,23 @@ public class FtlUtil {
 
     /**
      * 生成表关联对应的实体类以及拓展类
+     * @param flag true表示生成拓展类
      * @param table
      */
-    public static void genEntity(Table table){
+    public static void genEntity(Table table, boolean flag){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
         String className = table.getProperty();
         String extendClassName = className + StringUtil.getFirst(FtlConst.FTL_EXTEND, true);
-        ClassInfo extend = new ClassInfo(extendClassName, ClassType.CLASS, JavaConst.ABSTRACT + Const.SPACE_STR + JavaConst.CLASS);
-        extend.setPackageName(PackageConst.FTL_ENTITY_EXTEND_PACKAGE);
-        freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, extendClassName, JavaConst.JAVA));
-        freeMarker.setMap(JsonUtil.beanToMap(extend, true));
-        freeMarker.setFileDir(PathConst.FTL_ENTITY_EXTEND_PATH);
-        genCode(freeMarker);
-        
+        ClassInfo extend = null;
+        if(flag){
+        	extend = new ClassInfo(extendClassName, ClassType.CLASS, JavaConst.ABSTRACT + Const.SPACE_STR + JavaConst.CLASS);
+            extend.setPackageName(PackageConst.FTL_ENTITY_EXTEND_PACKAGE);
+            freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, extendClassName, JavaConst.JAVA));
+            freeMarker.setMap(JsonUtil.beanToMap(extend, true));
+            freeMarker.setFileDir(PathConst.FTL_ENTITY_EXTEND_PATH);
+            genCode(freeMarker);
+            
+        }
         freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
         ClassInfo classInfo = ClassUtil.getBean(table);
         classInfo.setExtend(extend);
@@ -107,7 +111,7 @@ public class FtlUtil {
         freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
         freeMarker.setData("baseService.ftl", "BaseService.java");
         Map<String, Object> map = new HashMap<>();
-        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_IMPL_PACKAGE);
+        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
         List<String> imports = new ArrayList<>();
         imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
         map.put(FtlConst.FTL_IMPORT, imports);

@@ -18,7 +18,7 @@ public class Page {
     /**
      * 记录总条数
      */
-    private int totalCount;
+    private long totalCount;
 
     /**
      * 数据结果集
@@ -38,19 +38,14 @@ public class Page {
     }
 
     public int getPageNumber() {
+    	if(pageNumber <= 1) {
+            return 1;
+        }
         return pageNumber;
     }
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
-    }
-
-    public int getStartRow() {
-        //不传或者传1都是从0开始查询
-        if(pageNumber <= 1) {
-            return 0;
-        }
-        return (pageNumber - 1) * lineNumber;
     }
 
     public int getLineNumber() {
@@ -61,11 +56,11 @@ public class Page {
         this.lineNumber = lineNumber;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -75,6 +70,14 @@ public class Page {
 
     public void setResult(Object result) {
         this.result = result;
+    }
+    
+    public int getStartRow() {
+        //不传或者传1都是从0开始查询
+        if(pageNumber <= 1) {
+            return 0;
+        }
+        return (pageNumber - 1) * lineNumber;
     }
 
 }

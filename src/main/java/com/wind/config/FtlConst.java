@@ -52,6 +52,6 @@ public interface FtlConst {
      * java jdk版本
      */
     int JDK_VERSION = 8;
-
-
+    
+    Version MYBATIS_VERSION = Version.V2;
 }

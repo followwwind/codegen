@@ -35,7 +35,7 @@ public class JdbcTest {
     @Test
     public void genAllCode(){
         tables.forEach(table -> {
-            FtlUtil.genEntity(table);
+            FtlUtil.genEntity(table, true);
             JdbcUtil.genDao(table, true);
             JdbcUtil.genService(table, true);
             JdbcUtil.genTest(table);

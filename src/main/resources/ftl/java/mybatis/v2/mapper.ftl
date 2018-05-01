@@ -21,39 +21,6 @@
         </#if>
     </#list>
     </resultMap>
-    
-    <sql id="Example_Where_Clause" >
-    	<where>
-  			<foreach collection="conditions" item="condition" separator="or" >
-	        	<if test="condition.valid" >
-	          		<trim prefix="(" suffix=")" prefixOverrides="and" >
-		            	<foreach collection="condition.attrs" item="attr" >
-		              		<choose >
-		                		<when test="attr.type == 'no'" >
-		                  			and ${dlBracket}attr.key}
-		                		</when>
-		                		<when test="attr.type == 'single'" >
-		                  			and ${dlBracket}attr.key} #${lBracket}attr.value}
-		                		</when>
-		                		<when test="attr.type == 'between'" >
-		                  			and ${dlBracket}attr.key}
-		                  			<foreach collection="attr.value" item="listItem" open="" close="" separator="and" >
-			                    		#${lBracket}listItem}
-			                  		</foreach>
-		                		</when>
-		                		<when test="attr.type == 'in'" >
-		                  			and ${dlBracket}attr.key}
-			                  		<foreach collection="attr.value" item="listItem" open="(" close=")" separator="," >
-			                    		#${lBracket}listItem}
-			                  		</foreach>
-		                		</when>
-		              		</choose>
-		            	</foreach>
-		          	</trim>
-		        </if>
-	      	</foreach>
-	   </where>
-	</sql>
 
     <#--<sql id="Base_Column_List" >
         ${join(0, ",", 0)}
@@ -74,6 +41,10 @@
     <sql id="Column_Assign_List" >
         ${join(3, ",", 0)}
     </sql>
+    
+    <sql id="InsertBatch_List" >
+        ${join(4, ",", 0)}
+    </sql>
 
     <insert id="insert" parameterType="${type}" >
         insert into ${tableName} (
@@ -82,18 +53,34 @@
         <include refid="Column_Assign_List" />
         )
     </insert>
+    
+    <insert id="insertBatch" >
+        insert into ${tableName} (
+        <include refid="Column_List" />
+        ) values 
+        <foreach collection="list" item="item" separator=",">
+			(
+			<include refid="InsertBatch_List" />
+			)
+		</foreach>
+    </insert>
 
-    <delete id="deleteById" parameterType="java.lang.String" >
-        delete from ${tableName}
-        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
-    </delete>
-
-    <delete id="deleteByCondition" parameterType="${type}" >
+    <delete id="delete" parameterType="${type}" >
         delete from ${tableName} where 1 = 1
         <include refid="Column_Selective_And_List" />
     </delete>
+    
+    <select id="findEntity" resultMap="BaseResultMap" parameterType="${type}">
+        select
+        <include refid="Column_List" />
+        from ${tableName}
+        where 1 = 1
+        <if test="${pkPro} != null">
+        	and ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
+        </if>
+    </select>
 
-    <select id="findEntitys" resultMap="BaseResultMap" parameterType="${type}">
+    <select id="findList" resultMap="BaseResultMap" parameterType="${type}">
         select
         <include refid="Column_List" />
         from ${tableName}
@@ -101,25 +88,7 @@
         <include refid="Column_Selective_And_List" />
     </select>
 
-    <select id="findByCondition" resultMap="BaseResultMap" parameterType="${example}" >
-        select
-        <include refid="Column_List" />
-        from ${tableName}
-        <if test="_parameter != null" >
-	      <include refid="Example_Where_Clause" />
-	    </if>
-	    <if test="groupClause != null" >
-	      group by ${dlBracket}groupClause}
-	    </if>
-	    <if test="orderClause != null" >
-	      order by ${dlBracket}orderClause}
-	    </if>
-	    <if test="limit != null" >
-	      limit ${dlBracket}limit}
-	    </if>
-    </select>
-
-    <update id="updateByCondition" parameterType="${type}" >
+    <update id="update" parameterType="${type}" >
         update ${tableName}
         <set>
             <include refid="Column_Selective_List" />
@@ -129,20 +98,10 @@
         </if>
     </update>
 
-    <select id="countByCondition" resultType="java.lang.Integer" parameterType="${example}" >
+    <select id="count" resultType="java.lang.Integer" parameterType="${type}" >
         select count(1) from ${tableName}
-        <if test="_parameter != null" >
-	      <include refid="Example_Where_Clause" />
-	    </if>
-	    <if test="groupClause != null" >
-	      group by ${dlBracket}groupClause}
-	    </if>
-	    <if test="orderClause != null" >
-	      order by ${dlBracket}orderClause}
-	    </if>
-	    <if test="limit != null" >
-	      limit ${dlBracket}limit}
-	    </if>
+        where 1 = 1
+        <include refid="Column_Selective_And_List" />
     </select>
 </mapper>
 
@@ -205,6 +164,15 @@
             <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>
         <#elseif type == 3>
             <#local s += "#" + lBracket + column.property
+            + ",jdbcType=" + replace(column.columnType) +"}">
+            <#if column_index < (columns?size - 1)>
+                <#local s += sign>
+            </#if>
+            <#if column_index != 0 && column_index % 4 == 0>
+                <#local s += "\n\t\t">
+            </#if>
+        <#elseif type == 4>
+            <#local s += "#" + lBracket + "item." + column.property
             + ",jdbcType=" + replace(column.columnType) +"}">
             <#if column_index < (columns?size - 1)>
                 <#local s += sign>

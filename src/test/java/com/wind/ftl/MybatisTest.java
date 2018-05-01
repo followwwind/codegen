@@ -19,21 +19,26 @@ public class MybatisTest {
 
     @Before
     public void init(){
-        //tables.addAll(DbUtil.getTables("test"));
-        tables.add(DbUtil.getTable("test", "demo"));
+        tables.addAll(DbUtil.getTables("test"));
+        //tables.add(DbUtil.getTable("test", "demo"));
+        
+        common();
+    }
+    
+    private void common(){
+    	FtlUtil.genPage();
+        MybatisUtil.genCommon();
+        MybatisUtil.genBaseMapper();
+        FtlUtil.genBaseService();
     }
 
     @Test
     public void genAllCode(){
         long start = System.currentTimeMillis();
-        FtlUtil.genPage();
-        MybatisUtil.genCommon();
-        MybatisUtil.genBaseMapper();
-        FtlUtil.genBaseService();
         System.out.println(tables.size());
         tables.forEach(table -> {
             MybatisUtil.genController(table);
-            FtlUtil.genEntity(table);
+            FtlUtil.genEntity(table, true);
             MybatisUtil.genMapper(table, true);
             MybatisUtil.genExample(table);
             MybatisUtil.genService(table, true);

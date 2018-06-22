@@ -192,7 +192,8 @@ public class DbUtil {
                 column.setColumnName(colName);
                 column.setColumnType(typeName);
                 column.setProperty(StringUtil.getCamelCase(colName, false));
-                column.setType(MysqlConst.getFieldType(typeName));
+                String type = MysqlConst.getFieldType(typeName);
+                column.setType(type);
                 column.setColumnSize(rs.getInt("COLUMN_SIZE"));
                 column.setNullable(rs.getInt("NULLABLE"));
                 column.setRemarks(rs.getString("REMARKS"));

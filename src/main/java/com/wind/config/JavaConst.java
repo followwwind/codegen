@@ -25,13 +25,16 @@ public interface JavaConst {
     String ANNOTATION = "annotation";
 
     String PACKAGE = "package";
-
+    
+    String JAVA_LANG = "java.lang.";
 
     String DATE = "java.util.Date";
 
     String LIST = "java.util.List";
 
     String MAP = "java.util.Map";
+    
+    String BIGDECIMAL = "BigDecimal";
 
     String INT = "int";
 

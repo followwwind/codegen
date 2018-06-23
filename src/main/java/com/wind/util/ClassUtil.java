@@ -31,7 +31,8 @@ public class ClassUtil {
             if(columns != null && !columns.isEmpty()){
                 columns.forEach(column -> {
                     String property = column.getProperty();
-                    ClassField field = new ClassField(property, column.getType());
+                    String type = column.getType();
+                    ClassField field = new ClassField(property, type);
                     field.setRemark(column.getRemarks());
                     fields.add(field);
                 });

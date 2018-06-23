@@ -120,14 +120,14 @@
 
 <#function replace columnType>
     <#local b = columnType>
-    <#if columnType == "INT">
-        <#local b = "INTEGER">
-    <#elseif columnType == "INT UNSIGNED">
+    <#if columnType == "INT" || columnType == "INT UNSIGNED">
         <#local b = "INTEGER">
     <#elseif columnType == "TEXT">
         <#local b = "LONGVARCHAR">
     <#elseif columnType == "DATETIME">
         <#local b = "TIMESTAMP">
+    <#elseif columnType == "TINYBLOB">
+        <#local b = "BINARY">
     </#if>
     <#return b>
 </#function>

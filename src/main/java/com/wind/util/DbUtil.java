@@ -1,7 +1,7 @@
 package com.wind.util;
 
 import com.wind.callback.DbCallBack;
-import com.wind.config.MysqlConst;
+import com.wind.config.SqlConst;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.PrimaryKey;
 import com.wind.entity.db.Table;
@@ -19,7 +19,7 @@ public class DbUtil {
 
     private static Properties props;
 
-    private static Connection conn;
+//    private static Connection conn;
 
     static {
         props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
@@ -34,14 +34,10 @@ public class DbUtil {
     /**
      * 获取数据库连接
      * @return
+     * @throws SQLException 
      */
-    private static Connection getConn(){
-        try {
-            conn = DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return conn;
+    private static Connection getConn() throws SQLException{
+        return DriverManager.getConnection(props.getProperty("jdbcUrl"), props);
     }
 
 
@@ -51,8 +47,9 @@ public class DbUtil {
      * @param callBack
      */
     private static void exec(DbCallBack callBack){
-        Connection con = getConn();
+    	Connection con = null;
         try {
+        	con = getConn();
             DatabaseMetaData db = con.getMetaData();
             callBack.call(db);
         } catch (SQLException e) {
@@ -103,7 +100,10 @@ public class DbUtil {
         exec(db -> {
             ResultSet rs = db.getTables(catalog, null, null, new String[]{"TABLE"});
             while(rs.next()){
-                tables.add(getTable(db, rs));
+            	Table table = getTable(db, rs);
+            	if(table != null) {
+            		tables.add(table);
+            	}
             }
             rs.close();
         });
@@ -115,11 +115,13 @@ public class DbUtil {
      * @param catalog
      * @param tableName
      * @return
+     * @throws Exception 
      */
-    public static Table getTable(String catalog, String tableName){
-        Connection con = getConn();
+    public static Table getTable(String catalog, String tableName) {
+        Connection con = null;
         Table table = null;
         try {
+        	con = getConn();
             DatabaseMetaData db = con.getMetaData();
             ResultSet rs = db.getTables(catalog, null, tableName, new String[]{"TABLE"});
             if(rs.next()) {
@@ -138,24 +140,25 @@ public class DbUtil {
      * 组装table数据
      * @param rs
      * @return
-     * @throws SQLException
+     * @throws Exception 
      */
-    private static Table getTable(DatabaseMetaData db, ResultSet rs){
+    private static Table getTable(DatabaseMetaData db, ResultSet rs) {
         Table table = null;
-        try {
-            if(rs != null){
-                table = new Table();
-                String tableName = rs.getString("TABLE_NAME");
-                table.setTableName(tableName);
-                table.setProperty(StringUtil.getCamelCase(tableName, true));
-                String catalog = rs.getString("TABLE_CAT");
-                table.setTableCat(catalog);
-                table.setRemarks(rs.getString("REMARKS"));
-                table.setPrimaryKeys(getPrimaryKeys(db, catalog, tableName));
-                table.setColumns(getColumns(db, catalog, tableName));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(rs != null){
+            try {
+				table = new Table();
+				String tableName = rs.getString("TABLE_NAME");
+				table.setTableName(tableName);
+				table.setProperty(StringUtil.getCamelCase(tableName, true));
+				String catalog = rs.getString("TABLE_CAT");
+				table.setTableCat(catalog);
+				table.setRemarks(rs.getString("REMARKS"));
+				table.setPrimaryKeys(getPrimaryKeys(db, catalog, tableName));
+				table.setColumns(getColumns(db, catalog, tableName));
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			} 
         }
         return table;
     }
@@ -170,7 +173,13 @@ public class DbUtil {
      */
     public static List<Column> getColumns(String catalog, String tableName){
         List<Column> columns = new ArrayList<>();
-        exec(db -> columns.addAll(DbUtil.getColumns(db, catalog, tableName)));
+        exec(db -> {
+			try {
+				columns.addAll(DbUtil.getColumns(db, catalog, tableName));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
         return columns;
     }
 
@@ -180,30 +189,34 @@ public class DbUtil {
      * @param catalog
      * @param tableName
      * @return
+     * @throws SQLException 
+     * @throws Exception 
      */
-    private static List<Column> getColumns(DatabaseMetaData db, String catalog, String tableName){
+    private static List<Column> getColumns(DatabaseMetaData db, String catalog, String tableName) throws SQLException{
         List<Column> columns = new ArrayList<>();
-        try {
-            ResultSet rs = db.getColumns(catalog, "%", tableName, "%");
-            while (rs.next()){
-                Column column = new Column();
-                String colName = rs.getString("COLUMN_NAME");
-                String typeName = rs.getString("TYPE_NAME");
-                column.setColumnName(colName);
-                column.setColumnType(typeName);
-                column.setProperty(StringUtil.getCamelCase(colName, false));
-                String type = MysqlConst.getFieldType(typeName);
-                column.setType(type);
-                column.setColumnSize(rs.getInt("COLUMN_SIZE"));
-                column.setNullable(rs.getInt("NULLABLE"));
-                column.setRemarks(rs.getString("REMARKS"));
-                column.setDigits(rs.getInt("DECIMAL_DIGITS"));
-                columns.add(column);
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ResultSet rs = db.getColumns(catalog, "%", tableName, "%");
+		while (rs.next()){
+		    Column column = new Column();
+		    String colName = rs.getString("COLUMN_NAME");
+		    String typeName = rs.getString("TYPE_NAME");
+		    column.setColumnName(colName);
+		    column.setColumnType(typeName);
+		    column.setProperty(StringUtil.getCamelCase(colName, false));
+		    String type = SqlConst.getFieldType(typeName);
+		    if(type == null) {
+		    	StringBuilder sb = new StringBuilder();
+		    	sb.append("表字段类型转换成java类型，找不到类型").append(",catalog:").append(catalog).append(",tableName:")
+		    	.append(tableName).append(",typeName:").append(typeName).append(",colName:").append(colName);
+		    	throw new SQLException(sb.toString());
+		    }
+		    column.setType(type);
+		    column.setColumnSize(rs.getInt("COLUMN_SIZE"));
+		    column.setNullable(rs.getInt("NULLABLE"));
+		    column.setRemarks(rs.getString("REMARKS"));
+		    column.setDigits(rs.getInt("DECIMAL_DIGITS"));
+		    columns.add(column);
+		}
+		rs.close();
 
         return columns;
     }

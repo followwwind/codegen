@@ -70,6 +70,15 @@ public class ClassInfo extends Attribute{
         	this.imports.add(extend.getPackageName() + Const.POINT_STR +extend.getName());
         }
     }
+    
+    /**
+     * 添加import
+     * @param importStr
+     */
+    public void addImport(String importStr) {
+    	this.imports = this.imports != null ? this.imports : new HashSet<>();
+    	this.imports.add(importStr);
+    }
 
     private void addImport(List<? extends Attribute> attrs){
         if(attrs != null){
@@ -80,25 +89,13 @@ public class ClassInfo extends Attribute{
                 }
                 String type = attr.getType();
                 String[] strs = StringUtil.split(type, Const.POINT_STR);
-                int length = strs.length;
-                if(length > 1){
-                    boolean flag = false;
-                    if(JavaConst.LIST.equals(type)){
-                        this.imports.add("java.util.List");
-                        flag = true;
-                    }
-                    if(JavaConst.DATE.equals(type)){
-                        this.imports.add("java.util.Date");
-                        flag = true;
-                    }
-                    if(JavaConst.MAP.equals(type)){
-                        this.imports.add("java.util.Map");
-                        flag = true;
-                    }
-                    if(flag){
-                        attr.setType(strs[length - 1]);
-                    }
+                if(!type.contains(JavaConst.JAVA_LANG)) {
+                	this.imports.add(type);
                 }
+                int length = strs.length;
+                if(length > 1) {
+                	attr.setType(strs[length - 1]);        
+                }           
             });
         }
     }

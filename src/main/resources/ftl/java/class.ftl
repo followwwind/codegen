@@ -43,6 +43,7 @@ ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
     public ${field.type} get${field.name?cap_first}(){
         return this.${field.name};
     }
+    
     </#list>
     </#if>
 

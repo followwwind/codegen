@@ -22,16 +22,16 @@ public class MybatisTest {
     @Before
     public void init(){
         /*tables.addAll(DbUtil.getTables("child"));
-    	String[] arr = {"hm_user", "hm_role", "hm_role_res", "hm_user_role"};
+    	String[] arr = {"pmt"};
     	tables.addAll(DbUtil.getTables("child").stream().filter(table -> {
     		String tableName = table.getTableName();
     		return Arrays.asList(arr).indexOf(tableName) > -1;
     	}).collect(Collectors.toList()));*/
         
-        tables.add(DbUtil.getTable("child", "fin_bill_item"));
+//        tables.add(DbUtil.getTable("child", "fin_bill_item"));
         
-    	common();
-//		tables.add(DbUtil.getTable("test", "demo"));
+    	//common();
+		tables.add(DbUtil.getTable("test", "demo"));
         
 		tables = tables.stream().filter(table -> table != null).collect(Collectors.toList());
     }
@@ -53,6 +53,8 @@ public class MybatisTest {
         long start = System.currentTimeMillis();
         System.out.println(tables.size());
         tables.stream().forEach(table -> {
+        	String tableName = table.getTableName();
+        	table.setTableName(tableName.replaceAll("pmt_", ""));
             MybatisUtil.genController(table);
             FtlUtil.genEntity(table, false);
             MybatisUtil.genMapper(table, true);

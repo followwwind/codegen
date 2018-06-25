@@ -87,13 +87,15 @@ public class ClassInfo extends Attribute{
                     ClassMethod m = (ClassMethod) attr;
                     addImport(m.getArgs());
                 }
+                
                 String type = attr.getType();
                 String[] strs = StringUtil.split(type, Const.POINT_STR);
-                if(!type.contains(JavaConst.JAVA_LANG)) {
+                int length = strs.length;             
+                if(!type.contains(JavaConst.JAVA_LANG) && length > 1) {
                 	this.imports.add(type);
                 }
-                int length = strs.length;
-                if(length > 1) {
+                
+                if(length >= 1) {
                 	attr.setType(strs[length - 1]);        
                 }           
             });

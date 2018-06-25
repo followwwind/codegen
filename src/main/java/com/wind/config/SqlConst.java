@@ -27,15 +27,20 @@ public enum SqlConst {
 	 */
 	CHAR("CHAR", "java.lang.String"),
 	VARCHAR("VARCHAR", "java.lang.String"),
-	TINYBLOB("TINYBLOB", "java.lang.Integer"),
 	TINYTEXT("TINYTEXT", "java.lang.String"),
-	BLOB("BLOB", "java.lang.Integer"),
 	TEXT("TEXT", "java.lang.String"),
-	MEDIUMBLOB("MEDIUMBLOB", "java.lang.Integer"),
 	MEDIUMTEXT("MEDIUMTEXT", "java.lang.String"),
-	LONGBLOB("LONGBLOB", "java.lang.Integer"),
 	LONGTEXT("LONGTEXT", "java.lang.String"),
-
+	
+	/**
+	 * 二进制
+	 */
+	TINYBLOB("TINYBLOB", "byte[]"),
+	BLOB("BLOB", "byte[]"),
+	MEDIUMBLOB("MEDIUMBLOB", "byte[]"),
+	LONGBLOB("LONGBLOB", "byte[]"),
+	BINARY("BINARY", "byte[]"),
+	VARBINARY("VARBINARY", "byte[]"),
 	/**
 	 * bool类型
 	 */
@@ -85,7 +90,7 @@ public enum SqlConst {
 		Optional<SqlConst> opt = Stream.of(SqlConst.values()).
 				filter(val -> {
 					String name = val.name;
-					return columnType.equals(name) || columnType.equals(name + " UNSIGNED");
+					return columnType.replaceAll(" UNSIGNED", "").equals(name);
 				}).findFirst();
 
 		if(opt.isPresent()) {

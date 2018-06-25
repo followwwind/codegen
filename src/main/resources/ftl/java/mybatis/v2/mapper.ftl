@@ -119,15 +119,17 @@
 </#function>
 
 <#function replace columnType>
-    <#local b = columnType>
-    <#if columnType == "INT" || columnType == "INT UNSIGNED">
+    <#local b = columnType?replace(" UNSIGNED", "")>
+    <#if columnType == "INT">
         <#local b = "INTEGER">
-    <#elseif columnType == "TEXT">
+    <#elseif columnType == "TEXT" || columnType == "MEDIUMTEXT" || columnType == "LONGTEXT">
         <#local b = "LONGVARCHAR">
     <#elseif columnType == "DATETIME">
         <#local b = "TIMESTAMP">
     <#elseif columnType == "TINYBLOB">
         <#local b = "BINARY">
+    <#elseif columnType == "BLOB" || columnType == "MEDIUMBLOB" || columnType == "LONGBLOB">
+        <#local b = "LONGVARBINARY">
     </#if>
     <#return b>
 </#function>

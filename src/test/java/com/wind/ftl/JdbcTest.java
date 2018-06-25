@@ -21,7 +21,7 @@ public class JdbcTest {
     @Before
     public void init(){
         //tables.addAll(DbUtil.getTables("test"));
-        tables.add(DbUtil.getTable("test", "demo"));
+        tables.addAll(DbUtil.getTable("test", "demo"));
         genCommon();
     }
 

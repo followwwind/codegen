@@ -21,17 +21,18 @@ public class MybatisTest {
 
     @Before
     public void init(){
-        /*tables.addAll(DbUtil.getTables("child"));
-    	String[] arr = {"pmt"};
+//        tables.addAll(DbUtil.getTables("child"));
+    	FtlUtil.clear();
+    	/*String[] arr = {"pmt"};
     	tables.addAll(DbUtil.getTables("child").stream().filter(table -> {
     		String tableName = table.getTableName();
-    		return Arrays.asList(arr).indexOf(tableName) > -1;
+    		return Arrays.asList(arr).stream().anyMatch(str -> tableName.contains(str));
     	}).collect(Collectors.toList()));*/
         
-//        tables.add(DbUtil.getTable("child", "fin_bill_item"));
+        tables.addAll(DbUtil.getTable("child", "pmt"));
         
     	//common();
-		tables.add(DbUtil.getTable("test", "demo"));
+//		tables.add(DbUtil.getTable("test", "demo"));
         
 		tables = tables.stream().filter(table -> table != null).collect(Collectors.toList());
     }

@@ -117,15 +117,15 @@ public class DbUtil {
      * @return
      * @throws Exception 
      */
-    public static Table getTable(String catalog, String tableName) {
+    public static List<Table> getTable(String catalog, String tableName) {
         Connection con = null;
-        Table table = null;
+        List<Table> tables = new ArrayList<>();
         try {
         	con = getConn();
             DatabaseMetaData db = con.getMetaData();
-            ResultSet rs = db.getTables(catalog, null, tableName, new String[]{"TABLE"});
-            if(rs.next()) {
-                table = getTable(db, rs);
+            ResultSet rs = db.getTables(catalog, null, "%" + tableName + "%", new String[]{"TABLE"});
+            while(rs.next()) {
+            	tables.add(getTable(db, rs));
             }
             rs.close();
         } catch (SQLException e) {
@@ -133,7 +133,7 @@ public class DbUtil {
         } finally {
             close(con);
         }
-        return table;
+        return tables;
     }
 
     /**

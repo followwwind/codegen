@@ -61,6 +61,24 @@ public class FtlUtil {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * 清空工作目录
+     */
+    public static void clear() {
+    	delDir(new File(FtlConst.FTL_DIR));
+    }
+    
+    /**
+     * 清空目标生成目录
+     */
+    public static void delDir(File dir) {
+    	if (dir.isDirectory()) {
+            for (File f : dir.listFiles())
+            	delDir(f);
+        }
+    	dir.delete();
+    }
 
     /**
      * 生成表关联对应的实体类以及拓展类

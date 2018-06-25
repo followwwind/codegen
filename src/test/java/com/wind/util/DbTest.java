@@ -38,8 +38,8 @@ public class DbTest {
 
     @Test
     public void printTable(){
-        Table table = DbUtil.getTable("test", "user_info");
-        System.out.println(JsonUtil.toJson(table));
+        List<Table> tables = DbUtil.getTable("test", "user_info");
+        System.out.println(JsonUtil.toJson(tables));
     }
 
 }

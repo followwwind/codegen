@@ -9,6 +9,7 @@ import ${import};
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type>
 </#if>
+
 /**
  * ${remarks!""} mapper接口
  * @author wind

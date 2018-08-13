@@ -206,7 +206,7 @@ public class MybatisUtil {
      * 生成controller
      * @param table
      */
-    public static void genController(Table table){
+    public static void genController(Table table, boolean swaggerFlag){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_CONTROLLER_PATH);
         String property = table.getProperty();
@@ -226,6 +226,7 @@ public class MybatisUtil {
         	freeMarker.setData("mybatis/v2/controller.ftl", property + "Controller.java");
         }
         map.put(FtlConst.FTL_IMPORT, imports);
+        map.put(FtlConst.FTL_SWAGGER, swaggerFlag);
         freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);
     }

@@ -9,7 +9,20 @@ public interface PackageConst {
     /**
      * java代码包名
      */
-    String FTL_PACKAGR = "com.wind";
+    //String FTL_PACKAGR = "com.wind";
+	
+	/**
+     * java代码生成根路径
+     */
+    String FTL_DIR_PATH = "E:/work/freemarker/";
+	
+//	String FTL_PACKAGR = "com.ancda.payservice";
+	
+	String FTL_PACKAGR = "com.ancda.palmbaby.hm.modules.finance";
+	
+//    String FTL_PACKAGR = "com.ancda.palmbaby.hm.modules.school";
+    
+//    String FTL_PACKAGR = "com.ancda.palmbaby.hm.script.module.test";
     /**
      * ibatis公共类包
      */
@@ -23,7 +36,9 @@ public interface PackageConst {
 
     String FTL_PAGE_PACKAGE = FTL_PACKAGR + ".entity.base";
 
-    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity";
+//    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity";
+    
+    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity.po.refund";
 
     String FTL_ENTITY_EXTEND_PACKAGE = FTL_PACKAGR + ".entity.extend";
 

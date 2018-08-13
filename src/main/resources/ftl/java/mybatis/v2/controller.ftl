@@ -1,6 +1,6 @@
 package ${packageName!"com.wind.controller"};
 
-
+<#assign lBracket = "<"/>
 <#if imports??>
     <#list imports as import>
 import ${import};
@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+<#if swagger>import io.swagger.annotations.Api;${"\n"}</#if><#t>
+<#if swagger>import io.swagger.annotations.ApiOperation;${"\n"}</#if><#t>
 
 /**
  * ${remarks!""} controller
@@ -20,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping(value = "${property?uncap_first}")
-@Api(value="${property?uncap_first}")
+<#if swagger>@Api(value="${property?uncap_first}")${"\n"}</#if><#t>
 public class ${property}Controller{
     <#assign service = property?uncap_first + "Service">
 
@@ -34,7 +33,7 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
     public JsonResult save(${property} r) {
         int i = ${service}.insert(r);
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
@@ -47,7 +46,7 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")${"\n"}</#if><#t>
     public JsonResult delete(${property} r) {
         int i = ${service}.delete(r);
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
@@ -60,7 +59,7 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "findEntity", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 单条记录查询接口", notes="${property} 单条记录查询接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 单条记录查询接口", notes="${property} 单条记录查询接口")${"\n"}</#if><#t>
     public JsonResult find${property}(${property} r) {
         return new JsonResult(${service}.findEntity(r));
     }
@@ -72,7 +71,7 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "findList", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")${"\n"}</#if><#t>
     public JsonResult findList(${property} r) {
         return new JsonResult(${service}.findList(r));
     }
@@ -84,7 +83,7 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "findPageList", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")${"\n"}</#if><#t>
     public JsonResult findPageList(${property} r, Page page){
     	${service}.findPageList(r, page);
         return new JsonResult(page);
@@ -97,10 +96,9 @@ public class ${property}Controller{
      * @return
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    @ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
     public JsonResult update(${property} r) {
         int i = ${service}.update(r);
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
 }
-

@@ -1,44 +1,77 @@
-package com.wind.util.ftl;
+package com.wind.util;
 
 import com.wind.config.*;
+import com.wind.entity.clazz.ClassInfo;
 import com.wind.entity.db.Table;
-import com.wind.entity.ftl.FreeMarker;
 import com.wind.entity.ftl.MyBatis;
-import com.wind.util.JsonUtil;
-import com.wind.util.StringUtil;
 
 import java.util.*;
 
 /**
- * mybatis代码生成工具类
- * @author wind
+ * @Title: MybatisUtil
+ * @Package com.wind.util
+ * @Description: mybatis代码生成工具类
+ * @author huanghy
+ * @date 2018/8/16 19:39
+ * @version V1.0
  */
 public class MybatisUtil {
+
+
+
 	
 	/**
      * 生成基础工具类
      */
 	public static void genCommon(){
-        if(FtlConst.MYBATIS_VERSION == Version.V1){
-        	FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-            freeMarker.setFileDir(PathConst.FTL_ENTITY_BASE_PATH);
-            freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_IBATIS_COMMON_PACKAGE);
-        	freeMarker.setData("mybatis/v1/attrType.ftl",  "AttrType.java");
-            FtlUtil.genCode(freeMarker);
-            
-            freeMarker.setData("mybatis/v1/attr.ftl",  "Attribute.java");
-            FtlUtil.genCode(freeMarker);
-            
-            freeMarker.setData("mybatis/v1/baseBuilder.ftl",  "BaseBuilder.java");
-            FtlUtil.genCode(freeMarker);
-            
-            freeMarker.setData("mybatis/v1/condition.ftl",  "Condition.java");
-            FtlUtil.genCode(freeMarker);
-            
-            freeMarker.setData("mybatis/v1/example.ftl",  "Example.java");
-            FtlUtil.genCode(freeMarker);
-        }
+
 	}
+
+    /**
+     * 生成controller
+     * @param table
+     */
+    public static void genController(Table table, boolean swaggerFlag){
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(PathConst.FTL_CONTROLLER_PATH);
+        String property = table.getProperty();
+        freeMarker.setMap(JsonUtil.beanToMap(table, true));
+        Map<String, Object> map = new HashMap<>();
+        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_CONTROLLER_PACKAGE);
+        List<String> imports = new ArrayList<>();
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_PACKAGE, property));
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_PACKAGE, property + "Service"));
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
+
+        if(FtlConst.MYBATIS_VERSION == Version.V1){
+            freeMarker.setData("mybatis/v1/controller.ftl", property + "Controller.java");
+        }else if(FtlConst.MYBATIS_VERSION == Version.V2){
+            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PACKAGE, "JsonResult"));
+            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_CONSTANT_PACKAGE, "HttpCode"));
+            freeMarker.setData("mybatis/v2/controller.ftl", property + "Controller.java");
+        }
+        map.put(FtlConst.FTL_IMPORT, imports);
+        map.put(FtlConst.FTL_SWAGGER, swaggerFlag);
+        freeMarker.addMap(map);
+        FtlUtil.genCode(freeMarker);
+    }
+
+    /**
+     * 生成表关联对应的实体类以及拓展类
+     * @param table
+     */
+    public static void genEntity(Table table){
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        String className = table.getProperty();
+        freeMarker.setData("entity.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
+        ClassInfo classInfo = ClassUtil.getBean(table);
+        classInfo.setExtend(extend);
+        classInfo.setPackageName(PackageConst.FTL_ENTITY_PACKAGE);
+        classInfo.initImports();
+        freeMarker.setFileDir(PathConst.FTL_ENTITY_PATH);
+        freeMarker.setMap(JsonUtil.beanToMap(classInfo, true));
+        genCode(freeMarker);
+    }
 
     /**
      * 生成通用dao操作类
@@ -47,9 +80,9 @@ public class MybatisUtil {
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_DAO_BASE_PATH);
         if(FtlConst.MYBATIS_VERSION == Version.V1){
-        	freeMarker.setData("mybatis/v1/baseMapper.ftl",  "BaseMapper.java");
+            freeMarker.setData("mybatis/v1/baseMapper.ftl",  "BaseMapper.java");
         }else if(FtlConst.MYBATIS_VERSION == Version.V2){
-        	freeMarker.setData("mybatis/v2/baseMapper.ftl",  "BaseMapper.java");
+            freeMarker.setData("mybatis/v2/baseMapper.ftl",  "BaseMapper.java");
         }
         Map<String, Object> map = new HashMap<>();
         map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_DAO_BASE_PACKAGE);
@@ -76,12 +109,12 @@ public class MybatisUtil {
             List<String> imports = new ArrayList<>();
             imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_PACKAGE, property));
             imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_DAO_BASE_PACKAGE, "BaseMapper"));
-            
+
             if(FtlConst.MYBATIS_VERSION == Version.V1){
-            	imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_EXAMPLE_PACKAGE, property + "Example"));
-            	freeMarker.setData("mybatis/v1/rMapper.ftl", property + "Mapper.java");
+                imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_EXAMPLE_PACKAGE, property + "Example"));
+                freeMarker.setData("mybatis/v1/rMapper.ftl", property + "Mapper.java");
             }else if(FtlConst.MYBATIS_VERSION == Version.V2){
-            	freeMarker.setData("mybatis/v2/rMapper.ftl", property + "Mapper.java");
+                freeMarker.setData("mybatis/v2/rMapper.ftl", property + "Mapper.java");
             }
             map.put(FtlConst.FTL_IMPORT, imports);
             freeMarker.addMap(map);
@@ -94,13 +127,32 @@ public class MybatisUtil {
         myBatis.setExample(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_EXAMPLE_PACKAGE, property + "Example"));
         myBatis.setTable(table);
         if(FtlConst.MYBATIS_VERSION == Version.V1){
-        	freeMarker.setData("mybatis/v1/mapper.ftl", property + "Mapper.xml");
+            freeMarker.setData("mybatis/v1/mapper.ftl", property + "Mapper.xml");
         }else if(FtlConst.MYBATIS_VERSION == Version.V2){
-        	freeMarker.setData("mybatis/v2/mapper.ftl", property + "Mapper.xml");
+            freeMarker.setData("mybatis/v2/mapper.ftl", property + "Mapper.xml");
         }
         freeMarker.initMap();
         freeMarker.addMap(JsonUtil.beanToMap(myBatis, true));
         freeMarker.setFileDir(PathConst.FTL_MAPPER_PATH);
+        FtlUtil.genCode(freeMarker);
+    }
+
+    /**
+     * 生成通用顶层service
+     */
+    public static void genBaseService(){
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
+        freeMarker.setData("baseService.ftl", "BaseService.java");
+        Map<String, Object> map = new HashMap<>();
+        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
+        List<String> imports = new ArrayList<>();
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
+        map.put(FtlConst.FTL_IMPORT, imports);
+        freeMarker.addMap(map);
+        FtlUtil.genCode(freeMarker);
+        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
+        freeMarker.setData("baseServiceImpl.ftl", "BaseServiceImpl.java");
         FtlUtil.genCode(freeMarker);
     }
 
@@ -149,30 +201,7 @@ public class MybatisUtil {
         freeMarker.setFileDir(PathConst.FTL_SERVICE_IMPL_PATH);
         FtlUtil.genCode(freeMarker);
     }
-    
-    /**
-     * 生成example
-     * @param table
-     */
-    public static void genExample(Table table){
-    	if(FtlConst.MYBATIS_VERSION == Version.V1){
-    		FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-            freeMarker.setFileDir(PathConst.FTL_ENTITY_EXAMPLE_PATH);
-            freeMarker.setMap(JsonUtil.beanToMap(table, true));
-            String property = table.getProperty();
-            Map<String, Object> map = new HashMap<>();
-            map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_ENTITY_EXAMPLE_PACKAGE);
-            List<String> imports = new ArrayList<>();
-            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_IBATIS_COMMON_PACKAGE, "AttrType"));
-            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_IBATIS_COMMON_PACKAGE, "Attribute"));
-            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_IBATIS_COMMON_PACKAGE, "BaseBuilder"));
-            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_IBATIS_COMMON_PACKAGE, "Example"));
-            map.put(FtlConst.FTL_IMPORT, imports);
-            freeMarker.addMap(map);
-            freeMarker.setData("mybatis/v1/rExample.ftl", property + "Example.java");
-            FtlUtil.genCode(freeMarker);
-    	}
-    }
+
 
     /**
      * 生成测试类
@@ -198,35 +227,6 @@ public class MybatisUtil {
         }
         
         map.put(FtlConst.FTL_IMPORT, imports);
-        freeMarker.addMap(map);
-        FtlUtil.genCode(freeMarker);
-    }
-
-    /**
-     * 生成controller
-     * @param table
-     */
-    public static void genController(Table table, boolean swaggerFlag){
-        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-        freeMarker.setFileDir(PathConst.FTL_CONTROLLER_PATH);
-        String property = table.getProperty();
-        freeMarker.setMap(JsonUtil.beanToMap(table, true));
-        Map<String, Object> map = new HashMap<>();
-        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_CONTROLLER_PACKAGE);
-        List<String> imports = new ArrayList<>();
-        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_PACKAGE, property));
-        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_PACKAGE, property + "Service"));
-        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
-        
-        if(FtlConst.MYBATIS_VERSION == Version.V1){
-        	freeMarker.setData("mybatis/v1/controller.ftl", property + "Controller.java");
-        }else if(FtlConst.MYBATIS_VERSION == Version.V2){
-        	imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PACKAGE, "JsonResult"));
-        	imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_CONSTANT_PACKAGE, "HttpCode"));
-        	freeMarker.setData("mybatis/v2/controller.ftl", property + "Controller.java");
-        }
-        map.put(FtlConst.FTL_IMPORT, imports);
-        map.put(FtlConst.FTL_SWAGGER, swaggerFlag);
         freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);
     }

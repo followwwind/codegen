@@ -2,8 +2,8 @@ package com.wind.ftl;
 
 import com.wind.entity.db.Table;
 import com.wind.util.DbUtil;
-import com.wind.util.ftl.FtlUtil;
-import com.wind.util.ftl.MybatisUtil;
+import com.wind.util.FtlUtil;
+import com.wind.util.MybatisUtil;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;

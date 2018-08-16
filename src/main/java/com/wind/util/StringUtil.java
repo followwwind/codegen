@@ -1,61 +1,27 @@
 package com.wind.util;
 
 import com.wind.config.Const;
-import com.wind.config.FtlConst;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.StringTokenizer;
 
 /**
- * 字符串工具类
- * @author wind
+ * @Title: StringUtil
+ * @Package com.wind.util
+ * @Description: 字符串工具类
+ * @author huanghy
+ * @date 2018/8/16 17:43
+ * @version V1.0
  */
 public class StringUtil {
 
-    private static AtomicLong next = new AtomicLong(1);
-
     /**
-     * 判断字符串是否为null或空字符串
+     * 判断字符串不为null且空字符串
      * @param str
      * @return
      */
-    public static boolean isEmpty(String str){
+    public static boolean isNotBlank(String str){
         return str != null && "".equals(str.trim());
-    }
-
-    /**
-     * 获取32位的UUID
-     * @return
-     */
-    public static String getUUID(){
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-
-    /**
-     * 生成一个13位数的唯一id
-     * @return
-     */
-    public static long getPKNum(){
-        return next.getAndIncrement() + System.currentTimeMillis();
-    }
-
-    /**
-     * url编码
-     * @param str
-     * @return
-     */
-    public static String encodeUrl(String str){
-        String s = null;
-        try {
-            s = URLEncoder.encode(str, Const.UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return s;
     }
 
 
@@ -80,52 +46,15 @@ public class StringUtil {
     }
 
     /**
-     * 由于String.subString对汉字处理存在问题（把一个汉字视为一个字节)，因此在 包含汉字的字符串时存在隐患，现调整如下：
-     *
-     * @param src
-     * 要截取的字符串
-     * @param startIdx
-     * 开始坐标（包括该坐标)
-     * @param endIdx
-     * 截止坐标（包括该坐标）
-     * @return
-     */
-    public static String substring(String src, int startIdx, int endIdx) {
-        byte[] b = src.getBytes();
-        StringBuilder sb = new StringBuilder();
-        for (int i = startIdx; i <= endIdx; i++) {
-            sb.append(b[i]);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * url解码
-     * @param str
-     * @return
-     */
-    public static String decodeUrl(String str){
-        String s = null;
-        try {
-            s = URLDecoder.decode(str, Const.UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return s;
-    }
-
-    /**
      * 字符串拼接
      * @param sign
-     * @param strs
+     * @param arr
      * @return
      */
-    public static String joinStr(String sign, String... strs){
+    public static String joinStr(String sign, String... arr){
         StringBuilder sb = new StringBuilder();
-        Optional<String> optional  = Arrays.stream(strs).reduce((a, b) -> a + sign + b);
-        if(optional.isPresent()){
-            sb.append(optional.get());
-        }
+        Optional<String> optional  = Arrays.stream(arr).reduce((a, b) -> a + sign + b);
+        optional.ifPresent(sb::append);
         return sb.toString();
     }
 
@@ -136,12 +65,11 @@ public class StringUtil {
      * @return
      */
     public static String getCamelCase(String colName, boolean flag){
-        String str = colName;
         StringBuilder sb = new StringBuilder();
         if(colName != null){
-            String[] strs = StringUtil.split(colName, Const.UNDERLINE);
-            for(int i = 0; i < strs.length; i++){
-                String s = strs[i];
+            String[] arr = StringUtil.split(colName, Const.UNDERLINE);
+            for(int i = 0; i < arr.length; i++){
+                String s = arr[i];
                 if(i == 0){
                     sb.append(getFirst(s, flag));
                 }else{
@@ -175,16 +103,8 @@ public class StringUtil {
     }
 
 
-
     public static void main(String[] args) {
-        /*String orginStr = null;
-        String[] strArr = split(orginStr, ".");
-        System.out.println(Arrays.asList(strArr));*/
 
-        String[] strs = split("java.util.Date", Const.POINT_STR);
-        System.out.println(strs.length);
-
-        //System.out.printf(StringUtil.joinStr(Const.POINT_STR, FtlConst.FTL_PACKAGR, FtlConst.FTL_CONTROLLER));
     }
 
 }

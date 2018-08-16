@@ -32,7 +32,7 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @PostMapping("/")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
     public JsonResult save(${property} r) {
         int i = ${service}.insert(r);
@@ -45,7 +45,7 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @DeleteMapping("/{id}")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")${"\n"}</#if><#t>
     public JsonResult delete(${property} r) {
         int i = ${service}.delete(r);

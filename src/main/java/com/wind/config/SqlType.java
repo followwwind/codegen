@@ -4,11 +4,14 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * mysql字段类型对应java bean对象
- * @author wind
- *
+ * @Title: SqlType
+ * @Package com.wind.config
+ * @Description: mysql字段类型对应java bean对象
+ * @author huanghy
+ * @date 2018/8/16 18:50
+ * @version V1.0
  */
-public enum SqlConst {
+public enum SqlType {
 	
 	/**
 	 * 数值类型
@@ -66,7 +69,7 @@ public enum SqlConst {
 	private String type;
 	
 
-	SqlConst(String name, String type) {
+	SqlType(String name, String type) {
 		this.name = name;
 		this.type = type;
 	}	
@@ -84,20 +87,14 @@ public enum SqlConst {
 	 * 表字段类型转换成java类型
 	 * @param columnType
 	 * @return
-	 * @throws Exception 
 	 */
-	public static String getFieldType(String columnType){
-		Optional<SqlConst> opt = Stream.of(SqlConst.values()).
+	public static String getJavaType(String columnType){
+		Optional<SqlType> opt = Stream.of(SqlType.values()).
 				filter(val -> {
 					String name = val.name;
 					return columnType.replaceAll(" UNSIGNED", "").equals(name);
 				}).findFirst();
 
-		if(opt.isPresent()) {
-			String type = opt.get().getType();
-			return type;
-		}
-		
-		return null;
+		return opt.map(SqlType::getType).orElse(null);
 	}
 }

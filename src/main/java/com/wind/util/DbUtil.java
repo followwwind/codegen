@@ -1,11 +1,10 @@
 package com.wind.util;
 
 import com.wind.callback.DbCallBack;
-import com.wind.config.SqlConst;
+import com.wind.config.SqlType;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.PrimaryKey;
 import com.wind.entity.db.Table;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.Properties;
 public class DbUtil {
 
     private static Properties props;
-
-//    private static Connection conn;
 
     static {
         props = PropUtil.readProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
@@ -115,7 +112,6 @@ public class DbUtil {
      * @param catalog
      * @param tableName
      * @return
-     * @throws Exception 
      */
     public static List<Table> getTable(String catalog, String tableName) {
         Connection con = null;
@@ -140,7 +136,6 @@ public class DbUtil {
      * 组装table数据
      * @param rs
      * @return
-     * @throws Exception 
      */
     private static Table getTable(DatabaseMetaData db, ResultSet rs) {
         Table table = null;
@@ -202,12 +197,11 @@ public class DbUtil {
 		    column.setColumnName(colName);
 		    column.setColumnType(typeName);
 		    column.setProperty(StringUtil.getCamelCase(colName, false));
-		    String type = SqlConst.getFieldType(typeName);
+		    String type = SqlType.getJavaType(typeName);
 		    if(type == null) {
-		    	StringBuilder sb = new StringBuilder();
-		    	sb.append("表字段类型转换成java类型，找不到类型").append(",catalog:").append(catalog).append(",tableName:")
-		    	.append(tableName).append(",typeName:").append(typeName).append(",colName:").append(colName);
-		    	throw new SQLException(sb.toString());
+		    	throw new SQLException("表字段类型转换成java类型，找不到类型," +
+                        "catalog is" +  catalog + ",tableName is " +  tableName + "," +
+                        "typeName is " +  typeName + ",colName is " +  colName);
 		    }
 		    column.setType(type);
 		    column.setColumnSize(rs.getInt("COLUMN_SIZE"));

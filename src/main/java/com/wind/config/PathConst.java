@@ -36,9 +36,4 @@ public interface PathConst {
     String FTL_SERVICE_BASE_PATH = FTL_DIR_PATH + "/service/base";
 
     String FTL_TEST_PATH = FTL_DIR_PATH + "/test";
-
-
-
-
-
 }

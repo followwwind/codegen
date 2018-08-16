@@ -15,11 +15,6 @@ public class MyBatis{
      * mybatis对应实体类全名
      */
     private String type;
-    
-    /**
-     * mybatis对应实体类查询条件
-     */
-    private String example;
 
     /**
      * 表数据
@@ -52,12 +47,4 @@ public class MyBatis{
     public void setTable(Table table) {
         this.table = table;
     }
-
-	public String getExample() {
-		return example;
-	}
-
-	public void setExample(String example) {
-		this.example = example;
-	}
 }

@@ -50,10 +50,4 @@ public interface FtlConst {
     String FTL_HTML = "html";
 
     String FTL_JSP = "jsp";
-    /**
-     * java jdk版本
-     */
-    int JDK_VERSION = 8;
-    
-    Version MYBATIS_VERSION = Version.V2;
 }

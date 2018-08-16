@@ -7,10 +7,6 @@ import java.io.File;
  * @author wind
  */
 public interface Const {
-    /**
-     * 空字符串
-     */
-    int MAP_SIZE = 16;
 
     /**********************************************分隔符常量************************************************/
 
@@ -32,27 +28,58 @@ public interface Const {
 
     String USER_DIR = "user.dir";
 
-    /**********************************************日期时间常量************************************************/
-
-    String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
-
-    String DATE_STR = "yyyy-MM-dd";
-
-    int SECOND = 1000;
-
-    int MINUTE = 60 * SECOND;
-
-    int HOUR = 60 * MINUTE;
-
-    int DAY = 24 * HOUR;
-
     /**********************************************编码格式************************************************/
 
     String UTF8 = "UTF-8";
 
+    /**
+     * flt模板根路径
+     */
+    String FTL_JAVA = "src/main/resources/ftl/java";
 
-    /**********************************************正则表达式************************************************/
-    String NUMBER = "^[0-9]*$";
+    /**
+     * java代码生成根路径
+     */
+    String FTL_DIR = "E:/work/freemarker/";
 
-    String FLOAT = "^\\d+\\.\\d+$";
+    int MAP_SIZE = 16;
+
+    /**********************************************java************************************************/
+    String SCOPE_PUBLIC = "public";
+
+    String SCOPE_PRIVATE = "private";
+
+    String SCOPE_PROTECTED = "protected";
+
+    String JAVA = "java";
+
+    String CLASS = "class";
+
+    String ABSTRACT = "abstract";
+
+    String INTERFACE = "interface";
+
+    String ENUM = "enum";
+
+    String ANNOTATION = "annotation";
+
+    String PACKAGE = "package";
+
+    String JAVA_LANG = "java.lang.";
+
+    String DATE = "java.util.Date";
+
+    String LIST = "java.util.List";
+
+    String MAP = "java.util.Map";
+
+    String BIGDECIMAL = "BigDecimal";
+
+    String INT = "int";
+
+    String STRING = "string";
+
+    String VOID = "void";
+
+
 }

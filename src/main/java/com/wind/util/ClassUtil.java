@@ -1,9 +1,8 @@
 package com.wind.util;
 
-import com.wind.config.JavaConst;
 import com.wind.entity.clazz.ClassField;
 import com.wind.entity.clazz.ClassInfo;
-import com.wind.entity.clazz.ClassType;
+import com.wind.entity.enums.ClassType;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.Table;
 

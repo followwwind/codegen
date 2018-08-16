@@ -6,9 +6,7 @@ import com.wind.util.ftl.FtlUtil;
 import com.wind.util.ftl.MybatisUtil;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +54,7 @@ public class MybatisTest {
         tables.stream().forEach(table -> {
         	String tableName = table.getTableName();
         	table.setTableName(tableName.replaceAll("pmt_", ""));
-            MybatisUtil.genController(table);
+            MybatisUtil.genController(table, false);
             FtlUtil.genEntity(table, false);
             MybatisUtil.genMapper(table, true);
             //MybatisUtil.genExample(table);

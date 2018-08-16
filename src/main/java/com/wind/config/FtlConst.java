@@ -14,6 +14,8 @@ public interface FtlConst {
      * java代码生成根路径
      */
     String FTL_DIR = "D:/work/freemarker/src";
+    
+    String FTL_SWAGGER = "swagger";
 
     String FTL_CONTROLLER = "controller";
 

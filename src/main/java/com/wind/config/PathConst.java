@@ -9,7 +9,7 @@ public interface PathConst {
     /**
      * java代码生成根路径
      */
-    String FTL_DIR_PATH = "D:/work/freemarker/src";
+    String FTL_DIR_PATH = "E:/work/freemarker/";
 
     String FTL_CONTROLLER_PATH = FTL_DIR_PATH + "/controller";
 

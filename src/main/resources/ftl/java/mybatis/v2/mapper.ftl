@@ -56,16 +56,16 @@
         )
     </insert>
     
-    <insert id="insertBatch" >
-        insert into ${tableName} (
-        <include refid="Column_List" />
-        ) values 
-        <foreach collection="list" item="item" separator=",">
-			(
-			<include refid="InsertBatch_List" />
-			)
-		</foreach>
-    </insert>
+    <!--<insert id="insertBatch" >-->
+        <!--insert into ${tableName} (-->
+        <!--<include refid="Column_List" />-->
+        <!--) values-->
+        <!--<foreach collection="list" item="item" separator=",">-->
+            <!--(-->
+            <!--<include refid="InsertBatch_List" />-->
+            <!--)-->
+        <!--</foreach>-->
+    <!--</insert>-->
 
     <delete id="delete" parameterType="${type}" >
         delete from ${tableName} where 1 = 1

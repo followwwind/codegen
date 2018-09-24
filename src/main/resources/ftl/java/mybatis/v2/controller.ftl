@@ -6,6 +6,8 @@ package ${packageName!"com.wind.controller"};
 import ${import};
     </#list>
 </#if>
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 <#if swagger>@Api(value="${property?uncap_first}")${"\n"}</#if><#t>
 public class ${property}Controller{
     <#assign service = property?uncap_first + "Service">
-
+	
+	private Logger logger = LoggerFactory.getLogger(${property}Controller.class);
+	
     @Autowired
     private ${property}Service ${service};
 
@@ -34,59 +38,58 @@ public class ${property}Controller{
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
-    public JsonResult save(${property} r) {
-        int i = ${service}.insert(r);
+    public JsonResult save() {
+        int i = 0;
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
 
     /**
      * 删除记录接口
-     * ${property?uncap_first}/delete
+     * ${property?uncap_first}/delete/{id}
      * @param r
      * @return
      */
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")${"\n"}</#if><#t>
-    public JsonResult delete(${property} r) {
-        int i = ${service}.delete(r);
+    public JsonResult delete() {
+        int i = 0;
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
 
     /**
      * 单条记录查询接口
-     * ${property?uncap_first}/findEntity
+     * ${property?uncap_first}/{id}
      * @param r
      * @return
      */
-    @RequestMapping(value = "findEntity", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 单条记录查询接口", notes="${property} 单条记录查询接口")${"\n"}</#if><#t>
-    public JsonResult find${property}(${property} r) {
-        return new JsonResult(${service}.findEntity(r));
+    public JsonResult get() {
+        return new JsonResult(null);
     }
 
     /**
      * 批量查询记录接口
-     * ${property?uncap_first}/findList
+     * ${property?uncap_first}/list
      * @param r
      * @return
      */
-    @RequestMapping(value = "findList", method = RequestMethod.POST)
+    @RequestMapping(value = "list", method = RequestMethod.POST)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")${"\n"}</#if><#t>
-    public JsonResult findList(${property} r) {
-        return new JsonResult(${service}.findList(r));
+    public JsonResult list() {
+        return new JsonResult(null);
     }
 
     /**
      * 分页查询记录接口
-     * ${property?uncap_first}/findPageList
+     * ${property?uncap_first}/page/list
      * @param r
      * @return
      */
-    @RequestMapping(value = "findPageList", method = RequestMethod.POST)
+    @RequestMapping(value = "page/list", method = RequestMethod.POST)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")${"\n"}</#if><#t>
-    public JsonResult findPageList(${property} r, Page page){
-    	${service}.findPageList(r, page);
-        return new JsonResult(page);
+    public JsonResult pageList(){
+        return new JsonResult(null);
     }
 
     /**
@@ -97,8 +100,8 @@ public class ${property}Controller{
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
-    public JsonResult update(${property} r) {
-        int i = ${service}.update(r);
+    public JsonResult update() {
+        int i = 0;
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
 }

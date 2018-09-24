@@ -27,7 +27,7 @@ public class MybatisTest {
     		return Arrays.asList(arr).stream().anyMatch(str -> tableName.contains(str));
     	}).collect(Collectors.toList()));*/
         
-        tables.addAll(DbUtil.getTable("child", "pmt"));
+        tables.addAll(DbUtil.getTable("test", ""));
         
     	//common();
 //		tables.add(DbUtil.getTable("test", "demo"));

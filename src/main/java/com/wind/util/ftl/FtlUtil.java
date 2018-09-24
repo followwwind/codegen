@@ -66,7 +66,7 @@ public class FtlUtil {
      * 清空工作目录
      */
     public static void clear() {
-    	delDir(new File(FtlConst.FTL_DIR));
+    	delDir(new File(PathConst.FTL_DIR_PATH));
     }
     
     /**
@@ -86,7 +86,7 @@ public class FtlUtil {
      * @param table
      */
     public static void genEntity(Table table, boolean flag){
-        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         String className = table.getProperty();
         String extendClassName = className + StringUtil.getFirst(FtlConst.FTL_EXTEND, true);
         ClassInfo extend = null;
@@ -114,7 +114,7 @@ public class FtlUtil {
      * 生成分页实体类
      */
     public static void genPage(){
-        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_PAGE_PATH );
         freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_PAGE_PACKAGE);
         freeMarker.setData("page.ftl", "Page.java");
@@ -125,7 +125,7 @@ public class FtlUtil {
      * 生成通用顶层service
      */
     public static void genBaseService(){
-        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
         freeMarker.setData("baseService.ftl", "BaseService.java");
         Map<String, Object> map = new HashMap<>();

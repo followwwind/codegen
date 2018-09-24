@@ -5,15 +5,6 @@ package com.wind.config;
  * @author wind
  */
 public interface FtlConst {
-    /**
-     * flt模板根路径
-     */
-    String FTL_JAVA = "src/main/resources/ftl/java";
-
-    /**
-     * java代码生成根路径
-     */
-    String FTL_DIR = "E:/work/freemarker/";
     
     String FTL_SWAGGER = "swagger";
 

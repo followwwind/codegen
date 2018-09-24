@@ -20,28 +20,21 @@ public interface BaseMapper<R, PK> {
      * @param r
      * @return
      */
-    int insert(R r);
-    
-    /**
-     * 批量添加纪录
-     * @param list
-     * @return
-     */
-    int insertBatch(List<R> list);
+    int save(R r);
 
     /**
      * 批量删除记录
-     * @param r
+     * @param id
      * @return
      */
-    int delete(R r);
+    int deleteById(PK id);
 
     /**
      * 通过and拼接查询记录
      * @param id
      * @return
      */
-    R findEntity(PK id);
+    R findById(PK id);
 
     /**
      * 条件批量查询记录

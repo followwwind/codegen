@@ -67,12 +67,11 @@
         <!--</foreach>-->
     <!--</insert>-->
 
-    <delete id="delete" parameterType="${type}" >
-        delete from ${tableName} where 1 = 1
-        <include refid="Column_Selective_And_List" />
+    <delete id="deleteById" parameterType="${pkJType}" >
+        delete from ${tableName} where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
     </delete>
     
-    <select id="findEntity" resultMap="BaseResultMap" parameterType="${pkJType}">
+    <select id="findById" resultMap="BaseResultMap" parameterType="${pkJType}">
         select
         <include refid="Column_List" />
         from ${tableName}

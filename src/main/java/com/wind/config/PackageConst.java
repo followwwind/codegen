@@ -9,36 +9,17 @@ public interface PackageConst {
     /**
      * java代码包名
      */
-    //String FTL_PACKAGR = "com.wind";
+	String FTL_PACKAGR = "com.wind.springboot";
 	
-	/**
-     * java代码生成根路径
-     */
-    String FTL_DIR_PATH = "E:/work/freemarker/";
-	
-//	String FTL_PACKAGR = "com.ancda.payservice";
-	
-	String FTL_PACKAGR = "com.ancda.palmbaby.hm.modules.finance";
-	
-//    String FTL_PACKAGR = "com.ancda.palmbaby.hm.modules.school";
-    
-//    String FTL_PACKAGR = "com.ancda.palmbaby.hm.script.module.test";
     /**
      * ibatis公共类包
      */
-    String FTL_IBATIS_COMMON_PACKAGE = FTL_PACKAGR + ".entity.base";
 
     String FTL_CONTROLLER_PACKAGE = FTL_PACKAGR + ".controller";
 
-    String FTL_DAO_BASE_PACKAGE = FTL_PACKAGR + ".dao.base";
-
     String FTL_DAO_PACKAGE = FTL_PACKAGR + ".dao";
 
-    String FTL_PAGE_PACKAGE = FTL_PACKAGR + ".entity.base";
-
-//    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity";
-    
-    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity.po.refund";
+    String FTL_ENTITY_PACKAGE = FTL_PACKAGR + ".entity.po";
 
     String FTL_ENTITY_EXTEND_PACKAGE = FTL_PACKAGR + ".entity.extend";
 
@@ -54,5 +35,9 @@ public interface PackageConst {
     
     String FTL_COMMON_PACKAGE = FTL_PACKAGR + ".common";
     
+    String FTL_COMMON_PERSISTENCE_PACKAGE = FTL_PACKAGR + ".common.persistence";
+    
     String FTL_COMMON_CONSTANT_PACKAGE = FTL_PACKAGR + ".common.constant";
+    
+    String FTL_COMMON_SQL_PACKAGE = FTL_PACKAGR + ".common.annotation";
 }

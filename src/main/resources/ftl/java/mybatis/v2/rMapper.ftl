@@ -9,8 +9,6 @@ import ${import};
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type>
 </#if>
-import com.ancda.palmbaby.hm.common.persistence.annotation.SqlMapper;
-import com.ancda.palmbaby.hm.common.persistence.dao.BaseMapper;
 
 /**
  * ${remarks!""} mapper接口

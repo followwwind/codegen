@@ -15,8 +15,12 @@ import ${import};
     <#assign imp = impls>
 </#if>
 /**
- * ${remark!""}
+ * @Title: ${name}
+ * @Package ${packageName!"com.wind"}
+ * @Description: ${remark!""}
  * @author wind
+ * @date .now?string("yyyy/MM/dd HH:mm:ss")
+ * @version V1.0
  */
 ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{
 

@@ -116,7 +116,7 @@ public class FtlUtil {
     public static void genPage(){
         FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_PAGE_PATH );
-        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_PAGE_PACKAGE);
+        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE);
         freeMarker.setData("page.ftl", "Page.java");
         FtlUtil.genCode(freeMarker);
     }
@@ -131,7 +131,7 @@ public class FtlUtil {
         Map<String, Object> map = new HashMap<>();
         map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
         List<String> imports = new ArrayList<>();
-        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_PAGE_PACKAGE, "Page"));
+        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE, "Page"));
         map.put(FtlConst.FTL_IMPORT, imports);
         freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);

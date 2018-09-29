@@ -11,8 +11,12 @@ import ${import};
 </#if>
 
 /**
- * ${remarks!""} service接口
+ * @Title: ${property}Service
+ * @Package ${packageName!"com.wind.service"}
+ * @Description: ${remarks!""} service
  * @author wind
+ * @date .now?string("yyyy/MM/dd HH:mm:ss")
+ * @version V1.0
  */
 public interface ${property}Service extends BaseService<${property}, ${type!"String"}>{
 

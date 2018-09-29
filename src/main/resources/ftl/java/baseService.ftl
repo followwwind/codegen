@@ -8,10 +8,12 @@ import ${import};
 </#if>
 
 /**
- * 数据库dao通用接口
+ * @Title: BaseService
+ * @Package ${packageName!"com.wind.service.base"}
+ * @Description: 基础service增删查改服务
  * @author wind
- * @param <R> 数据库表关联的实体类
- * @param <PK> 主键类型
+ * @date .now?string("yyyy/MM/dd HH:mm:ss")
+ * @version V1.0
  */
 public interface BaseService<R, PK> {
     /**

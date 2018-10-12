@@ -39,7 +39,6 @@ public class MybatisTest {
     }
     
     private void common(){
-    	FtlUtil.genPage();
         MybatisUtil.genCommon();
         MybatisUtil.genBaseMapper();
         FtlUtil.genBaseService();
@@ -51,7 +50,7 @@ public class MybatisTest {
         System.out.println(tables.size());
         tables.forEach(table -> {
         	String tableName = table.getTableName();
-        	table.setTableName(tableName.replaceAll("pmt_", ""));
+        	table.setTableName(tableName.replaceAll("", ""));
             MybatisUtil.genController(table, false);
             FtlUtil.genEntity(table, false);
             MybatisUtil.genMapper(table, true);

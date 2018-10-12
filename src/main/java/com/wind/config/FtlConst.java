@@ -5,6 +5,7 @@ package com.wind.config;
  * @author wind
  */
 public interface FtlConst {
+
     
     String FTL_SWAGGER = "swagger";
 

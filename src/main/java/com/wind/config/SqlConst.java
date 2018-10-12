@@ -1,6 +1,5 @@
 package com.wind.config;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -87,17 +86,9 @@ public enum SqlConst {
 	 * @throws Exception 
 	 */
 	public static String getFieldType(String columnType){
-		Optional<SqlConst> opt = Stream.of(SqlConst.values()).
-				filter(val -> {
-					String name = val.name;
-					return columnType.replaceAll(" UNSIGNED", "").equals(name);
-				}).findFirst();
-
-		if(opt.isPresent()) {
-			String type = opt.get().getType();
-			return type;
-		}
-		
-		return null;
+		return Stream.of(SqlConst.values()).filter(val -> {
+			String name = val.name;
+			return columnType.replaceAll(" UNSIGNED", "").equals(name);
+		}).findFirst().map(SqlConst::getType).orElse(null);
 	}
 }

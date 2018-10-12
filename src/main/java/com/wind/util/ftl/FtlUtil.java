@@ -109,18 +109,7 @@ public class FtlUtil {
         freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }
-    
 
-    /**
-     * 生成分页实体类
-     */
-    public static void genPage(){
-        FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
-        freeMarker.setFileDir(PathConst.FTL_PAGE_PATH );
-        freeMarker.addMap(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE);
-        freeMarker.setData("page.ftl", "Page.java");
-        FtlUtil.genCode(freeMarker);
-    }
 
     /**
      * 生成通用顶层service

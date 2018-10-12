@@ -27,7 +27,6 @@ public class JdbcTest {
 
     private void genCommon(){
         JdbcUtil.genCommon();
-        FtlUtil.genPage();
         JdbcUtil.genBaseDao();
         FtlUtil.genBaseService();
     }

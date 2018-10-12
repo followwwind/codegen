@@ -31,8 +31,6 @@ public class MybatisTest {
         
     	//common();
 //		tables.add(DbUtil.getTable("test", "demo"));
-        
-		tables = tables.stream().filter(table -> table != null).collect(Collectors.toList());
     }
     
     @Test
@@ -51,7 +49,7 @@ public class MybatisTest {
     public void genAllCode(){
         long start = System.currentTimeMillis();
         System.out.println(tables.size());
-        tables.stream().forEach(table -> {
+        tables.forEach(table -> {
         	String tableName = table.getTableName();
         	table.setTableName(tableName.replaceAll("pmt_", ""));
             MybatisUtil.genController(table, false);

@@ -7,16 +7,15 @@ import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.util.ClassUtil;
 import com.wind.util.JsonUtil;
+import com.wind.util.ReflectUtil;
 import com.wind.util.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 
 /**
@@ -73,11 +72,14 @@ public class FtlUtil {
      * 清空目标生成目录
      */
     public static void delDir(File dir) {
-    	if (dir.isDirectory()) {
-            for (File f : dir.listFiles())
-            	delDir(f);
+    	if (dir != null) {
+            if(dir.isDirectory()){
+                File[] files = dir.listFiles();
+                Stream.of(files != null ? files : new File[0]).forEach(FtlUtil::delDir);
+            }else{
+                dir.delete();
+            }
         }
-    	dir.delete();
     }
 
     /**
@@ -94,10 +96,9 @@ public class FtlUtil {
         	extend = new ClassInfo(extendClassName, ClassType.CLASS, JavaConst.ABSTRACT + Const.SPACE_STR + JavaConst.CLASS);
             extend.setPackageName(PackageConst.FTL_ENTITY_EXTEND_PACKAGE);
             freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, extendClassName, JavaConst.JAVA));
-            freeMarker.setMap(JsonUtil.beanToMap(extend, true));
+            freeMarker.setMap(ReflectUtil.beanToMap(table, true));
             freeMarker.setFileDir(PathConst.FTL_ENTITY_EXTEND_PATH);
             genCode(freeMarker);
-            
         }
         freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
         ClassInfo classInfo = ClassUtil.getBean(table);
@@ -105,7 +106,7 @@ public class FtlUtil {
         classInfo.setPackageName(PackageConst.FTL_ENTITY_PACKAGE);
         classInfo.initImports();
         freeMarker.setFileDir(PathConst.FTL_ENTITY_PATH);
-        freeMarker.setMap(JsonUtil.beanToMap(classInfo, true));
+        freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }
     
@@ -116,7 +117,7 @@ public class FtlUtil {
     public static void genPage(){
         FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_PAGE_PATH );
-        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE);
+        freeMarker.addMap(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE);
         freeMarker.setData("page.ftl", "Page.java");
         FtlUtil.genCode(freeMarker);
     }
@@ -128,14 +129,14 @@ public class FtlUtil {
         FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
         freeMarker.setData("baseService.ftl", "BaseService.java");
-        Map<String, Object> map = new HashMap<>();
-        map.put(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
+        Map<String, Object> map = new HashMap<>(16);
+        map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
         List<String> imports = new ArrayList<>();
         imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE, "Page"));
         map.put(FtlConst.FTL_IMPORT, imports);
         freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);
-        freeMarker.addMap(FtlConst.FTL_PACKAGR_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
+        freeMarker.addMap(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
         freeMarker.setData("baseServiceImpl.ftl", "BaseServiceImpl.java");
         FtlUtil.genCode(freeMarker);
     }

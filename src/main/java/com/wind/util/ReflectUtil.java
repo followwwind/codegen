@@ -1,6 +1,8 @@
 package com.wind.util;
 
 
+import com.wind.config.Const;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -25,7 +27,7 @@ public class ReflectUtil {
         if(flag){
             Class<?> supperClass = c.getSuperclass();
             if(!Object.class.equals(supperClass)){
-                fields.addAll(getFields(supperClass, flag));
+                fields.addAll(getFields(supperClass, true));
             }
         }
         return fields;
@@ -46,6 +48,30 @@ public class ReflectUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * bean实体类转换成map，字段名为key，值为value
+     * @param obj
+     * @param flag 若为false,则不获取父类成员属性，true则获取
+     * @return
+     */
+    public static Map<String, Object> beanToMap(Object obj, boolean flag){
+        Map<String, Object> map = new HashMap<>(Const.MAP_SIZE);
+        if(obj != null){
+            List<Field> fields = ReflectUtil.getFields(obj.getClass(), flag);
+            fields.forEach(field -> {
+                field.setAccessible(true);
+                try {
+                    String name = field.getName();
+                    Object val = field.get(obj);
+                    map.put(name, val);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        return map;
     }
 
     /**

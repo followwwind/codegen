@@ -21,6 +21,12 @@ public class ReflectTest {
     }
 
     @Test
+    public void beanToMap(){
+        ClassInfo classInfo = new ClassInfo("123");
+        System.out.println(ReflectUtil.beanToMap(classInfo, true));
+    }
+
+    @Test
     public void setField(){
         char c = '*';
     }

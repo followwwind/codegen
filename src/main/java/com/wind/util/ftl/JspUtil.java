@@ -6,6 +6,7 @@ import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.config.Const;
 import com.wind.util.JsonUtil;
+import com.wind.util.ReflectUtil;
 import com.wind.util.StringUtil;
 
 /**
@@ -32,7 +33,7 @@ public class JspUtil {
     public static void genTable(Table table){
         FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, PathConst.FTL_DIR_PATH, FtlConst.FTL_JSP));
-        freeMarker.setMap(JsonUtil.beanToMap(table, true));
+        freeMarker.setMap(ReflectUtil.beanToMap(table, true));
         String property = table.getProperty();
         freeMarker.setData("jsp/table.ftl", StringUtil.getCamelCase(property, false) + ".jsp");
         FtlUtil.genCode(freeMarker);
@@ -45,7 +46,7 @@ public class JspUtil {
     public static void genForm(Table table){
         FreeMarker freeMarker = new FreeMarker(PathConst.FTL_JAVA);
         freeMarker.setFileDir(StringUtil.joinStr(Const.FILE_SEPARATOR, PathConst.FTL_DIR_PATH, FtlConst.FTL_JSP));
-        freeMarker.setMap(JsonUtil.beanToMap(table, true));
+        freeMarker.setMap(ReflectUtil.beanToMap(table, true));
         String property = table.getProperty();
         freeMarker.setData("jsp/form.ftl", "add" + property + ".jsp");
         FtlUtil.genCode(freeMarker);

@@ -15,32 +15,15 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class StringUtil {
 
-    private static AtomicLong next = new AtomicLong(1);
-
     /**
      * 判断字符串是否为null或空字符串
      * @param str
      * @return
      */
-    public static boolean isEmpty(String str){
-        return str != null && "".equals(str.trim());
+    public static boolean isNotEmpty(String str){
+        return str != null && !"".equals(str.trim());
     }
 
-    /**
-     * 获取32位的UUID
-     * @return
-     */
-    public static String getUUID(){
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-
-    /**
-     * 生成一个13位数的唯一id
-     * @return
-     */
-    public static long getPKNum(){
-        return next.getAndIncrement() + System.currentTimeMillis();
-    }
 
     /**
      * url编码
@@ -117,16 +100,12 @@ public class StringUtil {
     /**
      * 字符串拼接
      * @param sign
-     * @param strs
+     * @param strArr
      * @return
      */
-    public static String joinStr(String sign, String... strs){
-        StringBuilder sb = new StringBuilder();
-        Optional<String> optional  = Arrays.stream(strs).reduce((a, b) -> a + sign + b);
-        if(optional.isPresent()){
-            sb.append(optional.get());
-        }
-        return sb.toString();
+    public static String joinStr(String sign, String... strArr){
+        Optional<String> optional  = Arrays.stream(strArr).reduce((a, b) -> a + sign + b);
+        return optional.orElse("");
     }
 
     /**
@@ -136,12 +115,11 @@ public class StringUtil {
      * @return
      */
     public static String getCamelCase(String colName, boolean flag){
-        String str = colName;
         StringBuilder sb = new StringBuilder();
         if(colName != null){
-            String[] strs = StringUtil.split(colName, Const.UNDERLINE);
-            for(int i = 0; i < strs.length; i++){
-                String s = strs[i];
+            String[] strArr = StringUtil.split(colName, Const.UNDERLINE);
+            for(int i = 0; i < strArr.length; i++){
+                String s = strArr[i];
                 if(i == 0){
                     sb.append(getFirst(s, flag));
                 }else{

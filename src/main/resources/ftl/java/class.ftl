@@ -11,15 +11,15 @@ import ${import};
     <#assign e = " extends " + extend.name>
 </#if>
 <#assign imp = []>
-<#if impls??>
-    <#assign imp = impls>
+<#if implList??>
+    <#assign imp = implList>
 </#if>
 /**
  * @Title: ${name}
  * @Package ${packageName!"com.wind"}
  * @Description: ${remark!""}
  * @author wind
- * @date .now?string("yyyy/MM/dd HH:mm:ss")
+ * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
  * @version V1.0
  */
 ${scope!"public"} ${type!"class"} ${name}${e}${join(imp, "," , 1)}{

@@ -10,7 +10,7 @@ public interface FtlConst {
 
     String FTL_CONTROLLER = "controller";
 
-    String FTL_PACKAGR_NAME = "packageName";
+    String FTL_PACKAGE_NAME = "packageName";
 
     String FTL_IMPORT = "imports";
 

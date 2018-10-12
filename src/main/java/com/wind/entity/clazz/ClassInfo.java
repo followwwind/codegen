@@ -40,7 +40,7 @@ public class ClassInfo extends Attribute{
     /**
      * 实现
      */
-    private List<ClassInfo> impls;
+    private List<ClassInfo> implList;
 
     /**
      * 类类型，比如bean，dao，service等
@@ -142,12 +142,12 @@ public class ClassInfo extends Attribute{
         this.extend = extend;
     }
 
-    public List<ClassInfo> getImpls() {
-        return impls;
+    public List<ClassInfo> getImplList() {
+        return implList;
     }
 
-    public void setImpls(List<ClassInfo> impls) {
-        this.impls = impls;
+    public void setImplList(List<ClassInfo> implList) {
+        this.implList = implList;
     }
 
     public ClassType getClassType() {

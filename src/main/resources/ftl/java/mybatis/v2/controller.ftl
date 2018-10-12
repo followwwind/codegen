@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type>
 </#if>
+
 /**
  * ${remarks!""} controller
  * @author wind

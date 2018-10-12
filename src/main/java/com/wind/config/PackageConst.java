@@ -9,7 +9,7 @@ public interface PackageConst {
     /**
      * java代码包名
      */
-	String FTL_PACKAGE = "com.wind.springboot";
+	String FTL_PACKAGE = "com.wind";
 	
     /**
      * ibatis公共类包

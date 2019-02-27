@@ -8,41 +8,7 @@ package com.wind.config;
  * @date 2019/2/27 15:23
  * @version V1.0
  */
-public enum EnvType {
-
-    CONTROLLER("controller", ""),
-
-    PACKAGE_NAME("packageName", ""),
-
-    IMPORT("imports", ""),
-
-    ENTITY("entity", ""),
-
-    DAO("dao", ""),
-
-    MAPPER("mapper", ""),
-
-    SERVICE("service", ""),
-
-    BEAN("bean", ""),
-
-    IMPL("impl", ""),
-
-    BASE("base", ""),
-
-    CALLBACK("callback", ""),
-
-    EXTEND("extend", ""),
-
-    EXAMPLE("example", ""),
-
-    UTIL("util", ""),
-
-    TEST("test", ""),
-
-    HTML("html", ""),
-
-    JSP("jsp", ""),
+public enum EnvType implements BaseEnum{
 
     /**
      * java jdk版本
@@ -51,13 +17,17 @@ public enum EnvType {
 
     SWAGGER("swagger", "1"),
 
-    ROOT_PACKAGE("rootPackage", FtlConst.FTL_PACKAGE),
-
-    ROOT_PATH("rootPath", FtlConst.FTL_DIR_PATH),
-
     TABLE_PATTERN("tablePattern", ""),
 
     REPLACE_HEAD("replaceHead", ""),
+
+    COMMON_SQL_PACKAGE("sqlMapper", "com.wind.boot.config.persistence.annotation.SqlMapper"),
+
+    JSON_RESULT("jsonResult", "com.wind.boot.config.message.JsonResult"),
+
+    HTTP_CODE("httpCode", "com.wind.boot.config.message.HttpCode"),
+
+    TARGET("target", FtlConst.FTL_DIR_PATH),
     ;
 
     private final String key;
@@ -69,10 +39,12 @@ public enum EnvType {
         this.value = value;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

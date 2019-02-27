@@ -2,18 +2,19 @@ package com.wind.util.ftl;
 
 import com.wind.config.*;
 import com.wind.entity.clazz.ClassInfo;
-import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
-import com.wind.util.*;
+import com.wind.util.ClassUtil;
+import com.wind.util.EnvUtil;
+import com.wind.util.ReflectUtil;
+import com.wind.util.StringUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -22,6 +23,10 @@ import java.util.stream.Stream;
  * @author wind
  */
 public class FtlUtil {
+
+    private FtlUtil(){
+
+    }
 
     /**
      * 生成文件
@@ -54,6 +59,7 @@ public class FtlUtil {
                 temp.process(map, out);
                 fos.flush();
                 out.close();
+                fos.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +72,7 @@ public class FtlUtil {
      * 清空工作目录
      */
     public static void clear() {
-    	delDir(new File(EnvUtil.get(EnvType.ROOT_PATH)));
+    	delDir(new File(EnvUtil.getValOrDefault(EnvType.TARGET)));
     }
     
     /**
@@ -104,9 +110,9 @@ public class FtlUtil {
         freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
         ClassInfo classInfo = ClassUtil.getBean(table);
 //        classInfo.setExtend(extend);
-        classInfo.setPackageName(EnvUtil.getPackage(EnvType.ENTITY));
+        classInfo.setPackageName(EnvUtil.getPackage(PackageType.ENTITY));
         classInfo.initImports();
-        freeMarker.setFileDir(EnvUtil.getPath(EnvType.ENTITY));
+        freeMarker.setFileDir(EnvUtil.getPath(PathType.ENTITY));
         freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
         genCode(freeMarker);
     }

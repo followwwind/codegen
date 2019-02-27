@@ -30,14 +30,13 @@ public class Runner {
     }
 
     public static void main(String[] args) {
-        if(args.length == 1){
-            Properties config = PropUtil.getProp(args[0]);
-            init(config);
-        }
+        Properties config = args.length == 1 ? PropUtil.getProp(args[0]) :
+                PropUtil.getProp(DbUtil.class.getResourceAsStream("/config.properties"));
+        init(config);
 
         FtlUtil.clear();
-        String pattern = EnvUtil.get(EnvType.TABLE_PATTERN);
-        String head = EnvUtil.get(EnvType.REPLACE_HEAD);
+        String pattern = EnvUtil.getValOrDefault(EnvType.TABLE_PATTERN);
+        String head = EnvUtil.getValOrDefault(EnvType.REPLACE_HEAD);
         List<Table> tables = new ArrayList<>(DbUtil.getTable(pattern));
         tables.forEach(table -> {
             String property = table.getProperty();

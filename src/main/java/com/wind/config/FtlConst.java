@@ -9,7 +9,7 @@ public interface FtlConst {
     /**
      * java代码包名
      */
-    String FTL_PACKAGE = "com.wind";
+    String FTL_PACKAGE = "com.wind.boot";
 
     /**
      * flt模板根路径
@@ -21,5 +21,8 @@ public interface FtlConst {
      */
     String FTL_DIR_PATH = "E:/work/freemarker";
 
+    String FTL_IMPORT = "imports";
+
+    String PACKAGE_NAME = "packageName";
 
 }

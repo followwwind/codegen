@@ -1,11 +1,9 @@
 package com.wind.util;
 
-import com.wind.config.Const;
-import com.wind.config.EnvType;
+import com.wind.config.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * @Title: EnvUtil
@@ -34,12 +32,11 @@ public class EnvUtil {
     }
 
     /**
-     * 获取生成文件路径
-     * @param type
+     * 获取import引入
      * @return
      */
-    public static String getPath(EnvType type){
-        return get(EnvType.ROOT_PATH) + Const.FILE_SEPARATOR + type.getKey();
+    public static String getImport(PackageType type, String name){
+        return getPackage(type) + Const.POINT_STR + name;
     }
 
     /**
@@ -47,36 +44,26 @@ public class EnvUtil {
      * @param type
      * @return
      */
-    public static String getPath(EnvType type, EnvType... arr){
-        String path = get(EnvType.ROOT_PATH) + Const.FILE_SEPARATOR + type.getKey();
-        if(arr != null){
-            path += Const.FILE_SEPARATOR;
-            path += Stream.of(arr).map(EnvType::getKey).reduce((a, b) -> a + Const.FILE_SEPARATOR + b).orElse("");
+    public static String getPath(PathType type){
+        String path = get(type);
+        if(StringUtil.isNotEmpty(path)){
+            return path;
         }
-        return path;
+        return getValOrDefault(PathType.ROOT_PATH) + Const.FILE_SEPARATOR + type.getValue();
     }
+
 
     /**
      * 获取包名
      * @param type
      * @return
      */
-    public static String getPackage(EnvType type){
-        return get(EnvType.ROOT_PACKAGE) + Const.POINT_STR + type.getKey();
-    }
-
-    /**
-     * 获取包名
-     * @param type
-     * @return
-     */
-    public static String getPackage(EnvType type, EnvType... arr){
-        String path = get(EnvType.ROOT_PACKAGE) + Const.POINT_STR + type.getKey();
-        if(arr != null){
-            path += Const.POINT_STR;
-            path += Stream.of(arr).map(EnvType::getKey).reduce((a, b) -> a + Const.POINT_STR + b).orElse("");
+    public static String getPackage(PackageType type){
+        String packageName = get(type);
+        if(StringUtil.isNotEmpty(packageName)){
+            return packageName;
         }
-        return path;
+        return getValOrDefault(PackageType.ROOT_PACKAGE) + Const.POINT_STR + type.getValue();
     }
 
     /**
@@ -84,7 +71,16 @@ public class EnvUtil {
      * @param type
      * @return
      */
-    public static String get(EnvType type){
+    public static String get(BaseEnum type){
+        return get(type.getKey());
+    }
+
+    /**
+     * 获取环境变量
+     * @param type
+     * @return
+     */
+    public static String getValOrDefault(BaseEnum type){
         String value = get(type.getKey());
         return StringUtil.isNotEmpty(value) ? value : type.getValue();
     }

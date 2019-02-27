@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author wind
@@ -19,7 +18,6 @@ public class MybatisTest {
 
     @Before
     public void init(){
-//        tables.addAll(DbUtil.getTables("child"));
     	FtlUtil.clear();
     	/*String[] arr = {"pmt"};
     	tables.addAll(DbUtil.getTables("child").stream().filter(table -> {
@@ -27,8 +25,9 @@ public class MybatisTest {
     		return Arrays.asList(arr).stream().anyMatch(str -> tableName.contains(str));
     	}).collect(Collectors.toList()));*/
         
-        tables.addAll(DbUtil.getTable("test", ""));
-        
+//        tables.addAll(DbUtil.getTable("test", "pmt"));
+
+        tables.addAll(DbUtil.getTables("test"));
     	//common();
 //		tables.add(DbUtil.getTable("test", "demo"));
     }
@@ -49,8 +48,8 @@ public class MybatisTest {
         long start = System.currentTimeMillis();
         System.out.println(tables.size());
         tables.forEach(table -> {
-        	String tableName = table.getTableName();
-        	table.setTableName(tableName.replaceAll("", ""));
+        	String property = table.getProperty();
+        	table.setProperty(property.replaceAll("Pmt", ""));
             MybatisUtil.genController(table, false);
             FtlUtil.genEntity(table, false);
             MybatisUtil.genMapper(table, true);

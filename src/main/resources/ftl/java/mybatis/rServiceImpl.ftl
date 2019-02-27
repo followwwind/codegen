@@ -18,8 +18,12 @@ import org.springframework.stereotype.Service;
 </#if>
 
 /**
- * ${remarks!""} service接口实现
+ * @Title: ${property}ServiceImpl
+ * @Package ${packageName!"com.wind"}
+ * @Description: ${remark!""}业务处理
  * @author wind
+ * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
+ * @version V1.0
  */
 @Service
 public class ${property}ServiceImpl implements ${property}Service{

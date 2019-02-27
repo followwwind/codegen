@@ -21,8 +21,12 @@ import org.springframework.web.bind.annotation.*;
 </#if>
 
 /**
- * ${remarks!""} controller
+ * @Title: ${property}Controller
+ * @Package ${packageName!"com.wind"}
+ * @Description: ${remark!""}接口
  * @author wind
+ * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
+ * @version V1.0
  */
 @RestController
 @RequestMapping(value = "${property?uncap_first}")

@@ -19,6 +19,11 @@ public class DbTest {
     }
 
     @Test
+    public void printTable2(){
+        DbUtil.getTable("");
+    }
+
+    @Test
     public void printTables(){
         List<Table> tables  = DbUtil.getTables("test");
         System.out.println(JsonUtil.toJson(tables));

@@ -11,11 +11,15 @@ import ${import};
 </#if>
 
 /**
- * ${remarks!""} mapper接口
+ * @Title: ${property}Mapper
+ * @Package ${packageName!"com.wind"}
+ * @Description: ${remark!""}mapper
  * @author wind
+ * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
+ * @version V1.0
  */
 @SqlMapper
-public interface ${property}Mapper extends BaseMapper<${property}, ${type!"String"}>{
+public interface ${property}Mapper{
 
 
 }

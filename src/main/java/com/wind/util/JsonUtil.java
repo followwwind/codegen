@@ -12,15 +12,22 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * json工具
+ * @Title: JsonUtil
+ * @Package com.wind.util
+ * @Description: json工具
  * @author wind
- *
+ * @date 2019/2/27 15:44
+ * @version V1.0
  */
 public class JsonUtil {
 
 	private static Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
 	private static ObjectMapper mapper;
+
+	private JsonUtil(){
+
+	}
 
 	/**
 	 * 获取对象

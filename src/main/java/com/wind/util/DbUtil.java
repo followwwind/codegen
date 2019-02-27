@@ -24,6 +24,12 @@ public class DbUtil {
 
     static {
         props = PropUtil.getProp(DbUtil.class.getResourceAsStream("/jdbc.properties"));
+        props.forEach((k, v) -> {
+            String value = EnvUtil.get(String.valueOf(k));
+            if(StringUtil.isNotEmpty(value)){
+                props.put(k, value);
+            }
+        });
         try {
             Class.forName(props.getProperty("driverClass"));
         } catch (ClassNotFoundException e) {
@@ -108,6 +114,28 @@ public class DbUtil {
             }
             rs.close();
         });
+        return tables;
+    }
+
+    public static List<Table> getTable(String tableName){
+        Connection con = null;
+        List<Table> tables = new ArrayList<>();
+        try {
+            con = getConn();
+            DatabaseMetaData db = con.getMetaData();
+            ResultSet rs = db.getTables(con.getCatalog(), null, "%" + tableName + "%", new String[]{"TABLE"});
+            while(rs.next()) {
+                Table t = getTable(db, rs);
+                if(t != null){
+                    tables.add(t);
+                }
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con);
+        }
         return tables;
     }
 

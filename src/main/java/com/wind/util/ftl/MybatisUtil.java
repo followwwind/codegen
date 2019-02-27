@@ -60,8 +60,8 @@ public class MybatisUtil {
         if(flag){
             freeMarker.setMap(ReflectUtil.beanToMap(table, true));
             Map<String, Object> map = new HashMap<>(16);
-//            map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_DAO_PACKAGE);
-            List<String> imports = new ArrayList<>();
+            map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.DAO));
+//            List<String> imports = new ArrayList<>();
 //            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_PACKAGE, property));
 //            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE, "BaseMapper"));
 //            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_SQL_PACKAGE, "SqlMapper"));
@@ -92,27 +92,27 @@ public class MybatisUtil {
         freeMarker.setMap(ReflectUtil.beanToMap(table, true));
         String property = table.getProperty();
         if(flag){
-//            Map<String, Object> map = new HashMap<>(16);
-//            map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_PACKAGE);
+            Map<String, Object> map = new HashMap<>(16);
+            map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.SERVICE));
 //            List<String> imports = new ArrayList<>();
 //            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_ENTITY_PACKAGE, property));
 //            imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_BASE_PACKAGE, "BaseService"));
 //            map.put(FtlConst.FTL_IMPORT, imports);
-//            freeMarker.addMap(map);
+            freeMarker.addMap(map);
             freeMarker.setData("mybatis/rService.ftl", property + "Service.java");
             FtlUtil.genCode(freeMarker);
         }
         //生成service实现类
         freeMarker.initMap();
         freeMarker.setMap(ReflectUtil.beanToMap(table, true));
-//        Map<String, Object> map = new HashMap<>(16);
-//        map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_IMPL_PACKAGE);
+        Map<String, Object> map = new HashMap<>(16);
+        map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.SERVICE, EnvType.SERVICE));
 //        List<String> imports = new ArrayList<>();
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_DAO_PACKAGE, property + "Mapper"));
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_PACKAGE, property + "Service"));
 //        freeMarker.setData("mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
 //        map.put(FtlConst.FTL_IMPORT, imports);
-//        freeMarker.addMap(map);
+        freeMarker.addMap(map);
         freeMarker.setFileDir(EnvUtil.getPath(EnvType.SERVICE, EnvType.IMPL));
         FtlUtil.genCode(freeMarker);
     }
@@ -149,7 +149,7 @@ public class MybatisUtil {
         String property = table.getProperty();
         freeMarker.setMap(ReflectUtil.beanToMap(table, true));
         Map<String, Object> map = new HashMap<>(16);
-//        map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_CONTROLLER_PACKAGE);
+        map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.CONTROLLER));
 //        List<String> imports = new ArrayList<>();
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_PACKAGE, property + "Service"));
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE, "JsonResult"));

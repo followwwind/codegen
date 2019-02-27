@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @Title: ${property}Controller
- * @Package ${packageName!"com.wind"}
- * @Description: ${remark!""}接口
+ * @Package ${packageName!"com.wind.controller"}
+ * @Description: ${remarks!""}接口
  * @author wind
  * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
  * @version V1.0

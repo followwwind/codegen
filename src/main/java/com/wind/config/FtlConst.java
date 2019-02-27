@@ -20,4 +20,6 @@ public interface FtlConst {
      * java代码生成根路径
      */
     String FTL_DIR_PATH = "E:/work/freemarker";
+
+
 }

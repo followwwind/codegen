@@ -12,8 +12,8 @@ import ${import};
 
 /**
  * @Title: ${property}Mapper
- * @Package ${packageName!"com.wind"}
- * @Description: ${remark!""}mapper
+ * @Package ${packageName!"com.wind.dao"}
+ * @Description: ${remarks!""}mapper
  * @author wind
  * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
  * @version V1.0

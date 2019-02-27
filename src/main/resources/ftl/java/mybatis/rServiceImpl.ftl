@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * @Title: ${property}ServiceImpl
- * @Package ${packageName!"com.wind"}
- * @Description: ${remark!""}业务处理
+ * @Package ${packageName!"com.wind.service.impl"}
+ * @Description: ${remarks!""}业务处理
  * @author wind
  * @date ${.now?string("yyyy/MM/dd HH:mm:ss")}
  * @version V1.0

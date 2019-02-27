@@ -45,7 +45,7 @@ public class FtlUtil {
                 Template temp = cfg.getTemplate(freeMarker.getCfgName());
 
                 OutputStream fos = new FileOutputStream( new File(dir, freeMarker.getFileName()));
-                Writer out = new OutputStreamWriter(fos);
+                Writer out = new OutputStreamWriter(fos, Const.UTF8);
                 Map<String, Object> map = freeMarker.getMap();
                 if(map == null){
                     map = new HashMap<>(Const.MAP_SIZE);

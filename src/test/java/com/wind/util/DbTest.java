@@ -31,8 +31,9 @@ public class DbTest {
 
     @Test
     public void printKeys(){
-        List<PrimaryKey> keys = DbUtil.getPrimaryKeys("test", "user_info");
+        List<PrimaryKey> keys = DbUtil.getPrimaryKeys("test", "user");
         System.out.println(keys.size());
+        System.out.println(JsonUtil.toJson(keys));
     }
 
     @Test
@@ -43,7 +44,7 @@ public class DbTest {
 
     @Test
     public void printTable(){
-        List<Table> tables = DbUtil.getTable("test", "user_info");
+        List<Table> tables = DbUtil.getTable("test", "user");
         System.out.println(JsonUtil.toJson(tables));
     }
 

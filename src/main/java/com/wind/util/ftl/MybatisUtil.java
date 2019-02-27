@@ -106,11 +106,11 @@ public class MybatisUtil {
         freeMarker.initMap();
         freeMarker.setMap(ReflectUtil.beanToMap(table, true));
         Map<String, Object> map = new HashMap<>(16);
-        map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.SERVICE, EnvType.SERVICE));
+        map.put(EnvType.PACKAGE_NAME.getKey(), EnvUtil.getPackage(EnvType.SERVICE, EnvType.IMPL));
 //        List<String> imports = new ArrayList<>();
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_DAO_PACKAGE, property + "Mapper"));
 //        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_SERVICE_PACKAGE, property + "Service"));
-//        freeMarker.setData("mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
+        freeMarker.setData("mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
 //        map.put(FtlConst.FTL_IMPORT, imports);
         freeMarker.addMap(map);
         freeMarker.setFileDir(EnvUtil.getPath(EnvType.SERVICE, EnvType.IMPL));

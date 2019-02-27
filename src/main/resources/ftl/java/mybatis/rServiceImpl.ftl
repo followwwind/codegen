@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 <#if primaryKeys?? && primaryKeys?size gt 0>
     <#assign key = getKey(columns, primaryKeys[0])>
-    <#assign type = key.type>
+    <#assign type = key.type?replace("java.lang.", "")>
 <#else>
     <#assign type = "String">
 </#if>
@@ -33,7 +33,49 @@ public class ${property}ServiceImpl implements ${property}Service{
     @Autowired
     private ${property}Mapper mapper;
 
+    @Override
+    public JsonResult save(Object r) {
+    	logger.info("${property}ServiceImpl.save param: r is {}", r);
+        ${property} entity = new ${property}();
+        BeanUtil.copy(r, entity);
+        int i = mapper.insert(entity);
+        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+    }
 
+    @Override
+    public JsonResult delete(${type!"String"} id) {
+    	logger.info("${property}ServiceImpl.delete param: id is {}", id);
+        int i = mapper.deleteById(id);
+        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+    }
+
+    @Override
+    public JsonResult get(${type!"String"} id) {
+    	logger.info("${property}ServiceImpl.get param: id is {}", id);
+        ${property} r = mapper.findById(id);
+        return new JsonResult(HttpCode.OK, r);
+    }
+
+    @Override
+    public JsonResult list(Object r) {
+    	logger.info("${property}ServiceImpl.list param: r is {}", r);
+        return new JsonResult(null);
+    }
+
+    @Override
+    public JsonResult pageList(Object r){
+    	logger.info("${property}ServiceImpl.pageList param: r is {}", r);
+        return new JsonResult(null);
+    }
+
+    @Override
+    public JsonResult update(Object r) {
+    	logger.info("${property}ServiceImpl.update param: r is {}", r);
+        ${property} entity = new ${property}();
+        BeanUtil.copy(r, entity);
+        int i = mapper.update(entity);
+        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+    }
     
 }
 

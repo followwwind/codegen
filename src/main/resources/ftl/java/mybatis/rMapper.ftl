@@ -5,6 +5,7 @@ package ${packageName!"com.wind.dao"};
 import ${import};
     </#list>
 </#if>
+import org.apache.ibatis.annotations.Param;
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type>
@@ -21,7 +22,34 @@ import ${import};
 @SqlMapper
 public interface ${property}Mapper{
 
+    /**
+     * 添加
+     * @param r
+     * @return
+     */
+    int insert(${property} r);
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    int deleteById(@Param("id") ${type!"String"} id);
+
+    /**
+     * 单条记录查询
+     * @param id
+     * @return
+     */
+    ${property} findById(@Param("id") ${type!"String"} id);
+
+
+    /**
+     * 修改
+     * @param r
+     * @return
+     */
+    int update(${property} r);
 }
 
 <#function getKey columns primary>

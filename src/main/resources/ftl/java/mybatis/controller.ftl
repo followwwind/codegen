@@ -9,15 +9,12 @@ import ${import};
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 <#if swagger>import io.swagger.annotations.Api;${"\n"}</#if><#t>
 <#if swagger>import io.swagger.annotations.ApiOperation;${"\n"}</#if><#t>
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>
- <#assign type = key.type>
+ <#assign type = key.type?replace("java.lang.", "")>
 </#if>
 
 /**
@@ -45,12 +42,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @PostMapping("/")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
     public JsonResult save(Object r) {
     	logger.info("${property}Controller.save param: r is {}", r);
-        int i = 0;
-        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+        return ${service}.save(r);
     }
 
     /**
@@ -59,12 +55,11 @@ public class ${property}Controller{
      * @param id
      * @return
      */
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{id}")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 删除记录接口", notes="${property} 删除记录接口")${"\n"}</#if><#t>
     public JsonResult delete(@PathVariable("id") ${type!"String"} id) {
     	logger.info("${property}Controller.delete param: id is {}", id);
-        int i = 0;
-        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+        return ${service}.delete(id);
     }
 
     /**
@@ -73,11 +68,11 @@ public class ${property}Controller{
      * @param id
      * @return
      */
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 单条记录查询接口", notes="${property} 单条记录查询接口")${"\n"}</#if><#t>
     public JsonResult get(@PathVariable("id") ${type!"String"} id) {
     	logger.info("${property}Controller.get param: id is {}", id);
-        return new JsonResult(null);
+        return ${service}.get(id);
     }
 
     /**
@@ -86,11 +81,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "list", method = RequestMethod.POST)
+    @PostMapping("/list")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")${"\n"}</#if><#t>
     public JsonResult list(Object r) {
     	logger.info("${property}Controller.list param: r is {}", r);
-        return new JsonResult(null);
+        return ${service}.list(r);
     }
 
     /**
@@ -99,11 +94,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "page/list", method = RequestMethod.POST)
+    @PostMapping("/page/list")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")${"\n"}</#if><#t>
     public JsonResult pageList(Object r){
     	logger.info("${property}Controller.pageList param: r is {}", r);
-        return new JsonResult(null);
+        return ${service}.pageList(r);
     }
 
     /**
@@ -112,12 +107,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @PutMapping("/")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
     public JsonResult update(Object r) {
     	logger.info("${property}Controller.update param: r is {}", r);
-        int i = 0;
-        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+        return ${service}.update(r);
     }
 }
 <#function getKey columns primary>

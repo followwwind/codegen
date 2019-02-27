@@ -71,7 +71,7 @@ public class EnvUtil {
      * @return
      */
     public static String getPackage(EnvType type, EnvType... arr){
-        String path = get(EnvType.ROOT_PATH) + Const.POINT_STR + type.getKey();
+        String path = get(EnvType.ROOT_PACKAGE) + Const.POINT_STR + type.getKey();
         if(arr != null){
             path += Const.POINT_STR;
             path += Stream.of(arr).map(EnvType::getKey).reduce((a, b) -> a + Const.POINT_STR + b).orElse("");

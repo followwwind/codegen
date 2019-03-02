@@ -27,7 +27,6 @@ public enum EnvType implements BaseEnum{
 
     HTTP_CODE("httpCode", "com.wind.boot.config.message.HttpCode"),
 
-    TARGET("target", FtlConst.FTL_DIR_PATH),
     ;
 
     private final String key;

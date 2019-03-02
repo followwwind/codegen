@@ -72,7 +72,7 @@ public class FtlUtil {
      * 清空工作目录
      */
     public static void clear() {
-    	delDir(new File(EnvUtil.getValOrDefault(EnvType.TARGET)));
+    	delDir(new File(EnvUtil.getValOrDefault(PathType.ROOT_PATH)));
     }
     
     /**

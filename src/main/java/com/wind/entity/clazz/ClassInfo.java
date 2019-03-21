@@ -67,7 +67,7 @@ public class ClassInfo extends Attribute{
         }
         
         if(extend != null){
-        	this.imports.add(extend.getPackageName() + Const.POINT_STR +extend.getName());
+        	this.imports.add(extend.getPackageName() + Const.POINT_STR + extend.getName());
         }
     }
     

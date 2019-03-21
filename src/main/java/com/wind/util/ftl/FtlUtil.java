@@ -2,6 +2,7 @@ package com.wind.util.ftl;
 
 import com.wind.config.*;
 import com.wind.entity.clazz.ClassInfo;
+import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.util.ClassUtil;
@@ -89,51 +90,88 @@ public class FtlUtil {
         }
     }
 
-    /**
-     * 生成表关联对应的实体类以及拓展类
-     * @param flag true表示生成拓展类
-     * @param table
-     */
-    public static void genEntity(Table table, boolean flag){
-        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-        String className = table.getProperty();
-//        String extendClassName = className + StringUtil.getFirst(FtlConst.FTL_EXTEND, true);
-//        ClassInfo extend = null;
-//        if(flag){
-//        	extend = new ClassInfo(extendClassName, ClassType.CLASS, JavaConst.ABSTRACT + Const.SPACE_STR + JavaConst.CLASS);
-//            extend.setPackageName(PackageConst.FTL_ENTITY_EXTEND_PACKAGE);
-//            freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, extendClassName, JavaConst.JAVA));
-//            freeMarker.setMap(ReflectUtil.beanToMap(table, true));
-//            freeMarker.setFileDir(PathConst.FTL_ENTITY_EXTEND_PATH);
-//            genCode(freeMarker);
-//        }
-        freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
-        ClassInfo classInfo = ClassUtil.getBean(table);
-//        classInfo.setExtend(extend);
-        classInfo.setPackageName(EnvUtil.getPackage(PackageType.ENTITY));
-        classInfo.initImports();
-        freeMarker.setFileDir(EnvUtil.getPath(PathType.ENTITY));
-        freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
-        genCode(freeMarker);
+    public static void genEntity(Table table){
+        genPO(table, true);
+        genVO(table, true);
+        genQ(table, true);
+        genSearch(table, true);
     }
 
+    /**
+     * genPO
+     * @param table
+     * @param flag
+     */
+    public static void genPO(Table table, boolean flag){
+        ClassInfo extend = null;
+        if(flag){
+            extend = new ClassInfo(EnvType.BASE_PO.getKey());
+            extend.addImport(EnvType.BASE_PO.getValue());
+            extend.setPackageName(EnvType.PERSISTENCE_PO.getValue());
+        }
+        genEntity(table, extend, PackageType.ENTITY_PO, PathType.ENTITY_PO, null);
+    }
 
     /**
-     * 生成通用顶层service
+     * genQ
+     * @param table
+     * @param flag
      */
-    public static void genBaseService(){
-//        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
-//        freeMarker.setFileDir(PathConst.FTL_SERVICE_BASE_PATH);
-//        freeMarker.setData("baseService.ftl", "BaseService.java");
-//        Map<String, Object> map = new HashMap<>(16);
-//        map.put(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
-//        List<String> imports = new ArrayList<>();
-//        imports.add(StringUtil.joinStr(Const.POINT_STR, PackageConst.FTL_COMMON_PERSISTENCE_PACKAGE, "Page"));
-//        map.put(FtlConst.FTL_IMPORT, imports);
-//        freeMarker.addMap(map);
-//        FtlUtil.genCode(freeMarker);
-//        freeMarker.addMap(FtlConst.FTL_PACKAGE_NAME, PackageConst.FTL_SERVICE_BASE_PACKAGE);
-//        freeMarker.setData("baseServiceImpl.ftl", "BaseServiceImpl.java");
-//        FtlUtil.genCode(freeMarker);
+    public static void genQ(Table table, boolean flag){
+        ClassInfo extend = null;
+        if(flag){
+            extend = new ClassInfo(EnvType.BASE_QUERY.getKey());
+            extend.addImport(EnvType.BASE_QUERY.getValue());
+            extend.setPackageName(EnvType.PERSISTENCE_PO.getValue());
+        }
+        String className = table.getProperty() + FtlConst.Q;
+        genEntity(table, extend, PackageType.ENTITY_QUERY, PathType.ENTITY_QUERY, className);
+    }
+
+    /**
+     * genVO
+     * @param table
+     * @param flag
+     */
+    public static void genVO(Table table, boolean flag){
+        ClassInfo extend = null;
+        if(flag){
+            extend = new ClassInfo(EnvType.BASE_VO.getKey());
+            extend.addImport(EnvType.BASE_PO.getValue());
+            extend.setPackageName(EnvType.PERSISTENCE_PO.getValue());
+        }
+        String className = table.getProperty() + FtlConst.VO;
+        genEntity(table, extend, PackageType.ENTITY_VO, PathType.ENTITY_VO, className);
+    }
+
+    /**
+     * genSearch
+     * @param table
+     * @param flag
+     */
+    public static void genSearch(Table table, boolean flag){
+        ClassInfo extend = null;
+        if(flag){
+            extend = new ClassInfo(EnvType.PAGE_QUERY.getKey());
+            extend.addImport(EnvType.PAGE_QUERY.getValue());
+            extend.setPackageName(EnvType.PERSISTENCE_PO.getValue());
+        }
+        String className = table.getProperty() + FtlConst.SEARCH;
+        genEntity(table, extend, PackageType.ENTITY_QUERY, PathType.ENTITY_QUERY, className);
+    }
+
+    public static void genEntity(Table table, ClassInfo extend, PackageType packageType, PathType pathType, String className){
+        FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
+        className = className != null ? className : table.getProperty();
+        freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
+        ClassInfo classInfo = ClassUtil.getBean(table);
+        if(extend != null){
+            classInfo.setExtend(extend);
+        }
+        classInfo.setPackageName(EnvUtil.getPackage(packageType));
+        classInfo.initImports();
+        freeMarker.setFileDir(EnvUtil.getPath(pathType));
+        freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
+        genCode(freeMarker);
     }
 }

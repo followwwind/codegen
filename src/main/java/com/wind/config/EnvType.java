@@ -21,13 +21,27 @@ public enum EnvType implements BaseEnum{
 
     REPLACE_HEAD("replaceHead", ""),
 
-    COMMON_SQL_PACKAGE("sqlMapper", "com.wind.boot.config.persistence.annotation.SqlMapper"),
-
-    JSON_RESULT("jsonResult", "com.wind.boot.config.message.JsonResult"),
-
-    HTTP_CODE("httpCode", "com.wind.boot.config.message.HttpCode"),
-
     TARGET("target", FtlConst.FTL_DIR_PATH),
+
+    COMMON_SQL_PACKAGE("SqlMapper", "com.wind.boot.config.persistence.annotation.SqlMapper"),
+
+    JSON_RESULT("JsonResult", "com.wind.boot.config.message.JsonResult"),
+
+    PERSISTENCE_PO("PersistencePO", "com.wind.boot.config.persistence"),
+
+    BASE_PO("BasePO", "com.wind.boot.config.persistence.BasePO"),
+
+    BASE_VO("BaseVO", "com.wind.boot.config.persistence.BaseVO"),
+
+    BASE_QUERY("BaseQuery", "com.wind.boot.config.persistence.BaseQuery"),
+
+    PAGE_QUERY("PageQuery", "com.wind.boot.config.persistence.PageQuery"),
+
+    HTTP_CODE("HttpCode", "com.wind.boot.config.message.HttpCode"),
+
+    BEAN_UTIL("BeanUtil", "com.wind.boot.util.BeanUtil"),
+
+    PAGE("Page", "com.wind.boot.config.persistence.Page"),
     ;
 
     private final String key;

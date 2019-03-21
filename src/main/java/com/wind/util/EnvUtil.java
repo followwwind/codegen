@@ -66,6 +66,18 @@ public class EnvUtil {
         return getValOrDefault(PackageType.ROOT_PACKAGE) + Const.POINT_STR + type.getValue();
     }
 
+    public static String getSearch(String name){
+        return EnvUtil.getPackage(PackageType.ENTITY_QUERY) + Const.POINT_STR + name + FtlConst.SEARCH;
+    }
+
+    public static String getQuery(String name){
+        return EnvUtil.getPackage(PackageType.ENTITY_QUERY) + Const.POINT_STR + name + FtlConst.Q;
+    }
+
+    public static String getVO(String name){
+        return EnvUtil.getPackage(PackageType.ENTITY_VO) + Const.POINT_STR + name + FtlConst.VO;
+    }
+
     /**
      * 获取环境变量
      * @param type

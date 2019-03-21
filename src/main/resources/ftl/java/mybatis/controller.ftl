@@ -44,7 +44,7 @@ public class ${property}Controller{
      */
     @PostMapping("/")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
-    public JsonResult save(@RequestBody Object r) {
+    public JsonResult save(@RequestBody ${property}Q r) {
     	logger.info("${property}Controller.save param: r is {}", r);
         return ${service}.save(r);
     }
@@ -83,7 +83,7 @@ public class ${property}Controller{
      */
     @PostMapping("/list")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 批量查询记录接口", notes="${property} 批量查询记录接口")${"\n"}</#if><#t>
-    public JsonResult list(@RequestBody Object r) {
+    public JsonResult list(@RequestBody ${property}SearchQ r) {
     	logger.info("${property}Controller.list param: r is {}", r);
         return ${service}.list(r);
     }
@@ -96,7 +96,7 @@ public class ${property}Controller{
      */
     @PostMapping("/page/list")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 分页查询记录接口", notes="${property} 分页查询记录接口")${"\n"}</#if><#t>
-    public JsonResult pageList(@RequestBody Object r){
+    public JsonResult pageList(@RequestBody ${property}SearchQ r){
     	logger.info("${property}Controller.pageList param: r is {}", r);
         return ${service}.pageList(r);
     }
@@ -109,7 +109,7 @@ public class ${property}Controller{
      */
     @PutMapping("/")
     <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
-    public JsonResult update(@RequestBody Object r) {
+    public JsonResult update(@RequestBody ${property}Q r) {
     	logger.info("${property}Controller.update param: r is {}", r);
         return ${service}.update(r);
     }

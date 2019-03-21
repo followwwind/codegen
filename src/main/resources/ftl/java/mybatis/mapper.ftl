@@ -81,12 +81,11 @@
         </if>
     </select>
 
-    <select id="findList" resultMap="BaseResultMap" parameterType="${type}">
+    <select id="list" resultType="${listReturn}" parameterType="${listParam}">
         select
-        <include refid="Column_List" />
-        from ${tableName}
+        ${join(6, ",", 0)}
+        from ${tableName} r
         where 1 = 1
-        <include refid="Column_Selective_And_List" />
     </select>
 
     <update id="update" parameterType="${type}" >
@@ -98,12 +97,6 @@
         	where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
         </if>
     </update>
-
-    <select id="count" resultType="java.lang.Integer" parameterType="${type}" >
-        select count(1) from ${tableName}
-        where 1 = 1
-        <include refid="Column_Selective_And_List" />
-    </select>
 </mapper>
 
 <#function contains primaryKeys colName>
@@ -199,6 +192,14 @@
             <#if flag == 1><#local s += "\t"></#if>
             <#local s += "</if>\n\t\t">
             <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>
+        <#elseif type == 6>
+            <#local s = "r." + column.property>
+            <#if column_index < (columns?size - 1)>
+                <#local s += sign>
+            </#if>
+            <#if column_index != 0 && column_index % 7 == 0>
+                <#local s += "\n\t\t\t">
+            </#if>
         </#if>
         <#local str += s>
     </#list>

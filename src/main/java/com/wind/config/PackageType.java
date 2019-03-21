@@ -14,7 +14,13 @@ public enum PackageType implements BaseEnum{
 
     CONTROLLER("controller", "controller"),
 
-    ENTITY("entity", "entity.po"),
+    ENTITY_PO("po", "entity.po"),
+
+    ENTITY_QUERY("query", "entity.query"),
+
+    ENTITY_SEARCH("search", "entity.search"),
+
+    ENTITY_VO("vo", "entity.vo"),
 
     DAO("dao", "dao"),
 

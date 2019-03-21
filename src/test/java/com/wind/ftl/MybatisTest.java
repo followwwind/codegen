@@ -39,8 +39,6 @@ public class MybatisTest {
     
     private void common(){
         MybatisUtil.genCommon();
-        MybatisUtil.genBaseMapper();
-        FtlUtil.genBaseService();
     }
 
     @Test
@@ -51,7 +49,7 @@ public class MybatisTest {
         	String property = table.getProperty();
         	table.setProperty(property.replaceAll("Pmt", ""));
             MybatisUtil.genController(table, false);
-            FtlUtil.genEntity(table, false);
+            FtlUtil.genEntity(table);
             MybatisUtil.genMapper(table, true);
             //MybatisUtil.genExample(table);
             MybatisUtil.genService(table, true);

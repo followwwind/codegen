@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.github.pagehelper.PageHelper;
+import java.util.List;
 <#if primaryKeys?? && primaryKeys?size gt 0>
     <#assign key = getKey(columns, primaryKeys[0])>
     <#assign type = key.type?replace("java.lang.", "")>
@@ -34,7 +36,7 @@ public class ${property}ServiceImpl implements ${property}Service{
     private ${property}Mapper mapper;
 
     @Override
-    public JsonResult save(Object r) {
+    public JsonResult save(${property}Q r) {
     	logger.info("${property}ServiceImpl.save param: r is {}", r);
         ${property} entity = new ${property}();
         BeanUtil.copy(r, entity);
@@ -57,19 +59,23 @@ public class ${property}ServiceImpl implements ${property}Service{
     }
 
     @Override
-    public JsonResult list(Object r) {
+    public JsonResult list(${property}SearchQ r) {
     	logger.info("${property}ServiceImpl.list param: r is {}", r);
-        return new JsonResult(null);
+        List<${property}VO> list = mapper.list(r);
+        return new JsonResult(HttpCode.OK, list);
     }
 
     @Override
-    public JsonResult pageList(Object r){
+    public JsonResult pageList(${property}SearchQ r){
     	logger.info("${property}ServiceImpl.pageList param: r is {}", r);
-        return new JsonResult(null);
+        PageHelper.startPage(r.getPageNumber(), r.getLineNumber());
+        List<${property}VO> list = mapper.list(r);
+        Page<${property}VO> page = new Page<>(list);
+        return new JsonResult(HttpCode.OK, page);
     }
 
     @Override
-    public JsonResult update(Object r) {
+    public JsonResult update(${property}Q r) {
     	logger.info("${property}ServiceImpl.update param: r is {}", r);
         ${property} entity = new ${property}();
         BeanUtil.copy(r, entity);

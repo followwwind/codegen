@@ -42,7 +42,7 @@ public class Runner {
             String property = table.getProperty();
             table.setProperty(property.replaceAll(StringUtil.getCamelCase(head, true), ""));
             MybatisUtil.genController(table, false);
-            FtlUtil.genEntity(table, false);
+            FtlUtil.genEntity(table);
             MybatisUtil.genMapper(table, true);
             MybatisUtil.genService(table, true);
         });

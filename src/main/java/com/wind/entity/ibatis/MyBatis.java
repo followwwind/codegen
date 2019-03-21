@@ -1,4 +1,4 @@
-package com.wind.entity.ftl;
+package com.wind.entity.ibatis;
 
 import com.wind.entity.db.Table;
 
@@ -15,11 +15,11 @@ public class MyBatis{
      * mybatis对应实体类全名
      */
     private String type;
-    
-    /**
-     * mybatis对应实体类查询条件
-     */
-    private String example;
+
+
+    private String listParam;
+
+    private String listReturn;
 
     /**
      * 表数据
@@ -53,11 +53,19 @@ public class MyBatis{
         this.table = table;
     }
 
-	public String getExample() {
-		return example;
-	}
+    public String getListParam() {
+        return listParam;
+    }
 
-	public void setExample(String example) {
-		this.example = example;
-	}
+    public void setListParam(String listParam) {
+        this.listParam = listParam;
+    }
+
+    public String getListReturn() {
+        return listReturn;
+    }
+
+    public void setListReturn(String listReturn) {
+        this.listReturn = listReturn;
+    }
 }

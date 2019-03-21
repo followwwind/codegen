@@ -25,4 +25,10 @@ public interface FtlConst {
 
     String PACKAGE_NAME = "packageName";
 
+    String Q = "Q";
+
+    String SEARCH = "SearchQ";
+
+    String VO = "VO";
+
 }

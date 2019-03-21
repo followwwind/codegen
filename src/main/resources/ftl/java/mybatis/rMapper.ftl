@@ -50,6 +50,13 @@ public interface ${property}Mapper{
      * @return
      */
     int update(${property} r);
+
+    /**
+     * 列表查询
+     * @param r
+     * @return
+     */
+    List<${property}VO> list(${property}SearchQ r);
 }
 
 <#function getKey columns primary>

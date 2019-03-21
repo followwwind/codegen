@@ -6,7 +6,7 @@ import java.util.List;
  * 数据库表详情类
  * @author wind
  */
-public class Table {
+public class Table{
     /**
      * 数据库实例名
      */

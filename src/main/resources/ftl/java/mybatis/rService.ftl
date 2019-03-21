@@ -1,5 +1,10 @@
 package ${packageName!"com.wind.service"};
 
+<#if imports??>
+    <#list imports as import>
+import ${import};
+    </#list>
+</#if>
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>
  <#assign type = key.type?replace("java.lang.", "")>
@@ -22,7 +27,7 @@ public interface ${property}Service{
      * @param r
      * @return
      */
-    JsonResult save(Object r);
+    JsonResult save(${property}Q r);
 
     /**
      * 删除
@@ -43,21 +48,21 @@ public interface ${property}Service{
      * @param r
      * @return
      */
-    JsonResult list(Object r);
+    JsonResult list(${property}SearchQ r);
 
     /**
      * 分页查询
      * @param r
      * @return
      */
-    JsonResult pageList(Object r);
+    JsonResult pageList(${property}SearchQ r);
 
     /**
      * 修改
      * @param r
      * @return
      */
-    JsonResult update(Object r);
+    JsonResult update(${property}Q r);
 }
 
 <#function getKey columns primary>

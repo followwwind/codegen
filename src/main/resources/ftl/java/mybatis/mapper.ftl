@@ -67,25 +67,16 @@
         <!--</foreach>-->
     <!--</insert>-->
 
-    <delete id="deleteById" parameterType="${pkJType}" >
+    <#if primaryKeys?size == 1>
+    <delete id="deleteById">
         delete from ${tableName} where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
     </delete>
-    
-    <select id="findById" resultMap="BaseResultMap" parameterType="${pkJType}">
+
+    <select id="findById" resultMap="BaseResultMap">
         select
         <include refid="Column_List" />
         from ${tableName}
-        where 1 = 1
-        <if test="_parameter != null">
-        	and ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
-        </if>
-    </select>
-
-    <select id="list" resultType="${listReturn}" parameterType="${listParam}">
-        select
-        ${join(6, ",", 0)}
-        from ${tableName} r
-        where 1 = 1
+        where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
     </select>
 
     <update id="update" parameterType="${type}" >
@@ -94,9 +85,18 @@
             <include refid="Column_Selective_List" />
         </set>
         <if test="${pkPro} != null">
-        	where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
+            where ${pkName!""} = #${lBracket}${pkPro},jdbcType=${replace(pkType)}}
         </if>
     </update>
+    <#else>
+    </#if>
+
+    <select id="list" resultType="${listReturn}" parameterType="${listParam}">
+        select
+        ${join(6, ",", 0)}
+        from ${tableName} r
+        where 1 = 1
+    </select>
 </mapper>
 
 <#function contains primaryKeys colName>

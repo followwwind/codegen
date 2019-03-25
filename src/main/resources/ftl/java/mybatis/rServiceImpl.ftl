@@ -44,6 +44,7 @@ public class ${property}ServiceImpl implements ${property}Service{
         return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
 
+    <#if primaryKeys?size == 1>
     @Override
     public JsonResult delete(${type!"String"} id) {
     	logger.info("${property}ServiceImpl.delete param: id is {}", id);
@@ -59,6 +60,16 @@ public class ${property}ServiceImpl implements ${property}Service{
     }
 
     @Override
+    public JsonResult update(${property}Q r) {
+    	logger.info("${property}ServiceImpl.update param: r is {}", r);
+        ${property} entity = new ${property}();
+        BeanUtil.copy(r, entity);
+        int i = mapper.update(entity);
+        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
+    }
+    </#if>
+
+    @Override
     public JsonResult list(${property}SearchQ r) {
     	logger.info("${property}ServiceImpl.list param: r is {}", r);
         List<${property}VO> list = mapper.list(r);
@@ -72,15 +83,6 @@ public class ${property}ServiceImpl implements ${property}Service{
         List<${property}VO> list = mapper.list(r);
         Page<${property}VO> page = new Page<>(list);
         return new JsonResult(HttpCode.OK, page);
-    }
-
-    @Override
-    public JsonResult update(${property}Q r) {
-    	logger.info("${property}ServiceImpl.update param: r is {}", r);
-        ${property} entity = new ${property}();
-        BeanUtil.copy(r, entity);
-        int i = mapper.update(entity);
-        return new JsonResult(i > 0 ? HttpCode.OK : HttpCode.FAIL);
     }
     
 }

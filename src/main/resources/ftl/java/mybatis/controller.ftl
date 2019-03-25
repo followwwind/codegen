@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @version V1.0
  */
 @RestController
-@RequestMapping(value = "${property?uncap_first}")
+@RequestMapping(value = "api/${property?uncap_first}")
 <#if swagger>@Api(value="${property?uncap_first}")${"\n"}</#if><#t>
 public class ${property}Controller{
     <#assign service = property?uncap_first + "Service">
@@ -49,6 +49,7 @@ public class ${property}Controller{
         return ${service}.save(r);
     }
 
+    <#if primaryKeys?size == 1>
     /**
      * 删除记录接口
      * ${property?uncap_first}/{id}
@@ -76,6 +77,20 @@ public class ${property}Controller{
     }
 
     /**
+     * 修改记录接口
+     * ${property?uncap_first}/update
+     * @param r
+     * @return
+     */
+    @PutMapping("/")
+    <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
+    public JsonResult update(@RequestBody ${property}Q r) {
+    	logger.info("${property}Controller.update param: r is {}", r);
+        return ${service}.update(r);
+    }
+    </#if>
+
+    /**
      * 批量查询记录接口
      * ${property?uncap_first}/list
      * @param r
@@ -101,18 +116,6 @@ public class ${property}Controller{
         return ${service}.pageList(r);
     }
 
-    /**
-     * 修改记录接口
-     * ${property?uncap_first}/update
-     * @param r
-     * @return
-     */
-    @PutMapping("/")
-    <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
-    public JsonResult update(@RequestBody ${property}Q r) {
-    	logger.info("${property}Controller.update param: r is {}", r);
-        return ${service}.update(r);
-    }
 }
 <#function getKey columns primary>
  <#local b = {}>

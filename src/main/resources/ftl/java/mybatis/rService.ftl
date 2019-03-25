@@ -29,6 +29,7 @@ public interface ${property}Service{
      */
     JsonResult save(${property}Q r);
 
+    <#if primaryKeys?size == 1>
     /**
      * 删除
      * @param id
@@ -44,6 +45,14 @@ public interface ${property}Service{
     JsonResult get(${type!"String"} id);
 
     /**
+     * 修改
+     * @param r
+     * @return
+     */
+    JsonResult update(${property}Q r);
+    </#if>
+
+    /**
      * 批量查询记录
      * @param r
      * @return
@@ -57,12 +66,6 @@ public interface ${property}Service{
      */
     JsonResult pageList(${property}SearchQ r);
 
-    /**
-     * 修改
-     * @param r
-     * @return
-     */
-    JsonResult update(${property}Q r);
 }
 
 <#function getKey columns primary>

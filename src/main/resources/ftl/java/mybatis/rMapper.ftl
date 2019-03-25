@@ -29,6 +29,7 @@ public interface ${property}Mapper{
      */
     int insert(${property} r);
 
+    <#if primaryKeys?size == 1>
     /**
      * 删除
      * @param id
@@ -43,13 +44,14 @@ public interface ${property}Mapper{
      */
     ${property} findById(@Param("id") ${type!"String"} id);
 
-
     /**
      * 修改
      * @param r
      * @return
      */
     int update(${property} r);
+    <#else>
+    </#if>
 
     /**
      * 列表查询
@@ -57,6 +59,7 @@ public interface ${property}Mapper{
      * @return
      */
     List<${property}VO> list(${property}SearchQ r);
+
 }
 
 <#function getKey columns primary>

@@ -170,6 +170,7 @@ public class FtlUtil {
         }
         classInfo.setPackageName(EnvUtil.getPackage(packageType));
         classInfo.initImports();
+        classInfo.setName(className);
         freeMarker.setFileDir(EnvUtil.getPath(pathType));
         freeMarker.setMap(ReflectUtil.beanToMap(classInfo, true));
         genCode(freeMarker);

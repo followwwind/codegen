@@ -5,6 +5,7 @@ package ${packageName!"com.wind.dao"};
 import ${import};
     </#list>
 </#if>
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 <#if primaryKeys?? && primaryKeys?size gt 0>
  <#assign key = getKey(columns, primaryKeys[0])>

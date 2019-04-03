@@ -193,7 +193,11 @@
             <#local s += "</if>\n\t\t">
             <#if flag == 1 && column_index < (columns?size - 1)><#local s += "\t"></#if>
         <#elseif type == 6>
-            <#local s = "r." + column.property>
+            <#if column.property == column.columnName>
+                <#local s = "r." + column.property>
+            <#else>
+                <#local s = "r." + column.columnName + " " +column.property>
+            </#if>
             <#if column_index < (columns?size - 1)>
                 <#local s += sign>
             </#if>

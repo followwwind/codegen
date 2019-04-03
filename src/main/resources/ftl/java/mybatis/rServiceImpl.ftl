@@ -1,6 +1,5 @@
 package ${packageName!"com.wind.service.impl"};
 
-import java.util.List;
 <#if imports??>
     <#list imports as import>
 import ${import};

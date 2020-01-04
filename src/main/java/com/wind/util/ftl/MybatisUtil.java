@@ -4,6 +4,9 @@ import com.wind.config.*;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
 import com.wind.entity.ibatis.MyBatis;
+import com.wind.enums.EnvType;
+import com.wind.enums.PackageType;
+import com.wind.enums.PathType;
 import com.wind.util.EnvUtil;
 import com.wind.util.ReflectUtil;
 import com.wind.util.StringUtil;
@@ -49,7 +52,7 @@ public class MybatisUtil {
             imports.add(EnvUtil.getValOrDefault(EnvType.COMMON_SQL_PACKAGE));
             imports.add(EnvUtil.getSearch(property));
             imports.add(EnvUtil.getVO(property));
-            freeMarker.setData("mybatis/rMapper.ftl", property + "Mapper.java");
+            freeMarker.setData("java/mybatis/rMapper.ftl", property + "Mapper.java");
             map.put(FtlConst.FTL_IMPORT, imports);
             freeMarker.addMap(map);
             FtlUtil.genCode(freeMarker);
@@ -60,7 +63,7 @@ public class MybatisUtil {
         myBatis.setTable(table);
         myBatis.setListParam(EnvUtil.getSearch(property));
         myBatis.setListReturn(EnvUtil.getVO(property));
-        freeMarker.setData("mybatis/mapper.ftl", property + "Mapper.xml");
+        freeMarker.setData("java/mybatis/mapper.ftl", property + "Mapper.xml");
         freeMarker.initMap();
         freeMarker.addMap(ReflectUtil.beanToMap(myBatis, true));
         freeMarker.setFileDir(EnvUtil.getPath(PathType.MAPPER));
@@ -86,7 +89,7 @@ public class MybatisUtil {
             imports.add(EnvUtil.getValOrDefault(EnvType.JSON_RESULT));
             map.put(FtlConst.FTL_IMPORT, imports);
             freeMarker.addMap(map);
-            freeMarker.setData("mybatis/rService.ftl", property + "Service.java");
+            freeMarker.setData("java/mybatis/rService.ftl", property + "Service.java");
             FtlUtil.genCode(freeMarker);
         }
         //生成service实现类
@@ -102,10 +105,13 @@ public class MybatisUtil {
         imports.add(EnvUtil.getValOrDefault(EnvType.HTTP_CODE));
         imports.add(EnvUtil.getValOrDefault(EnvType.PAGE));
         imports.add(EnvUtil.getValOrDefault(EnvType.BEAN_UTIL));
+        imports.add(EnvUtil.getValOrDefault(EnvType.FLUENT_VALID));
+        imports.add(EnvUtil.getValOrDefault(EnvType.PARAM_Add));
+        imports.add(EnvUtil.getValOrDefault(EnvType.PARAM_Update));
         imports.add(EnvUtil.getSearch(property));
         imports.add(EnvUtil.getVO(property));
         imports.add(EnvUtil.getQuery(property));
-        freeMarker.setData("mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
+        freeMarker.setData("java/mybatis/rServiceImpl.ftl", property + "ServiceImpl.java");
         map.put(FtlConst.FTL_IMPORT, imports);
         freeMarker.addMap(map);
         freeMarker.setFileDir(EnvUtil.getPath(PathType.IMPL));
@@ -150,9 +156,10 @@ public class MybatisUtil {
         imports.add(EnvUtil.getValOrDefault(EnvType.JSON_RESULT));
         imports.add(EnvUtil.getSearch(property));
         imports.add(EnvUtil.getQuery(property));
-        freeMarker.setData("mybatis/controller.ftl", property + "Controller.java");
+        freeMarker.setData("java/mybatis/controller.ftl", property + "Controller.java");
         map.put(FtlConst.FTL_IMPORT, imports);
         map.put(EnvType.SWAGGER.getKey(), swaggerFlag);
+        map.put(EnvType.REST_TYPE.getKey(), EnvUtil.getValOrDefault(EnvType.REST_TYPE));
         freeMarker.addMap(map);
         FtlUtil.genCode(freeMarker);
     }

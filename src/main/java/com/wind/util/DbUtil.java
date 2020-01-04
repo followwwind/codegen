@@ -1,11 +1,10 @@
 package com.wind.util;
 
 import com.wind.callback.DbCallBack;
-import com.wind.config.SqlConst;
+import com.wind.enums.SqlConst;
 import com.wind.entity.db.Column;
 import com.wind.entity.db.PrimaryKey;
 import com.wind.entity.db.Table;
-import javafx.scene.control.Tab;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,12 +12,20 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Db工具类
+ * @Title: DbUtil
+ * @Package com.wind.util
+ * @Description: Db工具类
  * @author wind
+ * @date 2020/1/4 18:03
+ * @version V1.0
  */
 public class DbUtil {
 
     private static Properties props;
+
+    private DbUtil(){
+
+    }
 
 //    private static Connection conn;
 

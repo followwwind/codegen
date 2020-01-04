@@ -42,7 +42,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
+    <#if RestType == "1">
     @PostMapping("/")
+    <#else>
+    @PostMapping("/save")
+    </#if>
     <#if swagger>${"\t"}@ApiOperation(value="${property} 添加记录接口", notes="${property} 添加记录接口")")${"\n"}</#if><#t>
     public JsonResult save(@RequestBody ${property}Q r) {
     	logger.info("${property}Controller.save param: r is {}", r);
@@ -82,7 +86,11 @@ public class ${property}Controller{
      * @param r
      * @return
      */
+    <#if RestType == "1">
     @PutMapping("/")
+        <#else>
+    @PostMapping("/update")
+    </#if>
     <#if swagger>${"\t"}@ApiOperation(value="${property} 修改记录接口", notes="${property} 修改记录接口")${"\n"}</#if><#t>
     public JsonResult update(@RequestBody ${property}Q r) {
     	logger.info("${property}Controller.update param: r is {}", r);

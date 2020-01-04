@@ -1,4 +1,4 @@
-package com.wind.config;
+package com.wind.enums;
 
 /**
  * mybatis模板生成版本

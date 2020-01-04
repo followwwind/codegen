@@ -14,7 +14,7 @@ public interface FtlConst {
     /**
      * flt模板根路径
      */
-    String FTL_JAVA = "src/main/resources/ftl/java";
+    String FTL_JAVA = "src/main/resources/ftl/";
 
     /**
      * java代码生成根路径

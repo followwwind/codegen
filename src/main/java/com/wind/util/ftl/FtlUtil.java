@@ -2,9 +2,11 @@ package com.wind.util.ftl;
 
 import com.wind.config.*;
 import com.wind.entity.clazz.ClassInfo;
-import com.wind.entity.clazz.ClassType;
 import com.wind.entity.db.Table;
 import com.wind.entity.ftl.FreeMarker;
+import com.wind.enums.EnvType;
+import com.wind.enums.PackageType;
+import com.wind.enums.PathType;
 import com.wind.util.ClassUtil;
 import com.wind.util.EnvUtil;
 import com.wind.util.ReflectUtil;
@@ -34,34 +36,28 @@ public class FtlUtil {
      * @param freeMarker
      */
     public static void genCode(FreeMarker freeMarker){
-        try {
-            File dir = new File(freeMarker.getFileDir());
-            boolean sign = true;
-            if(!dir.exists()){
-                sign = dir.mkdirs();
+        String fileDir = freeMarker.getFileDir();
+        String fileName = freeMarker.getFileName();
+        File dir = new File(fileDir);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        try(
+            OutputStream fos = new FileOutputStream( new File(fileDir, fileName));
+            Writer out = new OutputStreamWriter(fos, Const.UTF8)
+        ) {
+            Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
+            cfg.setClassForTemplateLoading(FtlUtil.class, "/ftl/");
+            cfg.setDefaultEncoding(Const.UTF8);
+            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+            Template temp = cfg.getTemplate(freeMarker.getCfgName());
+            Map<String, Object> map = freeMarker.getMap();
+            if(map == null){
+                map = new HashMap<>(Const.MAP_SIZE);
             }
-
-            if(sign){
-                Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
-//                String path = FtlUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-//                cfg.setDirectoryForTemplateLoading(new File(path + "ftl/java"));
-                cfg.setClassForTemplateLoading(FtlUtil.class, "/ftl/java");
-                cfg.setDefaultEncoding(Const.UTF8);
-                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-                Template temp = cfg.getTemplate(freeMarker.getCfgName());
-
-                OutputStream fos = new FileOutputStream( new File(dir, freeMarker.getFileName()));
-                Writer out = new OutputStreamWriter(fos, Const.UTF8);
-                Map<String, Object> map = freeMarker.getMap();
-                if(map == null){
-                    map = new HashMap<>(Const.MAP_SIZE);
-                }
-                map.put("JDK_VERSION", EnvType.JDK_VERSION.getValue());
-                temp.process(map, out);
-                fos.flush();
-                out.close();
-                fos.close();
-            }
+            map.put("JDK_VERSION", EnvType.JDK_VERSION.getValue());
+            temp.process(map, out);
+            fos.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TemplateException e) {
@@ -163,7 +159,7 @@ public class FtlUtil {
     public static void genEntity(Table table, ClassInfo extend, PackageType packageType, PathType pathType, String className){
         FreeMarker freeMarker = new FreeMarker(FtlConst.FTL_JAVA);
         className = className != null ? className : table.getProperty();
-        freeMarker.setData("class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
+        freeMarker.setData("java/class.ftl", StringUtil.joinStr(Const.POINT_STR, className, JavaConst.JAVA));
         ClassInfo classInfo = ClassUtil.getBean(table);
         if(extend != null){
             classInfo.setExtend(extend);

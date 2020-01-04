@@ -1,6 +1,8 @@
 package com.wind.util;
 
 import com.wind.config.*;
+import com.wind.enums.PackageType;
+import com.wind.enums.PathType;
 
 import java.util.HashMap;
 import java.util.Map;

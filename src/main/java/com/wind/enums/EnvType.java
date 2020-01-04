@@ -1,4 +1,7 @@
-package com.wind.config;
+package com.wind.enums;
+
+import com.wind.config.BaseEnum;
+import com.wind.config.FtlConst;
 
 /**
  * @Title: EnvType
@@ -8,7 +11,7 @@ package com.wind.config;
  * @date 2019/2/27 15:23
  * @version V1.0
  */
-public enum EnvType implements BaseEnum{
+public enum EnvType implements BaseEnum {
 
     /**
      * java jdk版本
@@ -42,6 +45,14 @@ public enum EnvType implements BaseEnum{
     BEAN_UTIL("BeanUtil", "com.wind.boot.util.BeanUtil"),
 
     PAGE("Page", "com.wind.boot.config.persistence.Page"),
+
+    FLUENT_VALID("FluentValid", "com.baidu.unbiz.fluentvalidator.annotation.FluentValid"),
+
+    PARAM_Add("ParamAdd", "com.wind.boot.config.validation.group.Add"),
+
+    PARAM_Update("ParamUpdate", "com.wind.boot.config.validation.group.Update"),
+
+    REST_TYPE("RestType", "1"),
     ;
 
     private final String key;

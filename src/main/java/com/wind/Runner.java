@@ -1,11 +1,12 @@
 package com.wind;
 
-import com.wind.config.EnvType;
+import com.wind.enums.EnvType;
 import com.wind.entity.db.Table;
 import com.wind.util.DbUtil;
 import com.wind.util.EnvUtil;
 import com.wind.util.PropUtil;
 import com.wind.util.StringUtil;
+import com.wind.util.ftl.AngularJsUtil;
 import com.wind.util.ftl.FtlUtil;
 import com.wind.util.ftl.MybatisUtil;
 
@@ -45,6 +46,8 @@ public class Runner {
             FtlUtil.genEntity(table);
             MybatisUtil.genMapper(table, true);
             MybatisUtil.genService(table, true);
+            AngularJsUtil.genTable(table);
+            AngularJsUtil.genJs(table);
         });
     }
 }

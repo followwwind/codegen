@@ -35,7 +35,7 @@ public class ${property}ServiceImpl implements ${property}Service{
     private ${property}Mapper mapper;
 
     @Override
-    public JsonResult save(${property}Q r) {
+    public JsonResult save(@FluentValid(groups = Add.class) ${property}Q r) {
     	logger.info("${property}ServiceImpl.save param: r is {}", r);
         ${property} entity = new ${property}();
         BeanUtil.copy(r, entity);
@@ -59,7 +59,7 @@ public class ${property}ServiceImpl implements ${property}Service{
     }
 
     @Override
-    public JsonResult update(${property}Q r) {
+    public JsonResult update(@FluentValid(groups = Update.class) ${property}Q r) {
     	logger.info("${property}ServiceImpl.update param: r is {}", r);
         ${property} entity = new ${property}();
         BeanUtil.copy(r, entity);

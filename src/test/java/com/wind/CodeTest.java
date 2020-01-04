@@ -1,24 +1,33 @@
-package com.wind.ftl;
+package com.wind;
 
 import com.wind.entity.db.Table;
 import com.wind.util.DbUtil;
+import com.wind.util.EnvUtil;
+import com.wind.util.PropUtil;
+import com.wind.util.ftl.AngularJsUtil;
 import com.wind.util.ftl.FtlUtil;
 import com.wind.util.ftl.MybatisUtil;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author wind
  */
-public class MybatisTest {
+public class CodeTest {
 
     private List<Table> tables = new ArrayList<>();
 
     @Before
     public void init(){
     	FtlUtil.clear();
+
+        Properties config = PropUtil.getProp(DbUtil.class.getResourceAsStream("/config.properties"));
+        if(config != null){
+            config.forEach((key, value) -> EnvUtil.set(String.valueOf(key), String.valueOf(value)));
+        }
     	/*String[] arr = {"pmt"};
     	tables.addAll(DbUtil.getTables("child").stream().filter(table -> {
     		String tableName = table.getTableName();
@@ -51,9 +60,11 @@ public class MybatisTest {
             MybatisUtil.genController(table, false);
             FtlUtil.genEntity(table);
             MybatisUtil.genMapper(table, true);
-            //MybatisUtil.genExample(table);
+//            MybatisUtil.genExample(table);
             MybatisUtil.genService(table, true);
-            //MybatisUtil.genTest(table);
+            MybatisUtil.genTest(table);
+            AngularJsUtil.genTable(table);
+            AngularJsUtil.genJs(table);
         });
 
         long end = System.currentTimeMillis();

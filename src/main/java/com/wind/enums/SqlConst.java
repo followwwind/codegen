@@ -1,4 +1,4 @@
-package com.wind.config;
+package com.wind.enums;
 
 import java.util.stream.Stream;
 

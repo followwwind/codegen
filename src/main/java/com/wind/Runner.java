@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * @Title: Runner
  * @Package com.wind
- * @Description: TODO
+ * @Description: 程序入口
  * @author wind
  * @date 2019/2/27 15:06
  * @version V1.0

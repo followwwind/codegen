@@ -1,2 +1,2 @@
-# codegen
-Java Code generate automatically
+# project code gen
+Project Code generate automatically

@@ -15,6 +15,7 @@
         <freemarker.version>2.3.23</freemarker.version>
         <junit.version>4.12</junit.version>
         <jackson.version>2.9.5</jackson.version>
+        <jgit.version>3.5.0.201409260305-r</jgit.version>
     </properties>
 
 
@@ -52,6 +53,11 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
+        </dependency>
 
         <dependency>
             <!-- 使用junit4 -->
@@ -63,7 +69,7 @@
     </dependencies>
 
     <build>
-        <finalName>codegen</finalName>
+        <finalName>code-gen</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -88,7 +94,7 @@
                 </executions>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <outputFile>${project.build.directory}/shaded/codegen.jar</outputFile>
+                    <outputFile>${project.build.directory}/shaded/code-gen.jar</outputFile>
                     <artifactSet>
                         <includes>
                             <!--<include>mysql:mysql-connector-java</include>-->

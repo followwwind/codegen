@@ -30,7 +30,6 @@ app.controller('${property}Controller', function($scope, $http, $timeout, time, 
 
 
     var tbl;
-    var layer = layui.layer
 
     $timeout(function(){
         tbl = $('#tbl').DataTable({
@@ -47,7 +46,7 @@ app.controller('${property}Controller', function($scope, $http, $timeout, time, 
                     callback($scope.returnData);
                 },
                 function(err){
-                    alert("数据加载请求异常");
+                    layui.layer.msg('数据加载请求异常', {icon: 2});
                 });
             },
             "serverSide":true,
@@ -101,14 +100,14 @@ app.controller('${property}Controller', function($scope, $http, $timeout, time, 
         var entity = tbl.row($(e.target).parents("tr")).data();
         $http.delete($scope.serverUrl + "api/${property?uncap_first}/" + entity.id, {}).then(function(response){
             if(response.data.code == 200){
-                layer.msg('删除成功', {icon: 1});
+                layui.layer.msg('删除成功', {icon: 1});
             }else{
-                layer.msg('删除失败', {icon: 1});
+                layui.layer.msg('删除失败', {icon: 2});
             }
             tbl.ajax.reload();
         },
         function(err){
-
+            layui.layer.msg('服务器异常', {icon: 2});
         });
     });
 
@@ -135,15 +134,15 @@ app.controller('${property}Controller', function($scope, $http, $timeout, time, 
         var url =  $scope.form.flag == 1 ? "api/${property?uncap_first}/save" : "api/${property?uncap_first}/update";
         $http.post($scope.serverUrl + url, $scope.form.entity).then(function(response){
             if(response.data.code == 200){
-                layer.msg('操作成功', {icon: 1});
+                layui.layer.msg('操作成功', {icon: 1});
             }else{
-                layer.msg('操作失败', {icon: 1});
+                layui.layer.msg('操作失败', {icon: 2});
             }
             tbl.ajax.reload();
             $("#add").modal("hide");
         },
         function(err){
-
+            layui.layer.msg('服务器异常', {icon: 2});
         });
     };
 
